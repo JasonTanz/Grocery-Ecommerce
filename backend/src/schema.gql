@@ -1,0 +1,27 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Customer {
+  cust_email: String!
+  cust_id: String!
+  cust_username: String!
+}
+
+input LoginCustomerInput {
+  cust_email: String!
+  cust_password: String!
+}
+
+type LoginResponse {
+  access_token: String!
+  customer: Customer!
+}
+
+type Mutation {
+  login(loginCustomerInput: LoginCustomerInput!): LoginResponse!
+}
+
+type Query {
+  customers: [Customer!]!
+}
