@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { AuthService } from './auth/auth.service';
 import { CustomerService } from './customer/customer.service';
 import { DatabaseModule } from 'db/database.module';
+import { AdminService } from './admin/admin.service';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -17,13 +19,14 @@ import { DatabaseModule } from 'db/database.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
       cors: true,
-      context: ({ req }) => ({ req }),
     }),
+
     CustomerModule,
     AuthModule,
     DatabaseModule,
+    AdminModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, CustomerService],
+  providers: [AppService, AuthService, CustomerService, AdminService],
 })
 export class AppModule {}

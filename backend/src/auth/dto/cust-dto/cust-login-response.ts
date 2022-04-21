@@ -1,8 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Customer } from '../../customer/entities/customer.entity';
+import { Customer } from '../../../customer/entities/customer.entity';
 
 @ObjectType()
-export class LoginResponse {
+export class CustLoginResponse {
   @Field()
   access_token: string;
 
