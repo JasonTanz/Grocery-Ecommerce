@@ -12,7 +12,6 @@ export class product extends Model<product> {
 
   @Column({
     type: DataType.STRING,
-    unique: true,
   })
   product_name: string;
 

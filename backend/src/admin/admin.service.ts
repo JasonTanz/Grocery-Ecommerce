@@ -2,10 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { admin } from 'src/models/admin';
 import { CreateAdminInput } from './dto/create-admin.input';
 import { Logger } from '@nestjs/common';
+import { ADMIN_REPOSITORY } from 'src/constants';
 @Injectable()
 export class AdminService {
   constructor(
-    @Inject('ADMIN_REPOSITORY') private readonly adminRepo: typeof admin,
+    @Inject(ADMIN_REPOSITORY) private readonly adminRepo: typeof admin,
   ) {}
 
   async findByEmail(email: string): Promise<admin> {
