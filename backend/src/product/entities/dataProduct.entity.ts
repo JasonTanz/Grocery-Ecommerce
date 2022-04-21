@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { dataProduct } from './dataProduct.entity';
+
 @ObjectType()
-export class Product {
+export class dataProduct {
   @Field()
   product_id: string;
 
@@ -22,7 +22,4 @@ export class Product {
 
   @Field()
   product_qty: number;
-
-  @Field(() => dataProduct)
-  dataValues?: dataProduct;
 }

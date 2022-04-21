@@ -33,6 +33,7 @@
     "apollo-server": "^3.6.7",
     "apollo-server-express": "^3.6.7",
     "bcrypt": "^5.0.1",
+    "class-validator": "^0.13.2",
     "dotenv": "^16.0.0",
     "graphql": "^16.3.0",
     "passport": "^0.5.2",
