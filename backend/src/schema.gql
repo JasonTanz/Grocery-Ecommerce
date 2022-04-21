@@ -1,0 +1,72 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Admin {
+  admin_email: String!
+  admin_id: String!
+  admin_username: String!
+  dataValues: dataAdmin!
+}
+
+type AdminLoginResponse {
+  access_token: String!
+  admin: Admin!
+}
+
+type CustLoginResponse {
+  access_token: String!
+  customer: Customer!
+}
+
+type Customer {
+  cust_email: String!
+  cust_id: String!
+  cust_username: String!
+  dataValues: dataCust!
+}
+
+input LoginAdminInput {
+  admin_email: String!
+  admin_password: String!
+}
+
+input LoginCustomerInput {
+  cust_email: String!
+  cust_password: String!
+}
+
+type Mutation {
+  adminLogin(loginAdminInput: LoginAdminInput!): AdminLoginResponse!
+  adminSignup(signUpAdminInput: SignUpAdminInput!): Admin!
+  custLogin(loginCustomerInput: LoginCustomerInput!): CustLoginResponse!
+  custSignup(signUpCustInput: SignUpCustInput!): Customer!
+}
+
+type Query {
+  customers: [Customer!]!
+}
+
+input SignUpAdminInput {
+  admin_email: String!
+  admin_password: String!
+  admin_username: String!
+}
+
+input SignUpCustInput {
+  cust_email: String!
+  cust_password: String!
+  cust_username: String!
+}
+
+type dataAdmin {
+  admin_email: String!
+  admin_id: String!
+  admin_username: String!
+}
+
+type dataCust {
+  cust_email: String!
+  cust_id: String!
+  cust_username: String!
+}
