@@ -11,6 +11,7 @@ export class CustomerResolver {
   @Query(() => [Customer])
   @UseGuards(JwtAuthGuard)
   customers(): Promise<Customer[]> {
+    console.log('sdf');
     return this.customerService.findAll();
   }
 }
