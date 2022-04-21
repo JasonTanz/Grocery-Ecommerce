@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
 import { admin } from 'src/models/admin';
-import { product } from 'src/models/product';
+import { product } from '../src/models/product';
 import { customer } from '../src/models/customer';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.js')[env];

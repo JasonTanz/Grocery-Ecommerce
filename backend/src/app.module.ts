@@ -11,6 +11,8 @@ import { CustomerService } from './customer/customer.service';
 import { DatabaseModule } from 'db/database.module';
 import { AdminService } from './admin/admin.service';
 import { AdminModule } from './admin/admin.module';
+import { ProductService } from './product/product.service';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -25,8 +27,15 @@ import { AdminModule } from './admin/admin.module';
     AuthModule,
     DatabaseModule,
     AdminModule,
+    ProductModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthService, CustomerService, AdminService],
+  providers: [
+    AppService,
+    AuthService,
+    CustomerService,
+    AdminService,
+    ProductService,
+  ],
 })
 export class AppModule {}
