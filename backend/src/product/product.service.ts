@@ -11,4 +11,8 @@ export class ProductService {
   async createProduct(data: CreateProductInput): Promise<product> {
     return await this.productRepo.create(data);
   }
+
+  async findAll(): Promise<product[]> {
+    return await this.productRepo.findAll();
+  }
 }

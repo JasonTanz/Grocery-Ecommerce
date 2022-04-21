@@ -30,7 +30,7 @@ describe('ProductService', () => {
             findById: jest.fn((id) => {
               return { id, ...mockProduct };
             }),
-            findAll: jest.fn(),
+            findAll: jest.fn(() => [mockProduct]),
             DeleteById: jest.fn(),
             UpdateById: jest.fn(),
           },
@@ -50,7 +50,8 @@ describe('ProductService', () => {
     expect(productRepo).toBeDefined();
   });
 
-  describe('createProduct', () => {
+  // Create Product
+  describe('Create a product', () => {
     it('should create a product with given body and return it', async () => {
       expect(await service.createProduct(mockProduct)).toEqual({
         product_id: 'carrot-id',
@@ -66,7 +67,6 @@ describe('ProductService', () => {
     it('should return the correct types', () => {
       expect(
         service.createProduct(mockProduct).then((product) => {
-          console.log(product.product_id);
           expect(typeof product.product_id).toBe('string');
           expect(typeof product.product_name).toBe('string');
           expect(typeof product.product_brief_intro).toBe('string');
@@ -74,6 +74,37 @@ describe('ProductService', () => {
           expect(typeof product.product_img).toBe('string');
           expect(typeof product.product_price).toBe('number');
           expect(typeof product.product_qty).toBe('number');
+        }),
+      );
+    });
+  });
+
+  // Get All Products
+  describe('Get all products', () => {
+    it('should return an array of products', async () => {
+      expect(await service.findAll()).toEqual(
+        expect.arrayContaining([expect.objectContaining(mockProduct)]),
+      );
+    });
+
+    it('should call the productRepo.create once and with the correct params', async () => {
+      await service.findAll();
+      expect(productRepo.findAll).toHaveBeenCalled();
+      expect(productRepo.findAll).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      expect(
+        service.findAll().then((products) => {
+          products.forEach((product) => {
+            expect(typeof product.product_id).toBe('string');
+            expect(typeof product.product_name).toBe('string');
+            expect(typeof product.product_brief_intro).toBe('string');
+            expect(typeof product.product_description).toBe('string');
+            expect(typeof product.product_img).toBe('string');
+            expect(typeof product.product_price).toBe('number');
+            expect(typeof product.product_qty).toBe('number');
+          });
         }),
       );
     });
