@@ -3,7 +3,6 @@ import { Repository } from 'sequelize-typescript';
 import { PRODUCT_REPOSITORY } from '../constants/index';
 import { product } from 'src/models/product';
 import { ProductService } from './product.service';
-import { CreateProductInput } from './dto/create-product.input';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -31,8 +30,14 @@ describe('ProductService', () => {
               return { product_id, ...mockProduct };
             }),
             findAll: jest.fn(() => [mockProduct]),
-            DeleteById: jest.fn(),
-            UpdateById: jest.fn(),
+            update: jest.fn((data) => {
+              return {
+                mockProduct: {
+                  ...mockProduct,
+                  ...data,
+                },
+              };
+            }),
           },
         },
       ],
@@ -131,6 +136,37 @@ describe('ProductService', () => {
         expect(typeof product.product_price).toBe('number');
         expect(typeof product.product_qty).toBe('number');
       });
+    });
+  });
+
+  //update by id
+  describe('update product with given id', () => {
+    it('should return a project with the given id', async () => {
+      return service
+        .updateById({ product_name: 'Cabbage' }, 'carrot-id')
+        .then((product: any) => {
+          expect(product.mockProduct.product_name).toEqual('Cabbage');
+        });
+    });
+
+    it('should call the productRepo.update once and with the correct params', async () => {
+      await service.updateById({ product_name: 'Cabbage' }, 'carrot-id');
+      expect(productRepo.update).toHaveBeenCalled();
+      expect(productRepo.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service
+        .updateById({ product_name: 'Cabbage' }, 'carrot-id')
+        .then((product: any) => {
+          expect(typeof product.mockProduct.product_id).toBe('string');
+          expect(typeof product.mockProduct.product_name).toBe('string');
+          expect(typeof product.mockProduct.product_brief_intro).toBe('string');
+          expect(typeof product.mockProduct.product_description).toBe('string');
+          expect(typeof product.mockProduct.product_img).toBe('string');
+          expect(typeof product.mockProduct.product_price).toBe('number');
+          expect(typeof product.mockProduct.product_qty).toBe('number');
+        });
     });
   });
 });

@@ -23,4 +23,20 @@ export class ProductService {
       },
     });
   }
+
+  async updateById(data, id: string) {
+    return await this.productRepo.update(data, {
+      where: {
+        product_id: id,
+      },
+    });
+  }
+
+  async deleteById(id: string) {
+    return await this.productRepo.destroy({
+      where: {
+        product_id: id,
+      },
+    });
+  }
 }
