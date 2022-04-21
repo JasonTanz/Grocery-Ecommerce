@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { customer } from 'src/models/customer';
 import { CreateCustomerInput } from './dto/create-customer.input';
-
+import { CUST_REPOSITORY } from '../constants/index';
 @Injectable()
 export class CustomerService {
   constructor(
-    @Inject('CUST_REPOSITORY') private readonly custRepo: typeof customer,
+    @Inject(CUST_REPOSITORY) private readonly custRepo: typeof customer,
   ) {}
 
   async findAll(): Promise<customer[]> {
