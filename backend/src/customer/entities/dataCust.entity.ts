@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { dataCust } from './dataCust.entity';
+
 @ObjectType()
-export class Customer {
+export class dataCust {
   @Field()
   cust_id: string;
 
@@ -10,7 +10,4 @@ export class Customer {
 
   @Field()
   cust_email: string;
-
-  @Field(() => dataCust)
-  dataValues?: dataCust;
 }

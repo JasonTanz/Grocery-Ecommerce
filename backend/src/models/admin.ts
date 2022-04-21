@@ -1,31 +1,31 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
 @Table
-export class customer extends Model<customer> {
+export class admin extends Model<admin> {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
     defaultValue: DataType.UUIDV4,
     allowNull: false,
   })
-  cust_id: string;
+  admin_id: string;
 
   @Column({
     type: DataType.STRING,
     unique: true,
     allowNull: false,
   })
-  cust_email: string;
+  admin_email: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  cust_username: string;
+  admin_username: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  cust_password: string;
+  admin_password: string;
 }

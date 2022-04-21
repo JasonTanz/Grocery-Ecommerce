@@ -8,21 +8,6 @@ export class CustomerService {
     @Inject('CUST_REPOSITORY') private readonly custRepo: typeof customer,
   ) {}
 
-  // private readonly users = [
-  //   {
-  //     id: 'asdf',
-  //     cust_email: 'test',
-  //     cust_password: 'test',
-  //     cust_username: 'test',
-  //   },
-  //   {
-  //     id: 'aasdf',
-  //     cust_email: 'jatest',
-  //     cust_password: 'atest',
-  //     cust_username: 'testa',
-  //   },
-  // ];
-
   async findAll(): Promise<customer[]> {
     return await this.custRepo.findAll<customer>({});
   }
