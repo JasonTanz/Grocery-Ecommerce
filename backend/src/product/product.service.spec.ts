@@ -27,8 +27,8 @@ describe('ProductService', () => {
           provide: PRODUCT_REPOSITORY,
           useValue: {
             create: jest.fn((data) => data),
-            findById: jest.fn((id) => {
-              return { id, ...mockProduct };
+            findOne: jest.fn((product_id: string) => {
+              return { product_id, ...mockProduct };
             }),
             findAll: jest.fn(() => [mockProduct]),
             DeleteById: jest.fn(),
@@ -65,17 +65,15 @@ describe('ProductService', () => {
       expect(productRepo.create).toHaveBeenCalledWith(mockProduct);
     });
     it('should return the correct types', () => {
-      expect(
-        service.createProduct(mockProduct).then((product) => {
-          expect(typeof product.product_id).toBe('string');
-          expect(typeof product.product_name).toBe('string');
-          expect(typeof product.product_brief_intro).toBe('string');
-          expect(typeof product.product_description).toBe('string');
-          expect(typeof product.product_img).toBe('string');
-          expect(typeof product.product_price).toBe('number');
-          expect(typeof product.product_qty).toBe('number');
-        }),
-      );
+      return service.createProduct(mockProduct).then((product) => {
+        expect(typeof product.product_id).toBe('string');
+        expect(typeof product.product_name).toBe('string');
+        expect(typeof product.product_brief_intro).toBe('string');
+        expect(typeof product.product_description).toBe('string');
+        expect(typeof product.product_img).toBe('string');
+        expect(typeof product.product_price).toBe('number');
+        expect(typeof product.product_qty).toBe('number');
+      });
     });
   });
 
@@ -87,26 +85,52 @@ describe('ProductService', () => {
       );
     });
 
-    it('should call the productRepo.create once and with the correct params', async () => {
+    it('should call the productRepo.findAll once', async () => {
       await service.findAll();
       expect(productRepo.findAll).toHaveBeenCalled();
       expect(productRepo.findAll).toHaveBeenCalledTimes(1);
     });
 
     it('should return the correct types', () => {
-      expect(
-        service.findAll().then((products) => {
-          products.forEach((product) => {
-            expect(typeof product.product_id).toBe('string');
-            expect(typeof product.product_name).toBe('string');
-            expect(typeof product.product_brief_intro).toBe('string');
-            expect(typeof product.product_description).toBe('string');
-            expect(typeof product.product_img).toBe('string');
-            expect(typeof product.product_price).toBe('number');
-            expect(typeof product.product_qty).toBe('number');
-          });
-        }),
-      );
+      return service.findAll().then((products) => {
+        products.forEach((product) => {
+          expect(typeof product.product_id).toBe('string');
+          expect(typeof product.product_name).toBe('string');
+          expect(typeof product.product_brief_intro).toBe('string');
+          expect(typeof product.product_description).toBe('string');
+          expect(typeof product.product_img).toBe('string');
+          expect(typeof product.product_price).toBe('number');
+          expect(typeof product.product_qty).toBe('number');
+        });
+      });
+    });
+  });
+
+  //Get product by id
+  describe('Get product with given id', () => {
+    it('should return a project with the given id', async () => {
+      return service.findById('carrot-id').then((product) => {
+        expect(product.product_id).toEqual('carrot-id');
+        expect(product).toEqual(mockProduct);
+      });
+    });
+
+    it('should call the productRepo.findOne once and with the correct params', async () => {
+      await service.findById('carrot-id');
+      expect(productRepo.findOne).toHaveBeenCalled();
+      expect(productRepo.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service.findById('carrot-id').then((product) => {
+        expect(typeof product.product_id).toBe('string');
+        expect(typeof product.product_name).toBe('string');
+        expect(typeof product.product_brief_intro).toBe('string');
+        expect(typeof product.product_description).toBe('string');
+        expect(typeof product.product_img).toBe('string');
+        expect(typeof product.product_price).toBe('number');
+        expect(typeof product.product_qty).toBe('number');
+      });
     });
   });
 });
