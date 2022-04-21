@@ -1,0 +1,117 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Admin {
+  admin_email: String!
+  admin_id: String!
+  admin_username: String!
+  dataValues: dataAdmin!
+}
+
+type AdminLoginResponse {
+  access_token: String!
+  admin: Admin!
+}
+
+input CreateProductInput {
+  product_brief_intro: String!
+  product_description: String!
+  product_img: String!
+  product_name: String!
+  product_price: Float!
+  product_qty: Float!
+}
+
+type CustLoginResponse {
+  access_token: String!
+  customer: Customer!
+}
+
+type Customer {
+  cust_email: String!
+  cust_id: String!
+  cust_username: String!
+  dataValues: dataCust!
+}
+
+input LoginAdminInput {
+  admin_email: String!
+  admin_password: String!
+}
+
+input LoginCustomerInput {
+  cust_email: String!
+  cust_password: String!
+}
+
+type Mutation {
+  adminLogin(loginAdminInput: LoginAdminInput!): AdminLoginResponse!
+  adminSignup(signUpAdminInput: SignUpAdminInput!): Admin!
+  createProduct(createProductInput: CreateProductInput!): Product!
+  custLogin(loginCustomerInput: LoginCustomerInput!): CustLoginResponse!
+  custSignup(signUpCustInput: SignUpCustInput!): Customer!
+  deleteById(product_id: String!): String!
+  updateById(updateProductInput: UpdateProductInput!): Product!
+}
+
+type Product {
+  dataValues: dataProduct!
+  product_brief_intro: String!
+  product_description: String!
+  product_id: String!
+  product_img: String!
+  product_name: String!
+  product_price: Float!
+  product_qty: Float!
+}
+
+type Query {
+  customers: [Customer!]!
+  findAll: [Product!]!
+  findById(product_id: String!): Product!
+}
+
+input SignUpAdminInput {
+  admin_email: String!
+  admin_password: String!
+  admin_username: String!
+}
+
+input SignUpCustInput {
+  cust_email: String!
+  cust_password: String!
+  cust_username: String!
+}
+
+input UpdateProductInput {
+  product_brief_intro: String
+  product_description: String
+  product_id: String
+  product_img: String
+  product_name: String
+  product_price: Float
+  product_qty: Float
+}
+
+type dataAdmin {
+  admin_email: String!
+  admin_id: String!
+  admin_username: String!
+}
+
+type dataCust {
+  cust_email: String!
+  cust_id: String!
+  cust_username: String!
+}
+
+type dataProduct {
+  product_brief_intro: String!
+  product_description: String!
+  product_id: String!
+  product_img: String!
+  product_name: String!
+  product_price: Float!
+  product_qty: Float!
+}
