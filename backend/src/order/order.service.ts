@@ -12,4 +12,8 @@ export class OrderService {
   async createOrder(data: CreateOrderInput): Promise<order> {
     return await this.orderRepo.create(data);
   }
+
+  async findAll(): Promise<order[]> {
+    return await this.orderRepo.findAll();
+  }
 }

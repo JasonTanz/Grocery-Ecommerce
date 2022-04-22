@@ -77,4 +77,30 @@ describe('OrderService', () => {
       });
     });
   });
+
+  describe('Get all orders', () => {
+    it('should return an array of orders', async () => {
+      expect(await service.findAll()).toEqual(
+        expect.arrayContaining([expect.objectContaining(mockOrder)]),
+      );
+    });
+
+    it('should call the orderRepo.findAll once', async () => {
+      await service.findAll();
+      expect(orderRepo.findAll).toHaveBeenCalled();
+      expect(orderRepo.findAll).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service.findAll().then((orders) => {
+        orders.forEach((order) => {
+          expect(typeof order.order_id).toBe('string');
+          expect(typeof order.order_status).toBe('string');
+          expect(typeof order.order_delivery_address).toBe('string');
+          expect(typeof order.order_phone_number).toBe('string');
+          expect(typeof order.order_total_price).toBe('number');
+        });
+      });
+    });
+  });
 });
