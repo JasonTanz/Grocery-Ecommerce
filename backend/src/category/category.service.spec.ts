@@ -62,4 +62,27 @@ describe('CategoryService', () => {
       });
     });
   });
+
+  describe('Get all categories', () => {
+    it('should return an array of categories', async () => {
+      expect(await service.findAll()).toEqual(
+        expect.arrayContaining([expect.objectContaining(mockCat)]),
+      );
+    });
+
+    it('should call the categoryRepo.findAll once', async () => {
+      await service.findAll();
+      expect(categoryRepo.findAll).toHaveBeenCalled();
+      expect(categoryRepo.findAll).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service.findAll().then((categories) => {
+        categories.forEach((cat) => {
+          expect(typeof cat.category_id).toBe('string');
+          expect(typeof cat.category_name).toBe('string');
+        });
+      });
+    });
+  });
 });
