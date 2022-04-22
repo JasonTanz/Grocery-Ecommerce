@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { product } from '../models/product';
 import { CATEGORY_REPOSITORY } from '../constants/index';
 import { category } from '../models/category';
 import { CreateCategoryInput } from './dto/create-category.input';
@@ -15,7 +16,9 @@ export class CategoryService {
   }
 
   async findAll(): Promise<category[]> {
-    return await this.categoryRepo.findAll();
+    return await this.categoryRepo.findAll({
+      include: [product],
+    });
   }
 
   async findById(id: string): Promise<category> {
@@ -23,6 +26,7 @@ export class CategoryService {
       where: {
         category_id: id,
       },
+      include: [product],
     });
   }
 
