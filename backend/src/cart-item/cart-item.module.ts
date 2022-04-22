@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { cartsProviders } from './cartItem.provider';
+import { cartsProviders } from './cart-item.provider';
 import { CartItemService } from './cart-item.service';
 import { CartItemResolver } from './cart-item.resolver';
 
