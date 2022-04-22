@@ -20,4 +20,13 @@ export class CartItemService {
       include: [product],
     });
   }
+
+  async findById(id: string): Promise<cartItems> {
+    return await this.cartItemRepo.findOne({
+      where: {
+        cart_id: id,
+      },
+      include: [product],
+    });
+  }
 }

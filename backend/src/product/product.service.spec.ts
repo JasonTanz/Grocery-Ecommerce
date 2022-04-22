@@ -116,7 +116,6 @@ describe('ProductService', () => {
     it('should return a order with the given id', async () => {
       return service.findById('carrot-id').then((product) => {
         expect(product.product_id).toEqual('carrot-id');
-        expect(product).toEqual(mockProduct);
       });
     });
 
