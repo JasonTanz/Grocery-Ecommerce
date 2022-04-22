@@ -16,4 +16,7 @@ export class CreateOrderInput {
 
   @Field()
   cust_id: string;
+
+  @Field()
+  product_id: string;
 }

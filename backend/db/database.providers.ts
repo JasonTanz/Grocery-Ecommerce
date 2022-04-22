@@ -3,6 +3,7 @@ import { admin } from 'src/models/admin';
 import { product } from '../src/models/product';
 import { customer } from '../src/models/customer';
 import { order } from 'src/models/order';
+import { cartItems } from 'src/models/cartItem';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.js')[env];
 export const databaseProviders = [
@@ -15,7 +16,7 @@ export const databaseProviders = [
         config.password,
         config,
       );
-      sequelize.addModels([customer, admin, product, order]);
+      sequelize.addModels([customer, admin, product, order, cartItems]);
 
       return sequelize;
     },

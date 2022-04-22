@@ -14,6 +14,7 @@ describe('OrderService', () => {
     order_phone_number: '017123412',
     order_total_price: 38,
     cust_id: 'cust-id',
+    product_id: 'product-id',
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
