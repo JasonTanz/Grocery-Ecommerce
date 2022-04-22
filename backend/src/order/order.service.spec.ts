@@ -109,7 +109,6 @@ describe('OrderService', () => {
     it('should return a order with the given id', async () => {
       return service.findById('order-id').then((order) => {
         expect(order.order_id).toEqual('order-id');
-        expect(order).toEqual(order);
       });
     });
 

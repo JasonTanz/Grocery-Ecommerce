@@ -98,4 +98,27 @@ describe('CartItemService', () => {
       });
     });
   });
+
+  describe('Get cart item with given id', () => {
+    it('should return a cart item with the given id', async () => {
+      return service.findById('cart-id').then((item) => {
+        expect(item.cart_id).toEqual('cart-id');
+      });
+    });
+
+    it('should call the cartItemRepo.findOne once and with the correct params', async () => {
+      await service.findById('cart-id');
+      expect(cartItemRepo.findOne).toHaveBeenCalled();
+      expect(cartItemRepo.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service.createCartItem(mockCartItem).then((item) => {
+        expect(typeof item.cart_id).toBe('string');
+        expect(typeof item.item_qty).toBe('number');
+        expect(typeof item.cust_id).toBe('string');
+        expect(typeof item.product_id).toBe('string');
+      });
+    });
+  });
 });
