@@ -128,4 +128,35 @@ describe('OrderService', () => {
       });
     });
   });
+
+  //update by id
+  describe('update order with given id', () => {
+    it('should return a order with the given id', async () => {
+      return service
+        .updateById({ order_status: 'Delivering' }, 'order-id')
+        .then((order: any) => {
+          console.log(order);
+          expect(order.mockOrder.order_status).toEqual('Delivering');
+        });
+    });
+
+    it('should call the orderRepo.update once and with the correct params', async () => {
+      await service.updateById({ order_status: 'Delivering' }, 'order-id');
+      expect(orderRepo.update).toHaveBeenCalled();
+      expect(orderRepo.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service
+        .updateById({ order_status: 'Delivering' }, 'order-id')
+        .then((order: any) => {
+          console.log(order);
+          expect(typeof order.mockOrder.order_id).toBe('string');
+          expect(typeof order.mockOrder.order_status).toBe('string');
+          expect(typeof order.mockOrder.order_delivery_address).toBe('string');
+          expect(typeof order.mockOrder.order_phone_number).toBe('string');
+          expect(typeof order.mockOrder.order_total_price).toBe('number');
+        });
+    });
+  });
 });
