@@ -1,4 +1,14 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  HasMany,
+  ForeignKey,
+} from 'sequelize-typescript';
+import { Order } from 'src/order/entities/order.entity';
+import { cartItems } from './cartItem';
+import { order } from './order';
 
 @Table
 export class customer extends Model<customer> {
@@ -28,4 +38,10 @@ export class customer extends Model<customer> {
     allowNull: false,
   })
   cust_password: string;
+
+  @HasMany(() => order, { as: 'Orders' })
+  orders: order[];
+
+  @HasMany(() => cartItems, { as: 'CartItems' })
+  cartItems: cartItems[];
 }

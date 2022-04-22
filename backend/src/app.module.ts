@@ -13,6 +13,8 @@ import { AdminService } from './admin/admin.service';
 import { AdminModule } from './admin/admin.module';
 import { ProductService } from './product/product.service';
 import { ProductModule } from './product/product.module';
+import { OrderModule } from './order/order.module';
+import { CartItemModule } from './cart-item/cart-item.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { ProductModule } from './product/product.module';
     DatabaseModule,
     AdminModule,
     ProductModule,
+    OrderModule,
+    CartItemModule,
   ],
   controllers: [AppController],
   providers: [
