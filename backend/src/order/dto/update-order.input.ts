@@ -18,4 +18,7 @@ export class UpdateOrderInput {
 
   @Field({ nullable: true })
   cust_id?: string;
+
+  @Field({ nullable: true })
+  product_id?: string;
 }

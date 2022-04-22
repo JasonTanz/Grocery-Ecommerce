@@ -10,38 +10,20 @@ import { customer } from './customer';
 import { product } from './product';
 
 @Table
-export class order extends Model<order> {
+export class cartItems extends Model<cartItems> {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
     defaultValue: DataType.UUIDV4,
     allowNull: false,
   })
-  order_id: string;
+  cart_id: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.INTEGER,
   })
-  order_status: string;
+  item_qty: number;
 
-  @Column({
-    type: DataType.STRING,
-  })
-  order_delivery_address: string;
-
-  @Column({
-    type: DataType.STRING,
-  })
-  order_phone_number: string;
-
-  @Column({
-    type: DataType.DOUBLE,
-  })
-  order_total_price: number;
-
-  @Column({
-    type: DataType.UUID,
-  })
   @ForeignKey(() => customer)
   @Column({
     type: DataType.UUID,

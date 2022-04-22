@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Customer } from 'src/customer/entities/customer.entity';
+import { Product } from 'src/product/entities/product.entity';
 import { dataOrder } from './dataOrder.entity';
 @ObjectType()
 export class Order {
@@ -20,6 +21,9 @@ export class Order {
 
   @Field(() => Customer)
   customer?: Customer;
+
+  @Field(() => Product)
+  product?: Product;
 
   @Field(() => dataOrder)
   dataValues?: dataOrder;

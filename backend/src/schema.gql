@@ -20,6 +20,7 @@ input CreateOrderInput {
   order_phone_number: String!
   order_status: String!
   order_total_price: Float!
+  product_id: String!
 }
 
 input CreateProductInput {
@@ -75,6 +76,7 @@ type Order {
   order_phone_number: String!
   order_status: String!
   order_total_price: Float!
+  product: Product!
 }
 
 type Product {
@@ -116,6 +118,7 @@ input UpdateOrderInput {
   order_phone_number: String
   order_status: String
   order_total_price: Float
+  product_id: String
 }
 
 input UpdateProductInput {

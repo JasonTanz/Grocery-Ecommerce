@@ -7,6 +7,7 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { Order } from 'src/order/entities/order.entity';
+import { cartItems } from './cartItem';
 import { order } from './order';
 
 @Table
@@ -40,4 +41,7 @@ export class customer extends Model<customer> {
 
   @HasMany(() => order, { as: 'Orders' })
   orders: order[];
+
+  @HasMany(() => cartItems, { as: 'CartItems' })
+  cartItems: cartItems[];
 }
