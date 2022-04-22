@@ -22,10 +22,21 @@ type CartItems {
   product: Product!
 }
 
+type Category {
+  category_id: String!
+  category_name: String!
+  dataValues: dataCat!
+  products: [Product!]!
+}
+
 input CreateCartItemInput {
   cust_id: String!
   item_qty: Int!
   product_id: String!
+}
+
+input CreateCategoryInput {
+  category_name: String!
 }
 
 input CreateOrderInput {
@@ -38,6 +49,7 @@ input CreateOrderInput {
 }
 
 input CreateProductInput {
+  categories: [String!]!
   product_brief_intro: String!
   product_description: String!
   product_img: String!
@@ -72,6 +84,7 @@ input LoginCustomerInput {
 
 type Mutation {
   DeleteCartItemById(cart_id: String!): String!
+  DeleteCategoryById(category_id: String!): String!
   DeleteOrderById(order_id: String!): String!
   DeleteProductById(product_id: String!): String!
   UpdateCartItemById(updateCartItemInput: UpdateCartItemInput!): CartItems!
@@ -80,6 +93,7 @@ type Mutation {
   adminLogin(loginAdminInput: LoginAdminInput!): AdminLoginResponse!
   adminSignup(signUpAdminInput: SignUpAdminInput!): Admin!
   createCartItem(createCartItemInput: CreateCartItemInput!): CartItems!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
   createOrder(createOrderInput: CreateOrderInput!): Order!
   createProduct(createProductInput: CreateProductInput!): Product!
   custLogin(loginCustomerInput: LoginCustomerInput!): CustLoginResponse!
@@ -98,6 +112,7 @@ type Order {
 }
 
 type Product {
+  categories: [Category!]!
   dataValues: dataProduct!
   product_brief_intro: String!
   product_description: String!
@@ -111,6 +126,8 @@ type Product {
 type Query {
   CartItem(cart_id: String!): CartItems!
   CartItems: [CartItems!]!
+  Categories: [Category!]!
+  Category(category_id: String!): Category!
   Customer(cust_id: String!): Customer!
   Customers: [Customer!]!
   Order(order_id: String!): Order!
@@ -167,6 +184,11 @@ type dataAdmin {
 type dataCart {
   cart_id: String!
   item_qty: Int!
+}
+
+type dataCat {
+  category_id: String!
+  category_name: String!
 }
 
 type dataCust {

@@ -11,7 +11,9 @@ export class ProductResolver {
   async createProduct(
     @Args('createProductInput') createProductInput: CreateProductInput,
   ) {
-    return await this.productService.createProduct(createProductInput);
+    const product = await this.productService.createProduct(createProductInput);
+    await product.$set('categories', createProductInput.categories);
+    return product;
   }
 
   @Query(() => [Product], { name: 'Products' })
