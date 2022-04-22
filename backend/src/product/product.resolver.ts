@@ -28,10 +28,11 @@ export class ProductResolver {
   async updateById(
     @Args('updateProductInput') updateProductInput: UpdateProductInput,
   ) {
-    return await this.productService.updateById(
+    await this.productService.updateById(
       updateProductInput,
       updateProductInput.product_id,
     );
+    return await this.productService.findById(updateProductInput.product_id);
   }
 
   @Mutation(() => String)

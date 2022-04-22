@@ -145,6 +145,7 @@ describe('ProductService', () => {
       return service
         .updateById({ product_name: 'Cabbage' }, 'carrot-id')
         .then((product: any) => {
+          console.log(product);
           expect(product.mockProduct.product_name).toEqual('Cabbage');
         });
     });

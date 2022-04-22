@@ -27,14 +27,14 @@ export class ProductService {
 
   async updateById(data: UpdateProductInput, id: string) {
     const { product_id, ...res } = data;
-    await this.productRepo.update(res, {
+    return await this.productRepo.update(res, {
       where: {
         product_id: id,
       },
     });
-    const updatedProduct = await this.findById(id);
+    // const updatedProduct = await this.findById(id);
 
-    return updatedProduct;
+    // return updatedProduct;
   }
 
   async deleteById(id: string) {
