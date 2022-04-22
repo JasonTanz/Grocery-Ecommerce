@@ -16,4 +16,12 @@ export class OrderService {
   async findAll(): Promise<order[]> {
     return await this.orderRepo.findAll();
   }
+
+  async findById(id: string): Promise<order> {
+    return await this.orderRepo.findOne({
+      where: {
+        order_id: id,
+      },
+    });
+  }
 }
