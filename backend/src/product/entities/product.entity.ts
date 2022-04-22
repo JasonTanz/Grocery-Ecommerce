@@ -1,4 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { Category } from 'src/category/entities/category.entity';
 import { dataProduct } from './dataProduct.entity';
 @ObjectType()
 export class Product {
@@ -22,6 +23,9 @@ export class Product {
 
   @Field()
   product_qty: number;
+
+  @Field(() => [Category])
+  categories?: Category[];
 
   @Field(() => dataProduct)
   dataValues?: dataProduct;

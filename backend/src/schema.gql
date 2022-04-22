@@ -22,6 +22,13 @@ type CartItems {
   product: Product!
 }
 
+type Category {
+  category_id: String!
+  category_name: String!
+  dataValues: dataCat!
+  products: [Product!]!
+}
+
 input CreateCartItemInput {
   cust_id: String!
   item_qty: Int!
@@ -98,6 +105,7 @@ type Order {
 }
 
 type Product {
+  categories: [Category!]!
   dataValues: dataProduct!
   product_brief_intro: String!
   product_description: String!
@@ -167,6 +175,11 @@ type dataAdmin {
 type dataCart {
   cart_id: String!
   item_qty: Int!
+}
+
+type dataCat {
+  category_id: String!
+  category_name: String!
 }
 
 type dataCust {
