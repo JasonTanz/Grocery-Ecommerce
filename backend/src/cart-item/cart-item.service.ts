@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { product } from '../models/product';
 import { CARTITEM_REPOSITORY } from '../constants/index';
 import { cartItems } from '../models/cartItem';
 import { CreateCartItemInput } from './dto/create-cartItems.input';
@@ -12,5 +13,11 @@ export class CartItemService {
 
   async createCartItem(data: CreateCartItemInput): Promise<cartItems> {
     return await this.cartItemRepo.create(data);
+  }
+
+  async findAll(): Promise<cartItems[]> {
+    return await this.cartItemRepo.findAll({
+      include: [product],
+    });
   }
 }
