@@ -4,6 +4,8 @@ import { product } from '../src/models/product';
 import { customer } from '../src/models/customer';
 import { order } from 'src/models/order';
 import { cartItems } from 'src/models/cartItem';
+import { category } from '../src/models/category';
+import { product_category } from '../src/models/product_category';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.js')[env];
 export const databaseProviders = [
@@ -16,7 +18,15 @@ export const databaseProviders = [
         config.password,
         config,
       );
-      sequelize.addModels([customer, admin, product, order, cartItems]);
+      sequelize.addModels([
+        customer,
+        admin,
+        product,
+        order,
+        cartItems,
+        category,
+        product_category,
+      ]);
 
       return sequelize;
     },
