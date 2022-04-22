@@ -14,7 +14,7 @@ export class OrderResolver {
   }
 
   @Query(() => [Order], { name: 'Orders' })
-  async findAlls() {
+  async findAll() {
     return await this.orderService.findAll();
   }
 
