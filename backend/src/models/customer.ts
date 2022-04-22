@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { order } from './order';
 
 @Table
 export class customer extends Model<customer> {
@@ -28,4 +29,10 @@ export class customer extends Model<customer> {
     allowNull: false,
   })
   cust_password: string;
+
+  @Column({
+    type: DataType.UUID,
+  })
+  @HasMany(() => order, 'cust_id')
+  orders: order[];
 }
