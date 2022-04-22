@@ -14,6 +14,20 @@ type AdminLoginResponse {
   admin: Admin!
 }
 
+type CartItems {
+  cart_id: String!
+  customer: Customer!
+  dataValues: dataCart!
+  item_qty: Int!
+  product: Product!
+}
+
+input CreateCartItemInput {
+  cust_id: String!
+  item_qty: Int!
+  product_id: String!
+}
+
 input CreateOrderInput {
   cust_id: String!
   order_delivery_address: String!
@@ -38,6 +52,7 @@ type CustLoginResponse {
 }
 
 type Customer {
+  CartItems: [CartItems!]!
   Orders: [Order!]!
   cust_email: String!
   cust_id: String!
@@ -56,12 +71,15 @@ input LoginCustomerInput {
 }
 
 type Mutation {
+  DeleteCartItemById(cart_id: String!): String!
   DeleteOrderById(order_id: String!): String!
   DeleteProductById(product_id: String!): String!
+  UpdateCartItemById(updateCartItemInput: UpdateCartItemInput!): CartItems!
   UpdateOrderById(updateOrderInput: UpdateOrderInput!): Order!
   UpdateProductById(updateProductInput: UpdateProductInput!): Product!
   adminLogin(loginAdminInput: LoginAdminInput!): AdminLoginResponse!
   adminSignup(signUpAdminInput: SignUpAdminInput!): Admin!
+  createCartItem(createCartItemInput: CreateCartItemInput!): CartItems!
   createOrder(createOrderInput: CreateOrderInput!): Order!
   createProduct(createProductInput: CreateProductInput!): Product!
   custLogin(loginCustomerInput: LoginCustomerInput!): CustLoginResponse!
@@ -91,6 +109,8 @@ type Product {
 }
 
 type Query {
+  CartItem(cart_id: String!): CartItems!
+  CartItems: [CartItems!]!
   Customer(cust_id: String!): Customer!
   Customers: [Customer!]!
   Order(order_id: String!): Order!
@@ -109,6 +129,13 @@ input SignUpCustInput {
   cust_email: String!
   cust_password: String!
   cust_username: String!
+}
+
+input UpdateCartItemInput {
+  cart_id: String
+  cust_id: String
+  item_qty: Int
+  product_id: String
 }
 
 input UpdateOrderInput {
@@ -135,6 +162,11 @@ type dataAdmin {
   admin_email: String!
   admin_id: String!
   admin_username: String!
+}
+
+type dataCart {
+  cart_id: String!
+  item_qty: Int!
 }
 
 type dataCust {
