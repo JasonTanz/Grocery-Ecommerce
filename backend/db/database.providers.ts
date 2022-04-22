@@ -2,6 +2,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { admin } from 'src/models/admin';
 import { product } from '../src/models/product';
 import { customer } from '../src/models/customer';
+import { order } from 'src/models/order';
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config.js')[env];
 export const databaseProviders = [
@@ -14,7 +15,7 @@ export const databaseProviders = [
         config.password,
         config,
       );
-      sequelize.addModels([customer, admin, product]);
+      sequelize.addModels([customer, admin, product, order]);
 
       return sequelize;
     },
