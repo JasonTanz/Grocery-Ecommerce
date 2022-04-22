@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { category } from '../models/category';
 import { product } from 'src/models/product';
 import { PRODUCT_REPOSITORY } from '../constants/index';
-import { CreateProductInput } from './dto/create-product.input';
+
 import { UpdateProductInput } from './dto/update-product.input';
 @Injectable()
 export class ProductService {
@@ -9,12 +10,16 @@ export class ProductService {
     @Inject(PRODUCT_REPOSITORY) private readonly productRepo: typeof product,
   ) {}
 
-  async createProduct(data: CreateProductInput): Promise<product> {
-    return await this.productRepo.create(data);
+  async createProduct(data): Promise<product> {
+    const { categories, ...res } = data;
+
+    return await this.productRepo.create(res);
   }
 
   async findAll(): Promise<product[]> {
-    return await this.productRepo.findAll();
+    return await this.productRepo.findAll({
+      include: [category],
+    });
   }
 
   async findById(id: string): Promise<product> {
@@ -22,6 +27,7 @@ export class ProductService {
       where: {
         product_id: id,
       },
+      include: [category],
     });
   }
 

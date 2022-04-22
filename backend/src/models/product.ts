@@ -1,4 +1,12 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  BelongsToMany,
+} from 'sequelize-typescript';
+import { category } from './category';
+import { product_category } from './product_category';
 
 @Table
 export class product extends Model<product> {
@@ -39,4 +47,7 @@ export class product extends Model<product> {
     type: DataType.NUMBER,
   })
   product_qty: number;
+
+  @BelongsToMany(() => category, () => product_category, 'product_id')
+  categories: category[];
 }
