@@ -13,6 +13,7 @@ import { AdminService } from './admin/admin.service';
 import { AdminModule } from './admin/admin.module';
 import { ProductService } from './product/product.service';
 import { ProductModule } from './product/product.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ProductModule } from './product/product.module';
     DatabaseModule,
     AdminModule,
     ProductModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [
