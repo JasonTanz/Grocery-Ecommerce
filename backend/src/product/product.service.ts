@@ -32,9 +32,6 @@ export class ProductService {
         product_id: id,
       },
     });
-    // const updatedProduct = await this.findById(id);
-
-    // return updatedProduct;
   }
 
   async deleteById(id: string) {

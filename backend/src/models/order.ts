@@ -4,7 +4,10 @@ import {
   Model,
   DataType,
   BelongsToMany,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { Customer } from 'src/customer/entities/customer.entity';
 import { customer } from './customer';
 
 @Table
@@ -40,6 +43,10 @@ export class order extends Model<order> {
   @Column({
     type: DataType.UUID,
   })
-  @BelongsToMany(() => customer, 'cust_id')
+  @ForeignKey(() => customer)
+  @Column
   cust_id: string;
+
+  @BelongsTo(() => customer, 'cust_id')
+  customer: customer;
 }
