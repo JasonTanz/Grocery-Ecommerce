@@ -135,7 +135,6 @@ describe('OrderService', () => {
       return service
         .updateById({ order_status: 'Delivering' }, 'order-id')
         .then((order: any) => {
-          console.log(order);
           expect(order.mockOrder.order_status).toEqual('Delivering');
         });
     });
@@ -150,7 +149,6 @@ describe('OrderService', () => {
       return service
         .updateById({ order_status: 'Delivering' }, 'order-id')
         .then((order: any) => {
-          console.log(order);
           expect(typeof order.mockOrder.order_id).toBe('string');
           expect(typeof order.mockOrder.order_status).toBe('string');
           expect(typeof order.mockOrder.order_delivery_address).toBe('string');

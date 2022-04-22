@@ -3,6 +3,7 @@ import { product } from '../models/product';
 import { CARTITEM_REPOSITORY } from '../constants/index';
 import { cartItems } from '../models/cartItem';
 import { CreateCartItemInput } from './dto/create-cartItems.input';
+import { UpdateCartItemInput } from './dto/update-cartItems.input';
 
 @Injectable()
 export class CartItemService {
@@ -27,6 +28,23 @@ export class CartItemService {
         cart_id: id,
       },
       include: [product],
+    });
+  }
+
+  async updateById(data: UpdateCartItemInput, id: string) {
+    const { cart_id, ...res } = data;
+    return await this.cartItemRepo.update(res, {
+      where: {
+        cart_id: id,
+      },
+    });
+  }
+
+  async deleteById(id: string) {
+    return await this.cartItemRepo.destroy({
+      where: {
+        cart_id: id,
+      },
     });
   }
 }

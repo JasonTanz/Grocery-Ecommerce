@@ -121,4 +121,31 @@ describe('CartItemService', () => {
       });
     });
   });
+
+  describe('update cart item with given id', () => {
+    it('should return a cart item with the given id', async () => {
+      return service
+        .updateById({ item_qty: 15 }, 'cart-id')
+        .then((item: any) => {
+          expect(item.mockCartItem.item_qty).toEqual(15);
+        });
+    });
+
+    it('should call the cartItemRepo.update once and with the correct params', async () => {
+      await service.updateById({ item_qty: 15 }, 'cart-id');
+      expect(cartItemRepo.update).toHaveBeenCalled();
+      expect(cartItemRepo.update).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service
+        .updateById({ item_qty: 15 }, 'cart-item')
+        .then((item: any) => {
+          expect(typeof item.mockCartItem.cart_id).toBe('string');
+          expect(typeof item.mockCartItem.item_qty).toBe('number');
+          expect(typeof item.mockCartItem.cust_id).toBe('string');
+          expect(typeof item.mockCartItem.product_id).toBe('string');
+        });
+    });
+  });
 });
