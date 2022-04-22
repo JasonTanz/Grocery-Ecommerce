@@ -3,6 +3,7 @@ import { ORDER_REPOSITORY } from '../constants/index';
 import { order } from 'src/models/order';
 import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
+import { customer } from 'src/models/customer';
 
 @Injectable()
 export class OrderService {
@@ -15,7 +16,9 @@ export class OrderService {
   }
 
   async findAll(): Promise<order[]> {
-    return await this.orderRepo.findAll();
+    return await this.orderRepo.findAll({
+      include: [customer],
+    });
   }
 
   async findById(id: string): Promise<order> {
@@ -23,6 +26,7 @@ export class OrderService {
       where: {
         order_id: id,
       },
+      include: [customer],
     });
   }
 

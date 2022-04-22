@@ -14,6 +14,14 @@ type AdminLoginResponse {
   admin: Admin!
 }
 
+input CreateOrderInput {
+  cust_id: String!
+  order_delivery_address: String!
+  order_phone_number: String!
+  order_status: String!
+  order_total_price: Float!
+}
+
 input CreateProductInput {
   product_brief_intro: String!
   product_description: String!
@@ -29,6 +37,7 @@ type CustLoginResponse {
 }
 
 type Customer {
+  Orders: [Order!]!
   cust_email: String!
   cust_id: String!
   cust_username: String!
@@ -46,13 +55,26 @@ input LoginCustomerInput {
 }
 
 type Mutation {
+  DeleteOrderById(order_id: String!): String!
+  DeleteProductById(product_id: String!): String!
+  UpdateOrderById(updateOrderInput: UpdateOrderInput!): Order!
+  UpdateProductById(updateProductInput: UpdateProductInput!): Product!
   adminLogin(loginAdminInput: LoginAdminInput!): AdminLoginResponse!
   adminSignup(signUpAdminInput: SignUpAdminInput!): Admin!
+  createOrder(createOrderInput: CreateOrderInput!): Order!
   createProduct(createProductInput: CreateProductInput!): Product!
   custLogin(loginCustomerInput: LoginCustomerInput!): CustLoginResponse!
   custSignup(signUpCustInput: SignUpCustInput!): Customer!
-  deleteById(product_id: String!): String!
-  updateById(updateProductInput: UpdateProductInput!): Product!
+}
+
+type Order {
+  customer: Customer!
+  dataValues: dataOrder!
+  order_delivery_addres: String!
+  order_id: String!
+  order_phone_number: String!
+  order_status: String!
+  order_total_price: Float!
 }
 
 type Product {
@@ -67,9 +89,12 @@ type Product {
 }
 
 type Query {
-  customers: [Customer!]!
-  findAll: [Product!]!
-  findById(product_id: String!): Product!
+  Customer(cust_id: String!): Customer!
+  Customers: [Customer!]!
+  Order(order_id: String!): Order!
+  Orders: [Order!]!
+  Product(product_id: String!): Product!
+  Products: [Product!]!
 }
 
 input SignUpAdminInput {
@@ -82,6 +107,15 @@ input SignUpCustInput {
   cust_email: String!
   cust_password: String!
   cust_username: String!
+}
+
+input UpdateOrderInput {
+  cust_id: String
+  order_delivery_address: String
+  order_id: String
+  order_phone_number: String
+  order_status: String
+  order_total_price: Float
 }
 
 input UpdateProductInput {
@@ -104,6 +138,14 @@ type dataCust {
   cust_email: String!
   cust_id: String!
   cust_username: String!
+}
+
+type dataOrder {
+  order_delivery_addres: String!
+  order_id: String!
+  order_phone_number: String!
+  order_status: String!
+  order_total_price: Float!
 }
 
 type dataProduct {

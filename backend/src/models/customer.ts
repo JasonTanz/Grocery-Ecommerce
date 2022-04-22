@@ -1,4 +1,12 @@
-import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  HasMany,
+  ForeignKey,
+} from 'sequelize-typescript';
+import { Order } from 'src/order/entities/order.entity';
 import { order } from './order';
 
 @Table
@@ -30,9 +38,6 @@ export class customer extends Model<customer> {
   })
   cust_password: string;
 
-  @Column({
-    type: DataType.UUID,
-  })
-  @HasMany(() => order, 'cust_id')
+  @HasMany(() => order, { as: 'Orders' })
   orders: order[];
 }
