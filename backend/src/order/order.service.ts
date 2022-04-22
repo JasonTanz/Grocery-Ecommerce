@@ -3,7 +3,7 @@ import { ORDER_REPOSITORY } from '../constants/index';
 import { order } from 'src/models/order';
 import { CreateOrderInput } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
-import { customer } from 'src/models/customer';
+import { customer } from '../models/customer';
 
 @Injectable()
 export class OrderService {
