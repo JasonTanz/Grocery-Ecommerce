@@ -73,4 +73,29 @@ describe('CartItemService', () => {
       });
     });
   });
+
+  describe('Get all cart items', () => {
+    it('should return an array of cart items', async () => {
+      expect(await service.findAll()).toEqual(
+        expect.arrayContaining([expect.objectContaining(mockCartItem)]),
+      );
+    });
+
+    it('should call the cartItemRepo.findAll once', async () => {
+      await service.findAll();
+      expect(cartItemRepo.findAll).toHaveBeenCalled();
+      expect(cartItemRepo.findAll).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service.findAll().then((items) => {
+        items.forEach((item) => {
+          expect(typeof item.cart_id).toBe('string');
+          expect(typeof item.item_qty).toBe('number');
+          expect(typeof item.cust_id).toBe('string');
+          expect(typeof item.product_id).toBe('string');
+        });
+      });
+    });
+  });
 });
