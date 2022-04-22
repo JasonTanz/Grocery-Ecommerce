@@ -17,4 +17,20 @@ export class CategoryService {
   async findAll(): Promise<category[]> {
     return await this.categoryRepo.findAll();
   }
+
+  async findById(id: string): Promise<category> {
+    return await this.categoryRepo.findOne({
+      where: {
+        category_id: id,
+      },
+    });
+  }
+
+  async deleteById(id: string) {
+    return await this.categoryRepo.destroy({
+      where: {
+        category_id: id,
+      },
+    });
+  }
 }

@@ -85,4 +85,25 @@ describe('CategoryService', () => {
       });
     });
   });
+
+  describe('Get category with given id', () => {
+    it('should return a category with the given id', async () => {
+      return service.findById('category-id').then((cat) => {
+        expect(cat.category_id).toEqual('category-id');
+      });
+    });
+
+    it('should call the categoryRepo.findOne once and with the correct params', async () => {
+      await service.findById('category-id');
+      expect(categoryRepo.findOne).toHaveBeenCalled();
+      expect(categoryRepo.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service.createCategory(mockCat).then((cat) => {
+        expect(typeof cat.category_id).toBe('string');
+        expect(typeof cat.category_name).toBe('string');
+      });
+    });
+  });
 });
