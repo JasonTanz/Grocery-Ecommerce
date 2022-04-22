@@ -14,27 +14,28 @@ export class ProductResolver {
     return await this.productService.createProduct(createProductInput);
   }
 
-  @Query(() => [Product])
+  @Query(() => [Product], { name: 'Products' })
   async findAll() {
     return await this.productService.findAll();
   }
 
-  @Query(() => Product)
+  @Query(() => Product, { name: 'Product' })
   async findById(@Args('product_id') product_id: string) {
     return await this.productService.findById(product_id);
   }
 
-  @Mutation(() => Product)
+  @Mutation(() => Product, { name: 'UpdateProductById' })
   async updateById(
     @Args('updateProductInput') updateProductInput: UpdateProductInput,
   ) {
-    return await this.productService.updateById(
+    await this.productService.updateById(
       updateProductInput,
       updateProductInput.product_id,
     );
+    return await this.productService.findById(updateProductInput.product_id);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => String, { name: 'DeleteProductById' })
   async deleteById(@Args('product_id') product_id: string) {
     await this.productService.deleteById(product_id);
     return `Product with the id ${product_id} successfully deleted`;
