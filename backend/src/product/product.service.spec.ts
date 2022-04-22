@@ -140,11 +140,10 @@ describe('ProductService', () => {
 
   //update by id
   describe('update product with given id', () => {
-    it('should return a project with the given id', async () => {
+    it('should return a product with the given id', async () => {
       return service
         .updateById({ product_name: 'Cabbage' }, 'carrot-id')
         .then((product: any) => {
-          console.log(product);
           expect(product.mockProduct.product_name).toEqual('Cabbage');
         });
     });
