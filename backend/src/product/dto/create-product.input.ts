@@ -19,4 +19,7 @@ export class CreateProductInput {
 
   @Field()
   product_qty: number;
+
+  @Field(() => [String])
+  categories: string[];
 }

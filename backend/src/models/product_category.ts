@@ -9,7 +9,9 @@ import {
 import { category } from './category';
 import { product } from './product';
 
-@Table
+@Table({
+  tableName: 'product_category',
+})
 export class product_category extends Model<product_category> {
   @ForeignKey(() => product)
   @Column({
