@@ -113,7 +113,7 @@ describe('ProductService', () => {
 
   //Get product by id
   describe('Get product with given id', () => {
-    it('should return a project with the given id', async () => {
+    it('should return a order with the given id', async () => {
       return service.findById('carrot-id').then((product) => {
         expect(product.product_id).toEqual('carrot-id');
         expect(product).toEqual(mockProduct);

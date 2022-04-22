@@ -103,4 +103,29 @@ describe('OrderService', () => {
       });
     });
   });
+
+  describe('Get order with given id', () => {
+    it('should return a order with the given id', async () => {
+      return service.findById('order-id').then((order) => {
+        expect(order.order_id).toEqual('order-id');
+        expect(order).toEqual(order);
+      });
+    });
+
+    it('should call the orderRepo.findOne once and with the correct params', async () => {
+      await service.findById('order-id');
+      expect(orderRepo.findOne).toHaveBeenCalled();
+      expect(orderRepo.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('should return the correct types', () => {
+      return service.createOrder(mockOrder).then((order) => {
+        expect(typeof order.order_id).toBe('string');
+        expect(typeof order.order_status).toBe('string');
+        expect(typeof order.order_delivery_address).toBe('string');
+        expect(typeof order.order_phone_number).toBe('string');
+        expect(typeof order.order_total_price).toBe('number');
+      });
+    });
+  });
 });
