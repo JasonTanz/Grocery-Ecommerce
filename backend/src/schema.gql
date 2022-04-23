@@ -97,7 +97,7 @@ type Mutation {
   createOrder(createOrderInput: CreateOrderInput!): Order!
   createProduct(createProductInput: CreateProductInput!): Product!
   custLogin(loginCustomerInput: LoginCustomerInput!): CustLoginResponse!
-  custSignup(signUpCustInput: SignUpCustInput!): Customer!
+  custSignup(signUpCustInput: SignUpCustInput!): CustLoginResponse!
 }
 
 type Order {

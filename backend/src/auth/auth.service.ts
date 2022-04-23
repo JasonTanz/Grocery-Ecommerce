@@ -143,7 +143,9 @@ export class AuthService {
     }
   }
 
-  async custSignup(signUpCustInput: SignUpCustInput) {
+  async custSignup(
+    signUpCustInput: SignUpCustInput,
+  ): Promise<CustLoginResponse> {
     try {
       const cust = await this.customerService.findByEmail(
         signUpCustInput.cust_email,
@@ -158,10 +160,25 @@ export class AuthService {
         );
       } else {
         const password = await bcrypt.hash(signUpCustInput.cust_password, 10);
-        return this.customerService.createCustomer({
+        const cust = await this.customerService.createCustomer({
           ...signUpCustInput,
           cust_password: password,
         });
+        const { cust_email, cust_username, cust_id } = cust;
+
+        const data = {
+          access_token: this.jwtService.sign({
+            email: cust_email,
+            sub: cust_id,
+            role: 'cust',
+          }),
+          customer: {
+            cust_email,
+            cust_username,
+            cust_id,
+          },
+        };
+        return data;
       }
     } catch (error) {
       throw new HttpException(
