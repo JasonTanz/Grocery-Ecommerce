@@ -11,3 +11,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.zoom-on-hover .product-img {
+  transition: all 0.5s;
+}
+.zoom-on-hover:hover .product-img {
+  transform: scale(1.1);
+}
+
+.custom-dropdown {
+  height: 45px;
+  min-height: 50px;
+  width: 150px;
+  max-width: 150px;
+}
