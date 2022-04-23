@@ -21,7 +21,7 @@ export class AuthResolver {
     return await this.authService.custLogin(loginCustomerInput);
   }
 
-  @Mutation(() => Customer)
+  @Mutation(() => CustLoginResponse)
   async custSignup(@Args('signUpCustInput') signUpCustInput: SignUpCustInput) {
     return await this.authService.custSignup(signUpCustInput);
   }
