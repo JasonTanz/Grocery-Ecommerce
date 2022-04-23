@@ -6,4 +6,5 @@ export interface formField {
   flex?: boolean;
   customclass?: string;
   value?: string;
+  type?: string;
 }

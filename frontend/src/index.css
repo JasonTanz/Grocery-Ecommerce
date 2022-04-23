@@ -25,3 +25,35 @@ code {
   width: 150px;
   max-width: 150px;
 }
+
+.trash-can-icon:hover {
+  color: red;
+  transition: all 0.3s;
+}
+.phone-input {
+  width: 100%;
+  position: relative;
+}
+
+.phone-input input {
+  padding: 6px 0;
+  padding-left: 4em;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.phone-input input:focus {
+  border: 1px solid #90cdf4;
+  outline: 1px solid #2a4365;
+}
+
+.phone-input input:invalid {
+  border: 1px solid #e53e3e;
+}
+
+.PhoneInputCountry {
+  position: absolute;
+  top: 12px;
+  left: 6px;
+  border-right: 1px solid #e2e8f0;
+}

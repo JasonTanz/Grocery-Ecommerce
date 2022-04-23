@@ -12,6 +12,15 @@ function App() {
           path="/product/detail"
           element={<GERoutes component={Screens.ProductDetail} />}
         />
+        <Route
+          path="/product/detail"
+          element={<GERoutes component={Screens.ProductDetail} />}
+        />
+        <Route
+          path="/product/"
+          element={<GERoutes component={Screens.ProductListings} />}
+        />
+        <Route path="/cart" element={<GERoutes component={Screens.Cart} />} />
       </Routes>
     </Router>
   );
