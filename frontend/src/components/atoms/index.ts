@@ -1,3 +1,4 @@
 import GESelectDropDown from './GESelectDropDown/GESelectDropDown';
 import CategoryButton from './CategoryButton/CategoryButton';
-export { GESelectDropDown, CategoryButton };
+import ProfileDropDownText from './ProfileDropDownText/ProfileDropDownText';
+export { GESelectDropDown, CategoryButton, ProfileDropDownText };
