@@ -9,13 +9,10 @@ function App() {
       <Routes>
         <Route path="/" element={<GERoutes component={Screens.Landing} />} />
         <Route
-          path="/product/detail"
+          path="/product/detail/:product_id"
           element={<GERoutes component={Screens.ProductDetail} />}
         />
-        <Route
-          path="/product/detail"
-          element={<GERoutes component={Screens.ProductDetail} />}
-        />
+
         <Route
           path="/product/"
           element={<GERoutes component={Screens.ProductListings} />}

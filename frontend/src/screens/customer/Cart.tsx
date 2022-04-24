@@ -163,7 +163,7 @@ const Cart = () => {
                       />
                     </VStack>
                     <Button colorScheme={'teal'} w="100%">
-                      Submit Order
+                      Place Order
                     </Button>
                   </Form>
                 )}

@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import { Center, HStack, Container, Image, Heading } from '@chakra-ui/react';
+import {
+  Center,
+  HStack,
+  Container,
+  Image,
+  Heading,
+  Link,
+} from '@chakra-ui/react';
 import { GroceryLogo } from '../../../assets';
 import { SearchBar } from '../../molecules';
 import { Form, Field, Formik } from 'formik';
@@ -80,6 +87,12 @@ const Header = ({ searchBar = false }: Props) => {
               >
                 Grocery Ecommerce
               </Heading>
+              <Link fontSize={'18px'} href="/" pt="6px">
+                Home
+              </Link>
+              <Link fontSize={'18px'} href="/product/" pt="6px">
+                Products
+              </Link>
             </HStack>
             <HStack gap="1.2em" w="50%">
               <HStack w="100%">
