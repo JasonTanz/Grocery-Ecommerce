@@ -1,7 +1,12 @@
 import React from 'react';
 import { VStack, HStack, Text, Button, Image } from '@chakra-ui/react';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
-const ProductCard = () => {
+import { Category } from '../../../types/categoryType';
+import { Products as ProductsProps } from '../../../types/productTypes';
+interface Props {
+  prod: ProductsProps;
+}
+const ProductCard = ({ prod }: Props) => {
   return (
     <VStack
       borderRadius={'15px'}
@@ -17,27 +22,37 @@ const ProductCard = () => {
         boxShadow: 'md',
         transition: 'opacity 500ms ease 0',
       }}
-      onClick={() => (window.location.href = '/product/detail')}
+      onClick={() =>
+        (window.location.href = `/product/detail/${prod.product_id}`)
+      }
     >
       <VStack className="zoom-on-hover">
         <Image
-          src={
-            'http://wp.alithemes.com/html/nest/demo/assets/imgs/shop/product-1-1.jpg'
-          }
+          src={prod.product_img}
+          minH="195px"
+          minW="195px"
           maxH="320px"
           className="product-img"
         />
       </VStack>
-      <VStack alignItems={'flex-start'} gap="6px">
-        <Text color="#adadad" fontSize={'12px'}>
-          Snack
-        </Text>
+      <VStack alignItems={'flex-start'} gap="3px">
+        {prod.categories.map((cat: Category) => (
+          <Text
+            style={{ marginTop: 0, marginLeft: 0 }}
+            color="#adadad"
+            fontSize={'12px'}
+            key={cat.category_id}
+          >
+            {cat.category_name}
+          </Text>
+        ))}
+
         <Text fontSize={'16px'} fontWeight="700">
-          Seeds of Change Organic Quinoe Naurel
+          {prod.product_name}
         </Text>
         <HStack justifyContent={'space-between'} w="100%">
           <Text fontSize={'18px'} fontWeight="bold" color="#3BB77E">
-            RM28.85
+            RM{prod.product_price}
           </Text>
           <Button
             backgroundColor={'#DEF9EC'}

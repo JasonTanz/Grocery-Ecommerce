@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PageWrapper } from '../components/organisms';
 import {
   Grid,
@@ -7,21 +7,50 @@ import {
   Heading,
   Text,
   Divider,
+  useToast,
+  Center,
+  Container,
+  Spinner,
 } from '@chakra-ui/react';
 import { GiFruitBowl, GiChickenLeg, GiFrozenOrb } from 'react-icons/gi';
 import { BsEgg } from 'react-icons/bs';
 import { FaCoffee } from 'react-icons/fa';
 import { CategoryButton } from '../components/atoms';
+import { findAllProducts } from '../graphql/product';
+import { Products as ProductsProps } from '../types/productTypes';
+import { useQuery } from '@apollo/client';
 import { ProductCard } from '../components/molecules';
 const ProductListings = () => {
-  const item = ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''];
+  const toast = useToast();
+  const {
+    data: products,
+    loading: productLoading,
+    error: productErr,
+  } = useQuery(findAllProducts);
+  const [allProducts, setAllProducts] = useState<ProductsProps[]>([]);
+  useEffect(() => {
+    if (products) {
+      console.log(products);
+      setAllProducts([...products.Products]);
+    }
+
+    if (productErr) {
+      toast({
+        title: 'Fail to fetch products',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [productErr, products, toast]);
+
   return (
     <>
       <PageWrapper>
         <Grid
           templateColumns={'1fr 4fr'}
           gap="16px"
-          px="14px"
+          px="16px"
           pt="25px"
           pb="2em"
         >
@@ -54,7 +83,7 @@ const ProductListings = () => {
                         height: '25px',
                       }}
                     />
-                    <Text>Meets & Seafood</Text>
+                    <Text>Meats & Seafood</Text>
                   </CategoryButton>
                   <CategoryButton>
                     {' '}
@@ -91,13 +120,34 @@ const ProductListings = () => {
             </VStack>
           </GridItem>
           <GridItem>
-            <Grid templateColumns={'repeat(4, 1fr)'} gap="1.2em">
-              {item.map((_, index: number) => (
-                <GridItem key={index}>
-                  <ProductCard />
-                </GridItem>
-              ))}
-            </Grid>
+            {productLoading ? (
+              <Center minH="100vh">
+                <Container
+                  d="flex"
+                  justifyContent={'center'}
+                  maxW="container.xl"
+                  mb="30px"
+                >
+                  <Spinner
+                    thickness="5px"
+                    speed="0.65s"
+                    emptyColor="gray.200"
+                    color="blue.500"
+                    size="xl"
+                  />
+                </Container>
+              </Center>
+            ) : (
+              <>
+                <Grid templateColumns={'repeat(4, 1fr)'} gap="1.2em">
+                  {allProducts.map((prod) => (
+                    <GridItem key={prod.product_id}>
+                      <ProductCard prod={prod} />
+                    </GridItem>
+                  ))}
+                </Grid>
+              </>
+            )}
           </GridItem>
         </Grid>
       </PageWrapper>
