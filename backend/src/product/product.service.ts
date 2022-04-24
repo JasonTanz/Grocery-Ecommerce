@@ -4,6 +4,7 @@ import { product } from 'src/models/product';
 import { PRODUCT_REPOSITORY } from '../constants/index';
 
 import { UpdateProductInput } from './dto/update-product.input';
+import { Op } from 'sequelize';
 @Injectable()
 export class ProductService {
   constructor(
@@ -45,6 +46,17 @@ export class ProductService {
       where: {
         product_id: id,
       },
+    });
+  }
+
+  async findByKeywords(keywords: string) {
+    return await this.productRepo.findAll({
+      where: {
+        product_name: {
+          [Op.iLike]: '%' + keywords.toLowerCase() + '%',
+        },
+      },
+      include: [category],
     });
   }
 }

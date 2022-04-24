@@ -134,6 +134,7 @@ type Query {
   Orders: [Order!]!
   Product(product_id: String!): Product!
   Products: [Product!]!
+  searchProductByKeyword(keywords: String!): [Product!]!
 }
 
 input SignUpAdminInput {

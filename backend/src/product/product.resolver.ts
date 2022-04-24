@@ -26,6 +26,11 @@ export class ProductResolver {
     return await this.productService.findById(product_id);
   }
 
+  @Query(() => [Product], { name: 'searchProductByKeyword' })
+  async findByKeyword(@Args('keywords') keywords: string) {
+    return await this.productService.findByKeywords(keywords);
+  }
+
   @Mutation(() => Product, { name: 'UpdateProductById' })
   async updateById(
     @Args('updateProductInput') updateProductInput: UpdateProductInput,

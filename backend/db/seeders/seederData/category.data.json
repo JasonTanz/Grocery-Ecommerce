@@ -1,0 +1,22 @@
+[
+  {
+    "category_id": "fe6e645c-951c-4a2d-8c94-abfd5d15227b",
+    "category_name": "Fruits & Vegetables"
+  },
+  {
+    "category_id": "6ebc0a16-ede2-4f2c-a1e1-d790b216d7bd",
+    "category_name": "Meats & Seafood"
+  },
+  {
+    "category_id": "60bf6267-44f8-487e-ba5a-9ba9f8dfe133",
+    "category_name": "Breakfast & Dairy"
+  },
+  {
+    "category_id": "118d1a5f-5ef7-46c4-8719-958963f21464",
+    "category_name": "Beverages"
+  },
+  {
+    "category_id": "3cc8b578-1894-4165-a66d-131694b1398b",
+    "category_name": "Frozen Foods"
+  }
+]
