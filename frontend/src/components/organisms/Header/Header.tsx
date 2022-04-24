@@ -12,7 +12,7 @@ import { SearchBar } from '../../molecules';
 import { Form, Field, Formik } from 'formik';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { SearchProps } from '../../../types/searchTypes';
-
+import { useNavigate } from 'react-router-dom';
 import ProfileDropDown from '../ProfileDropDown/ProfileDropDown';
 
 interface Props {
@@ -22,7 +22,7 @@ interface Props {
 // eslint-disable-next-line no-unused-vars
 const Header = ({ searchBar = false }: Props) => {
   const headerSticky = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   const initialValues = { keywords: '' };
 
   const handleScroll = useCallback((e: any) => {
@@ -90,7 +90,7 @@ const Header = ({ searchBar = false }: Props) => {
               <Link fontSize={'18px'} href="/" pt="6px">
                 Home
               </Link>
-              <Link fontSize={'18px'} href="/product/" pt="6px">
+              <Link fontSize={'18px'} href="/products" pt="6px">
                 Products
               </Link>
             </HStack>
@@ -99,13 +99,10 @@ const Header = ({ searchBar = false }: Props) => {
                 <Formik
                   initialValues={initialValues}
                   onSubmit={(data: SearchProps) => {
-                    const url = new URL('/services', window.location.origin);
-                    const searchParams = url.searchParams;
-                    searchParams.set('keywords', data.keywords);
-                    searchParams.delete('category');
-                    url.search = searchParams.toString();
-                    const newurl = url.toString();
-                    window.location.href = newurl;
+                    navigate({
+                      pathname: '/products',
+                      search: `?keywords=${data.keywords}`,
+                    });
                   }}
                   enableReinitialize
                 >

@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 
 import { HStack, Text, Input, VStack, Box, Spinner } from '@chakra-ui/react';
 
@@ -13,10 +12,33 @@ interface Props {
 const SearchBar = ({ form, landing = false }: Props) => {
   const { loading, searchWords, filteredData, setSearchWords } = useSearch();
   const [searchParams] = useSearchParams();
-  // eslint-disable-next-line no-unused-vars
   const keywords = searchParams.get('keywords');
   const inputText = useRef(null);
-
+  const dropDownRef = useRef<HTMLDivElement>(null);
+  const handleClickOutside = useCallback((e) => {
+    if (dropDownRef.current) {
+      if (dropDownRef && !dropDownRef.current!.contains(e.target)) {
+        dropDownRef.current!.style!.visibility = 'hidden';
+      } else {
+        return;
+      }
+    }
+  }, []);
+  const dropDownToggle = (status: boolean) => {
+    if (status) {
+      dropDownRef.current!.style!.visibility = 'visible';
+    } else {
+      dropDownRef.current!.style!.visibility = 'hidden';
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('mousedown', (e: any) => handleClickOutside(e));
+    return () => {
+      document.removeEventListener('mousedown', (e: any) =>
+        handleClickOutside(e),
+      );
+    };
+  }, [handleClickOutside]);
   useEffect(() => {
     if (keywords) {
       if (inputText.current) {
@@ -45,6 +67,10 @@ const SearchBar = ({ form, landing = false }: Props) => {
               py="6px"
               border={'1px solid transparent'}
               variant="unstyled"
+              onChange={(e) => {
+                dropDownToggle(true);
+                setSearchWords(e.target.value);
+              }}
             />
           ) : (
             <Input
@@ -53,6 +79,11 @@ const SearchBar = ({ form, landing = false }: Props) => {
               border={'1px solid transparent'}
               p="8px"
               variant="unstyled"
+              onChange={(e) => {
+                setSearchWords(e.target.value);
+                dropDownToggle(true);
+                form.setFieldValue('keywords', e.target.value);
+              }}
             />
           )}
 
@@ -73,6 +104,7 @@ const SearchBar = ({ form, landing = false }: Props) => {
           <>
             {' '}
             <VStack
+              ref={dropDownRef}
               justifyContent={'flex-start'}
               alignItems={'flex-start'}
               bgColor={'#FFFFFF'}
@@ -136,7 +168,7 @@ const SearchBar = ({ form, landing = false }: Props) => {
                             window.location.href = newurl;
                           }}
                         >
-                          <Text>{value.service_name}</Text>
+                          <Text>{value.product_name}</Text>
                         </Box>
                       );
                     })

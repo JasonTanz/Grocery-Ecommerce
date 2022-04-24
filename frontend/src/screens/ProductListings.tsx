@@ -16,21 +16,38 @@ import { GiFruitBowl, GiChickenLeg, GiFrozenOrb } from 'react-icons/gi';
 import { BsEgg } from 'react-icons/bs';
 import { FaCoffee } from 'react-icons/fa';
 import { CategoryButton } from '../components/atoms';
-import { findAllProducts } from '../graphql/product';
+import { findAllProducts, findByKeywordsWithInfo } from '../graphql/product';
 import { Products as ProductsProps } from '../types/productTypes';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { ProductCard } from '../components/molecules';
+import { useSearchParams } from 'react-router-dom';
 const ProductListings = () => {
   const toast = useToast();
-  const {
-    data: products,
-    loading: productLoading,
-    error: productErr,
-  } = useQuery(findAllProducts);
+  const [searchParams] = useSearchParams();
+  const keywords = searchParams.get('keywords')
+    ? searchParams.get('keywords')
+    : '';
+
+  const [
+    getByProductKeywords,
+    {
+      data: productsByKeyword,
+      loading: productLoadingByKeyword,
+      error: productErrByKeyword,
+    },
+  ] = useLazyQuery(findByKeywordsWithInfo, {
+    variables: { keywords },
+  });
+  const [
+    getAll,
+    { data: products, loading: productLoading, error: productErr },
+  ] = useLazyQuery(findAllProducts, {
+    variables: { keywords },
+  });
+
   const [allProducts, setAllProducts] = useState<ProductsProps[]>([]);
   useEffect(() => {
     if (products) {
-      console.log(products);
       setAllProducts([...products.Products]);
     }
 
@@ -42,7 +59,30 @@ const ProductListings = () => {
         isClosable: true,
       });
     }
-  }, [productErr, products, toast]);
+  }, [productErr, productErrByKeyword, products, productsByKeyword, toast]);
+
+  useEffect(() => {
+    if (productsByKeyword) {
+      setAllProducts([...productsByKeyword.searchProductByKeyword]);
+    }
+
+    if (productErrByKeyword) {
+      toast({
+        title: 'Fail to fetch products',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [productErrByKeyword, productsByKeyword, toast]);
+
+  useEffect(() => {
+    if (keywords !== '') {
+      getByProductKeywords();
+    } else {
+      getAll();
+    }
+  }, [getAll, getByProductKeywords, keywords]);
 
   return (
     <>
@@ -120,7 +160,7 @@ const ProductListings = () => {
             </VStack>
           </GridItem>
           <GridItem>
-            {productLoading ? (
+            {productLoading || productLoadingByKeyword ? (
               <Center minH="100vh">
                 <Container
                   d="flex"

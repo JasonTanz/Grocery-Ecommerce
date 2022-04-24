@@ -42,4 +42,35 @@ const findProductById = gql`
   }
 `;
 
-export { createProduct, findAllProducts, findProductById };
+const findByKeywords = gql`
+  query ($keywords: String!) {
+    searchProductByKeyword(keywords: $keywords) {
+      product_name
+    }
+  }
+`;
+
+const findByKeywordsWithInfo = gql`
+  query ($keywords: String!) {
+    searchProductByKeyword(keywords: $keywords) {
+      product_id
+      product_name
+      product_brief_intro
+      product_description
+      product_img
+      product_price
+      categories {
+        category_id
+        category_name
+      }
+    }
+  }
+`;
+
+export {
+  createProduct,
+  findAllProducts,
+  findProductById,
+  findByKeywords,
+  findByKeywordsWithInfo,
+};
