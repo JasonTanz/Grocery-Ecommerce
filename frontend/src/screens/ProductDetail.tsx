@@ -29,7 +29,7 @@ const ProductDetail = () => {
   const toast = useToast();
   const [productDetail, setProductDetail] = useState<ProductProps>();
   const { product_id } = useParams();
-  console.log(product_id);
+
   const {
     data: product,
     loading: productLoading,
@@ -40,7 +40,6 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (product) {
-      console.log(product);
       setProductDetail({ ...product.Product });
     }
     if (productErr) {

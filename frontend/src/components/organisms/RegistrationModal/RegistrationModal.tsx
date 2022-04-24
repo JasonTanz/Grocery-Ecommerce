@@ -94,7 +94,6 @@ const RegistrationModal = ({ isOpen, onClose }: Props) => {
       onClose();
     }
     if (signUpErr) {
-      console.log(signUpErr);
       toast({
         title: 'Sign up failed',
         status: 'error',

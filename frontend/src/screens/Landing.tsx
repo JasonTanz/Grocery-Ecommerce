@@ -13,9 +13,8 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { useQuery } from '@apollo/client';
-import { Formik, Form, Field } from 'formik';
-import { SearchProps } from '../types/searchTypes';
-import { SearchBar, ProductCard } from '../components/molecules';
+
+import { ProductCard } from '../components/molecules';
 import { PageWrapper } from '../components/organisms';
 import { findAllProducts } from '../graphql/product';
 import { Products as ProductsProps } from '../types/productTypes';
@@ -32,9 +31,7 @@ SwiperCore.use([Autoplay]);
 const Landing = () => {
   const navigationPrevRef = useRef(null);
   const navigationNextRef = useRef(null);
-  const initialValues = {
-    keywords: '',
-  };
+
   const toast = useToast();
   const {
     data: products,
@@ -45,7 +42,6 @@ const Landing = () => {
 
   useEffect(() => {
     if (products) {
-      console.log(products);
       setAllProducts([...products.Products]);
     }
 
@@ -79,9 +75,6 @@ const Landing = () => {
                 clickable: true,
               }}
               slidesPerView={1}
-              autoplay={{
-                delay: 3000,
-              }}
               className="mySwiper"
               style={{
                 width: '98%',
@@ -127,33 +120,6 @@ const Landing = () => {
                         Big Discount
                       </Heading>
                     </VStack>
-
-                    <Formik
-                      initialValues={initialValues}
-                      onSubmit={(data: SearchProps) => {
-                        const url = new URL(
-                          '/services',
-                          window.location.origin,
-                        );
-                        const searchParams = url.searchParams;
-                        searchParams.set('keywords', data.keywords);
-                        searchParams.delete('category');
-                        url.search = searchParams.toString();
-                        const newurl = url.toString();
-                        window.location.href = newurl;
-                      }}
-                      enableReinitialize
-                    >
-                      {() => (
-                        <Form style={{ width: '30%' }}>
-                          <Field
-                            placeholder="Search for products..."
-                            component={SearchBar}
-                            landing={true}
-                          />
-                        </Form>
-                      )}
-                    </Formik>
                   </VStack>
                 </VStack>
               </SwiperSlide>
@@ -194,33 +160,6 @@ const Landing = () => {
                         Big Discount
                       </Heading>
                     </VStack>
-
-                    <Formik
-                      initialValues={initialValues}
-                      onSubmit={(data: SearchProps) => {
-                        const url = new URL(
-                          '/services',
-                          window.location.origin,
-                        );
-                        const searchParams = url.searchParams;
-                        searchParams.set('keywords', data.keywords);
-                        searchParams.delete('category');
-                        url.search = searchParams.toString();
-                        const newurl = url.toString();
-                        window.location.href = newurl;
-                      }}
-                      enableReinitialize
-                    >
-                      {() => (
-                        <Form style={{ width: '30%' }}>
-                          <Field
-                            placeholder="Search for products..."
-                            component={SearchBar}
-                            landing={true}
-                          />
-                        </Form>
-                      )}
-                    </Formik>
                   </VStack>
                 </VStack>
               </SwiperSlide>
