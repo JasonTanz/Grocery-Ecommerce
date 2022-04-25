@@ -9,6 +9,11 @@ import { theme } from '@chakra-ui/react';
 import store from './store';
 import { API_URL } from './constants';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {
+  ThemeProvider,
+  unstable_createMuiStrictModeTheme,
+} from '@mui/material/styles';
+const MUITheme = unstable_createMuiStrictModeTheme();
 const client = new ApolloClient({
   uri: API_URL,
   cache: new InMemoryCache(),
@@ -16,11 +21,13 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <Provider store={store}>
-      <ChakraProvider theme={theme}>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
-      </ChakraProvider>
+      <ThemeProvider theme={MUITheme}>
+        <ChakraProvider theme={theme}>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </ChakraProvider>
+      </ThemeProvider>
     </Provider>
   </ApolloProvider>,
   document.getElementById('root'),

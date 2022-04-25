@@ -3,6 +3,7 @@ import { customer } from 'src/models/customer';
 import { CreateCustomerInput } from './dto/create-customer.input';
 import { CUST_REPOSITORY } from '../constants/index';
 import { order } from 'src/models/order';
+import { cartItems } from 'src/models/cartItem';
 @Injectable()
 export class CustomerService {
   constructor(
@@ -20,6 +21,7 @@ export class CustomerService {
       where: {
         cust_email: email,
       },
+      include: [cartItems],
     });
   }
 

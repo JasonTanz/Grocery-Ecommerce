@@ -20,3 +20,9 @@ export class CreateOrderInput {
   @Field()
   product_id: string;
 }
+
+@InputType()
+export class CreateOrderInputAll {
+  @Field(() => [CreateOrderInput])
+  data: CreateOrderInput[];
+}

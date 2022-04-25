@@ -1,22 +1,45 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 
 import { HStack, Text, Input, VStack, Box, Spinner } from '@chakra-ui/react';
 
 import { useSearchParams } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../../hooks';
+// import { BsSearch } from 'react-icons/bs';
 interface Props {
   form: any;
-  landing: boolean;
 }
-const SearchBar = ({ form, landing = false }: Props) => {
+const SearchBar = ({ form }: Props) => {
   const { loading, searchWords, filteredData, setSearchWords } = useSearch();
   const [searchParams] = useSearchParams();
-  // eslint-disable-next-line no-unused-vars
+  const navigate = useNavigate();
   const keywords = searchParams.get('keywords');
   const inputText = useRef(null);
-
+  const dropDownRef = useRef<HTMLDivElement>(null);
+  const handleClickOutside = useCallback((e) => {
+    if (dropDownRef.current) {
+      if (dropDownRef && !dropDownRef.current!.contains(e.target)) {
+        dropDownRef.current!.style!.visibility = 'hidden';
+      } else {
+        return;
+      }
+    }
+  }, []);
+  const dropDownToggle = (status: boolean) => {
+    if (status) {
+      dropDownRef.current!.style!.visibility = 'visible';
+    } else {
+      dropDownRef.current!.style!.visibility = 'hidden';
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('mousedown', (e: any) => handleClickOutside(e));
+    return () => {
+      document.removeEventListener('mousedown', (e: any) =>
+        handleClickOutside(e),
+      );
+    };
+  }, [handleClickOutside]);
   useEffect(() => {
     if (keywords) {
       if (inputText.current) {
@@ -27,6 +50,7 @@ const SearchBar = ({ form, landing = false }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keywords]);
+
   return (
     <>
       <HStack
@@ -36,43 +60,31 @@ const SearchBar = ({ form, landing = false }: Props) => {
         py=".6em"
         px="3.5"
         position={'relative'}
-        borderRadius={landing ? '25px' : '6px'}
+        borderRadius={'6px'}
       >
-        <HStack w="100%">
-          {landing ? (
-            <Input
-              borderColor={'#f3f4f7'}
-              py="6px"
-              border={'1px solid transparent'}
-              variant="unstyled"
-            />
-          ) : (
-            <Input
-              backgroundColor="#f3f4f7"
-              borderColor={'#f3f4f7'}
-              border={'1px solid transparent'}
-              p="8px"
-              variant="unstyled"
-            />
-          )}
-
-          {/* <IconButton
-              size="sm"
-              aria-label="Search"
-              type="submit"
-              bgColor={'#005450'}
-              color="#000000"
-              borderRadius={'50%'}
-              cursor="pointer"
-            >
-              <Image src={SearchIcon} w="12px" h="14px" />
-            </IconButton> */}
+        <HStack w="100%" justifyContent={'flex-end'}>
+          {' '}
+          <Input
+            ref={inputText}
+            backgroundColor="#f3f4f7"
+            borderColor={'#f3f4f7'}
+            border={'1px solid transparent'}
+            p="8px"
+            w="60%"
+            variant="unstyled"
+            onChange={(e) => {
+              setSearchWords(e.target.value);
+              dropDownToggle(true);
+              form.setFieldValue('keywords', e.target.value);
+            }}
+          />
         </HStack>
 
         {searchWords.length > 0 && (
           <>
             {' '}
             <VStack
+              ref={dropDownRef}
               justifyContent={'flex-start'}
               alignItems={'flex-start'}
               bgColor={'#FFFFFF'}
@@ -105,14 +117,14 @@ const SearchBar = ({ form, landing = false }: Props) => {
                   {filteredData.length === 0 ? (
                     <>
                       <Text px="16px" py="6px" cursor="pointer">
-                        No such service
+                        No such product
                       </Text>
                     </>
                   ) : (
                     filteredData.slice(0, 10).map((value: any) => {
                       return (
                         <Box
-                          key={value.service_id}
+                          key={value.product_id}
                           py="8px"
                           px="15px"
                           style={{
@@ -124,19 +136,14 @@ const SearchBar = ({ form, landing = false }: Props) => {
                           w="100%"
                           cursor={'pointer'}
                           onClick={() => {
-                            const url = new URL(
-                              '/services',
-                              window.location.href,
-                            );
-                            const searchParams = url.searchParams;
-                            searchParams.set('keywords', value.service_name);
-                            searchParams.delete('category');
-                            url.search = searchParams.toString();
-                            const newurl = url.toString();
-                            window.location.href = newurl;
+                            navigate({
+                              pathname: '/products',
+                              search: `?keywords=${value.product_name}`,
+                            });
+                            dropDownToggle(false);
                           }}
                         >
-                          <Text>{value.service_name}</Text>
+                          <Text>{value.product_name}</Text>
                         </Box>
                       );
                     })

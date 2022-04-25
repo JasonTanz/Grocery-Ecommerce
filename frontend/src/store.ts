@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './reducers/authSlice';
+import cartReducer from './reducers/cartSlice';
 import { routerReducer } from 'react-router-redux';
 export default configureStore({
   reducer: {
     routing: routerReducer,
     auth: authReducer,
+    cart: cartReducer,
   },
   //@ts-ignore
   middleware: (getDefaultMiddleware) =>

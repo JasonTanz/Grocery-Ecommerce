@@ -25,7 +25,6 @@ import { CategoryModule } from './category/category.module';
       sortSchema: true,
       cors: true,
     }),
-
     CustomerModule,
     AuthModule,
     DatabaseModule,
