@@ -1,33 +1,38 @@
 import { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
-// import { useFetchServiceByKeyword } from '../api/service.api';
-
+import { findByKeywords } from '../graphql/product';
+import { useLazyQuery } from '@apollo/client';
+interface dataProps {
+  product_name: string;
+}
 const useSearch = () => {
-  const [filteredData, setFilteredData] = useState<any>([]);
+  const [filteredData, setFilteredData] = useState<dataProps[]>([]);
   const [searchWords, setSearchWords] = useState('');
   const [debouncedSearchTerm] = useDebounce(searchWords, 500);
-  // change this
-  const loading = true;
-  // eslint-disable-next-line no-unused-vars
-  //   const { loading, fetch } = useFetchServiceByKeyword(
-  //     debouncedSearchTerm,
-  //     (err: any, res: any) => {
-  //       if (err) {
-  //         setFilteredData([]);
-  //       } else if (res) {
-  //         setFilteredData(res.data);
-  //       }
-  //     },
-  //   );
+
+  const [getKeywords, { loading, error, data, refetch }] = useLazyQuery(
+    findByKeywords,
+    {
+      variables: { keywords: debouncedSearchTerm },
+    },
+  );
+
+  useEffect(() => {
+    if (data) {
+      setFilteredData([...data.searchProductByKeyword]);
+    }
+    if (error) {
+      setFilteredData([]);
+    }
+  }, [data, error, loading]);
 
   useEffect(() => {
     if (debouncedSearchTerm) {
-      //   fetch();
+      getKeywords();
     } else {
       setFilteredData([]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, getKeywords, refetch]);
 
   return { loading, searchWords, filteredData, setSearchWords };
 };

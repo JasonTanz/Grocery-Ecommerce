@@ -4,6 +4,7 @@ import { CARTITEM_REPOSITORY } from '../constants/index';
 import { cartItems } from '../models/cartItem';
 import { CreateCartItemInput } from './dto/create-cartItems.input';
 import { UpdateCartItemInput } from './dto/update-cartItems.input';
+import { category } from 'src/models/category';
 
 @Injectable()
 export class CartItemService {
@@ -45,6 +46,28 @@ export class CartItemService {
       where: {
         cart_id: id,
       },
+    });
+  }
+
+  async bulkDelete(data) {
+    return await this.cartItemRepo.destroy({
+      where: {
+        cart_id: data.cart_id,
+      },
+    });
+  }
+
+  async findCartByCustId(cust_id: string): Promise<cartItems[]> {
+    return await this.cartItemRepo.findAll({
+      where: {
+        cust_id,
+      },
+      include: [
+        {
+          model: product,
+          include: [category],
+        },
+      ],
     });
   }
 }

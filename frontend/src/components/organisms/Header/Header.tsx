@@ -1,13 +1,26 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import { Center, HStack, Container, Image, Heading } from '@chakra-ui/react';
+import {
+  Center,
+  HStack,
+  Container,
+  Image,
+  Heading,
+  Link,
+  Text,
+  VStack,
+  useToast,
+} from '@chakra-ui/react';
 import { GroceryLogo } from '../../../assets';
 import { SearchBar } from '../../molecules';
 import { Form, Field, Formik } from 'formik';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { SearchProps } from '../../../types/searchTypes';
-
+import { useNavigate } from 'react-router-dom';
 import ProfileDropDown from '../ProfileDropDown/ProfileDropDown';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useLazyQuery } from '@apollo/client';
+import { findCartByCustId } from '../../../graphql/cart';
+import { ADD_TO_CART } from '../../../reducers/cartSlice';
 interface Props {
   searchBar?: boolean;
 }
@@ -15,8 +28,17 @@ interface Props {
 // eslint-disable-next-line no-unused-vars
 const Header = ({ searchBar = false }: Props) => {
   const headerSticky = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   const initialValues = { keywords: '' };
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated,
+  );
+  const cart_qty = useSelector((state: any) => state.cart.cart_qty);
+  const authState = useSelector((state: any) => state.auth.user);
+  const [getCartByCustId, { data: cartItem, error: cartErr }] =
+    useLazyQuery(findCartByCustId);
 
   const handleScroll = useCallback((e: any) => {
     const window = e.currentTarget;
@@ -38,6 +60,34 @@ const Header = ({ searchBar = false }: Props) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (cartItem) {
+      dispatch(
+        ADD_TO_CART({
+          cart_qty: cartItem.findCartByCustId.length,
+        }),
+      );
+    }
+    if (cartErr) {
+      toast({
+        title: 'Fail to fetch products',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [toast, cartItem, cartErr, dispatch]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getCartByCustId({
+        variables: {
+          cust_id: authState.id,
+        },
+      });
+    }
+  }, [authState.id, getCartByCustId, isAuthenticated]);
 
   useEffect(() => {
     window.addEventListener('scroll', (e: any) => handleScroll(e));
@@ -80,19 +130,22 @@ const Header = ({ searchBar = false }: Props) => {
               >
                 Grocery Ecommerce
               </Heading>
+              <Link fontSize={'18px'} href="/" pt="6px">
+                Home
+              </Link>
+              <Link fontSize={'18px'} href="/products" pt="6px">
+                Products
+              </Link>
             </HStack>
-            <HStack gap="1.2em" w="50%">
+            <HStack gap="1.2em" w="50%" position={'relative'}>
               <HStack w="100%">
                 <Formik
                   initialValues={initialValues}
                   onSubmit={(data: SearchProps) => {
-                    const url = new URL('/services', window.location.origin);
-                    const searchParams = url.searchParams;
-                    searchParams.set('keywords', data.keywords);
-                    searchParams.delete('category');
-                    url.search = searchParams.toString();
-                    const newurl = url.toString();
-                    window.location.href = newurl;
+                    navigate({
+                      pathname: '/products',
+                      search: `?keywords=${data.keywords}`,
+                    });
                   }}
                   enableReinitialize
                 >
@@ -107,16 +160,36 @@ const Header = ({ searchBar = false }: Props) => {
                   )}
                 </Formik>
               </HStack>
-              <AiOutlineShoppingCart
-                style={{
-                  width: '35px',
-                  height: '35px',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  window.location.href = '/cart';
-                }}
-              />
+              <VStack position={'relative'}>
+                <AiOutlineShoppingCart
+                  style={{
+                    width: '35px',
+                    height: '35px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    window.location.href = '/cart';
+                  }}
+                />
+
+                <HStack
+                  position={'absolute'}
+                  w="20px"
+                  h={'20px'}
+                  borderRadius="50%"
+                  color="#ffffff"
+                  top="-12px"
+                  left="20px"
+                  backgroundColor="#3BB77E"
+                  justifyContent={'center'}
+                  alignItems="center"
+                >
+                  <Text fontSize={'12px'} fontWeight="600">
+                    {cart_qty}
+                  </Text>
+                </HStack>
+              </VStack>
+
               <ProfileDropDown />
             </HStack>
           </HStack>

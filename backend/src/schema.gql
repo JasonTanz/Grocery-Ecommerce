@@ -14,6 +14,10 @@ type AdminLoginResponse {
   admin: Admin!
 }
 
+input BulkDeleteCartItemById {
+  cart_id: [String!]!
+}
+
 type CartItems {
   cart_id: String!
   customer: Customer!
@@ -48,6 +52,10 @@ input CreateOrderInput {
   product_id: String!
 }
 
+input CreateOrderInputAll {
+  data: [CreateOrderInput!]!
+}
+
 input CreateProductInput {
   categories: [String!]!
   product_brief_intro: String!
@@ -72,6 +80,13 @@ type Customer {
   dataValues: dataCust!
 }
 
+input GetProductsInput {
+  category: String
+  keywords: String
+  limit: Float
+  page: Float
+}
+
 input LoginAdminInput {
   admin_email: String!
   admin_password: String!
@@ -83,6 +98,7 @@ input LoginCustomerInput {
 }
 
 type Mutation {
+  BulkDeleteCartItemById(cart_id: BulkDeleteCartItemById!): [String!]!
   DeleteCartItemById(cart_id: String!): String!
   DeleteCategoryById(category_id: String!): String!
   DeleteOrderById(order_id: String!): String!
@@ -94,7 +110,7 @@ type Mutation {
   adminSignup(signUpAdminInput: SignUpAdminInput!): Admin!
   createCartItem(createCartItemInput: CreateCartItemInput!): CartItems!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
-  createOrder(createOrderInput: CreateOrderInput!): Order!
+  createOrder(createOrderInput: CreateOrderInputAll!): [Order!]!
   createProduct(createProductInput: CreateProductInput!): Product!
   custLogin(loginCustomerInput: LoginCustomerInput!): CustLoginResponse!
   custSignup(signUpCustInput: SignUpCustInput!): CustLoginResponse!
@@ -109,6 +125,12 @@ type Order {
   order_status: String!
   order_total_price: Float!
   product: Product!
+}
+
+type PaginateProduct {
+  currentPage: Float!
+  data: [Product!]!
+  totalPages: Float!
 }
 
 type Product {
@@ -132,8 +154,14 @@ type Query {
   Customers: [Customer!]!
   Order(order_id: String!): Order!
   Orders: [Order!]!
+  PopularProducts(limit: Float!): [Product!]!
   Product(product_id: String!): Product!
   Products: [Product!]!
+  findByCategoryName(category_name: String!): [Category!]!
+  findCartByCustId(cust_id: String!): [CartItems!]!
+  findSimilarProducts(category_name: SimilarProducts!): [Product!]!
+  getProductsPaginate(getProductsInput: GetProductsInput!): PaginateProduct!
+  searchProductByKeyword(keywords: String!): [Product!]!
 }
 
 input SignUpAdminInput {
@@ -146,6 +174,10 @@ input SignUpCustInput {
   cust_email: String!
   cust_password: String!
   cust_username: String!
+}
+
+input SimilarProducts {
+  category_name: [String!]!
 }
 
 input UpdateCartItemInput {
