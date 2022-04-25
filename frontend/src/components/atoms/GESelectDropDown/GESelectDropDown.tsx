@@ -16,7 +16,7 @@ const GESelectDropDown = ({
   customLabel,
   flex = false,
   customclass,
-  value,
+
   ...props
 }: Props) => {
   const errorText: string =
@@ -36,10 +36,9 @@ const GESelectDropDown = ({
             isOptionSelected={(option: any) => {
               return option.value === field.value;
             }}
-            defaultInputValue={value}
+            isSearchable={false}
             onChange={(e: any) => handleSelect(e)}
-            placeholder="Qty "
-            isClearable={true}
+            placeholder={form.values.qty}
           />
           <FormErrorMessage fontSize="sm">{errorText}</FormErrorMessage>
         </HStack>

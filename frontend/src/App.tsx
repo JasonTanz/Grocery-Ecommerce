@@ -9,15 +9,12 @@ function App() {
       <Routes>
         <Route path="/" element={<GERoutes component={Screens.Landing} />} />
         <Route
-          path="/product/detail"
+          path="/product/detail/:product_id"
           element={<GERoutes component={Screens.ProductDetail} />}
         />
+
         <Route
-          path="/product/detail"
-          element={<GERoutes component={Screens.ProductDetail} />}
-        />
-        <Route
-          path="/product/"
+          path="/products*"
           element={<GERoutes component={Screens.ProductListings} />}
         />
         <Route path="/cart" element={<GERoutes component={Screens.Cart} />} />

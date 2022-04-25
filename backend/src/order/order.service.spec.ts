@@ -7,15 +7,17 @@ import { OrderService } from './order.service';
 describe('OrderService', () => {
   let service: OrderService;
   let orderRepo: Repository<order>;
-  const mockOrder = {
-    order_id: 'order-id',
-    order_status: 'Pending',
-    order_delivery_address: 'Jalan ABC, Taman ABC',
-    order_phone_number: '017123412',
-    order_total_price: 38,
-    cust_id: 'cust-id',
-    product_id: 'product-id',
-  };
+  const mockOrder = [
+    {
+      order_id: 'order-id',
+      order_status: 'Pending',
+      order_delivery_address: 'Jalan ABC, Taman ABC',
+      order_phone_number: '017123412',
+      order_total_price: 38,
+      cust_id: 'cust-id',
+      product_id: 'product-id',
+    },
+  ];
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -23,7 +25,7 @@ describe('OrderService', () => {
         {
           provide: ORDER_REPOSITORY,
           useValue: {
-            create: jest.fn((data) => data),
+            bulkCreate: jest.fn((data) => data),
             findOne: jest.fn((order_id: string) => {
               return { order_id, ...mockOrder };
             }),

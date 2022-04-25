@@ -53,6 +53,7 @@ const RegistrationModal = ({ isOpen, onClose }: Props) => {
           accessToken: logInData.custLogin.access_token,
         }),
       );
+
       toast({
         title: 'Log in successful',
         status: 'success',
@@ -94,7 +95,6 @@ const RegistrationModal = ({ isOpen, onClose }: Props) => {
       onClose();
     }
     if (signUpErr) {
-      console.log(signUpErr);
       toast({
         title: 'Sign up failed',
         status: 'error',

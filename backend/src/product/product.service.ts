@@ -4,6 +4,8 @@ import { product } from 'src/models/product';
 import { PRODUCT_REPOSITORY } from '../constants/index';
 
 import { UpdateProductInput } from './dto/update-product.input';
+import { Op } from 'sequelize';
+import { SimilarProducts } from './dto/get-products.input';
 @Injectable()
 export class ProductService {
   constructor(
@@ -14,6 +16,19 @@ export class ProductService {
     const { categories, ...res } = data;
 
     return await this.productRepo.create(res);
+  }
+
+  async findSimilarProducts(category_name: SimilarProducts) {
+    return await this.productRepo.findAll({
+      include: [
+        {
+          model: category,
+          where: {
+            category_name: category_name.category_name,
+          },
+        },
+      ],
+    });
   }
 
   async findAll(): Promise<product[]> {
@@ -45,6 +60,46 @@ export class ProductService {
       where: {
         product_id: id,
       },
+    });
+  }
+
+  async findByKeywords(keywords: string) {
+    return await this.productRepo.findAll({
+      where: {
+        product_name: {
+          [Op.iLike]: '%' + keywords.toLowerCase() + '%',
+        },
+      },
+
+      include: [category],
+    });
+  }
+
+  async findPopular(limit: number) {
+    return await this.productRepo.findAll({
+      limit,
+      include: [category],
+    });
+  }
+
+  async findAllPaginate(
+    keywords: string | null,
+    limit: number,
+    offset: number,
+    condition,
+    condition_2,
+  ) {
+    return await this.productRepo.findAndCountAll({
+      distinct: true,
+      where: condition,
+      limit,
+      offset,
+      include: [
+        {
+          model: category,
+          where: condition_2,
+        },
+      ],
     });
   }
 }
