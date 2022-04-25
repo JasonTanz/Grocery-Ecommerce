@@ -72,6 +72,13 @@ type Customer {
   dataValues: dataCust!
 }
 
+input GetProductsInput {
+  category: String
+  keywords: String
+  limit: Float
+  page: Float
+}
+
 input LoginAdminInput {
   admin_email: String!
   admin_password: String!
@@ -111,6 +118,12 @@ type Order {
   product: Product!
 }
 
+type PaginateProduct {
+  currentPage: Float!
+  data: [Product!]!
+  totalPages: Float!
+}
+
 type Product {
   categories: [Category!]!
   dataValues: dataProduct!
@@ -132,8 +145,13 @@ type Query {
   Customers: [Customer!]!
   Order(order_id: String!): Order!
   Orders: [Order!]!
+  PopularProducts(limit: Float!): [Product!]!
   Product(product_id: String!): Product!
   Products: [Product!]!
+  findByCategoryName(category_name: String!): [Category!]!
+  findCartByCustId(cust_id: String!): [CartItems!]!
+  findSimilarProducts(category_name: SimilarProducts!): [Product!]!
+  getProductsPaginate(getProductsInput: GetProductsInput!): PaginateProduct!
   searchProductByKeyword(keywords: String!): [Product!]!
 }
 
@@ -147,6 +165,10 @@ input SignUpCustInput {
   cust_email: String!
   cust_password: String!
   cust_username: String!
+}
+
+input SimilarProducts {
+  category_name: [String!]!
 }
 
 input UpdateCartItemInput {

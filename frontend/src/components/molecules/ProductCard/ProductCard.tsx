@@ -35,13 +35,13 @@ const ProductCard = ({ prod }: Props) => {
           className="product-img"
         />
       </VStack>
-      <VStack alignItems={'flex-start'} gap="3px">
-        {prod.categories.map((cat: Category) => (
+      <VStack alignItems={'flex-start'} gap="3px" pt="8px">
+        {prod.categories.map((cat: Category, index) => (
           <Text
             style={{ marginTop: 0, marginLeft: 0 }}
             color="#adadad"
             fontSize={'12px'}
-            key={cat.category_id}
+            key={index}
           >
             {cat.category_name}
           </Text>

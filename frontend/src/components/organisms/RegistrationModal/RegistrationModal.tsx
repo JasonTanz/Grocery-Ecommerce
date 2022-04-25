@@ -53,6 +53,7 @@ const RegistrationModal = ({ isOpen, onClose }: Props) => {
           accessToken: logInData.custLogin.access_token,
         }),
       );
+
       toast({
         title: 'Log in successful',
         status: 'success',

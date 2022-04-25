@@ -6,6 +6,9 @@ import {
   Image,
   Heading,
   Link,
+  Text,
+  VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { GroceryLogo } from '../../../assets';
 import { SearchBar } from '../../molecules';
@@ -14,7 +17,10 @@ import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { SearchProps } from '../../../types/searchTypes';
 import { useNavigate } from 'react-router-dom';
 import ProfileDropDown from '../ProfileDropDown/ProfileDropDown';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useLazyQuery } from '@apollo/client';
+import { findCartByCustId } from '../../../graphql/cart';
+import { ADD_TO_CART } from '../../../reducers/cartSlice';
 interface Props {
   searchBar?: boolean;
 }
@@ -24,6 +30,15 @@ const Header = ({ searchBar = false }: Props) => {
   const headerSticky = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const initialValues = { keywords: '' };
+  const toast = useToast();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated,
+  );
+  const cart_qty = useSelector((state: any) => state.cart.cart_qty);
+  const authState = useSelector((state: any) => state.auth.user);
+  const [getCartByCustId, { data: cartItem, error: cartErr }] =
+    useLazyQuery(findCartByCustId);
 
   const handleScroll = useCallback((e: any) => {
     const window = e.currentTarget;
@@ -45,6 +60,36 @@ const Header = ({ searchBar = false }: Props) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (cartItem) {
+      dispatch(
+        ADD_TO_CART({
+          cart_qty: cartItem.findCartByCustId.length,
+        }),
+      );
+
+      console.log(cartItem);
+    }
+    if (cartErr) {
+      toast({
+        title: 'Fail to fetch products',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [toast, cartItem, cartErr, dispatch]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getCartByCustId({
+        variables: {
+          cust_id: authState.id,
+        },
+      });
+    }
+  }, [authState.id, getCartByCustId, isAuthenticated]);
 
   useEffect(() => {
     window.addEventListener('scroll', (e: any) => handleScroll(e));
@@ -94,7 +139,7 @@ const Header = ({ searchBar = false }: Props) => {
                 Products
               </Link>
             </HStack>
-            <HStack gap="1.2em" w="50%">
+            <HStack gap="1.2em" w="50%" position={'relative'}>
               <HStack w="100%">
                 <Formik
                   initialValues={initialValues}
@@ -117,16 +162,36 @@ const Header = ({ searchBar = false }: Props) => {
                   )}
                 </Formik>
               </HStack>
-              <AiOutlineShoppingCart
-                style={{
-                  width: '35px',
-                  height: '35px',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  window.location.href = '/cart';
-                }}
-              />
+              <VStack position={'relative'}>
+                <AiOutlineShoppingCart
+                  style={{
+                    width: '35px',
+                    height: '35px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    window.location.href = '/cart';
+                  }}
+                />
+
+                <HStack
+                  position={'absolute'}
+                  w="20px"
+                  h={'20px'}
+                  borderRadius="50%"
+                  color="#ffffff"
+                  top="-12px"
+                  left="20px"
+                  backgroundColor="#3BB77E"
+                  justifyContent={'center'}
+                  alignItems="center"
+                >
+                  <Text fontSize={'12px'} fontWeight="600">
+                    {cart_qty}
+                  </Text>
+                </HStack>
+              </VStack>
+
               <ProfileDropDown />
             </HStack>
           </HStack>
