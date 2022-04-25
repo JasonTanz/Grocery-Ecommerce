@@ -2,7 +2,7 @@ import { Product } from './entities/product.entity';
 
 export class ProductHelper {
   getPagination(page: number, pageSize: number) {
-    const limit = pageSize ? pageSize : 10;
+    const limit = pageSize ? pageSize : 12;
 
     const offset = page ? (page - 1) * limit : 0;
 

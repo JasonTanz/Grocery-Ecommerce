@@ -14,6 +14,10 @@ type AdminLoginResponse {
   admin: Admin!
 }
 
+input BulkDeleteCartItemById {
+  cart_id: [String!]!
+}
+
 type CartItems {
   cart_id: String!
   customer: Customer!
@@ -46,6 +50,10 @@ input CreateOrderInput {
   order_status: String!
   order_total_price: Float!
   product_id: String!
+}
+
+input CreateOrderInputAll {
+  data: [CreateOrderInput!]!
 }
 
 input CreateProductInput {
@@ -90,6 +98,7 @@ input LoginCustomerInput {
 }
 
 type Mutation {
+  BulkDeleteCartItemById(cart_id: BulkDeleteCartItemById!): [String!]!
   DeleteCartItemById(cart_id: String!): String!
   DeleteCategoryById(category_id: String!): String!
   DeleteOrderById(order_id: String!): String!
@@ -101,7 +110,7 @@ type Mutation {
   adminSignup(signUpAdminInput: SignUpAdminInput!): Admin!
   createCartItem(createCartItemInput: CreateCartItemInput!): CartItems!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
-  createOrder(createOrderInput: CreateOrderInput!): Order!
+  createOrder(createOrderInput: CreateOrderInputAll!): [Order!]!
   createProduct(createProductInput: CreateProductInput!): Product!
   custLogin(loginCustomerInput: LoginCustomerInput!): CustLoginResponse!
   custSignup(signUpCustInput: SignUpCustInput!): CustLoginResponse!

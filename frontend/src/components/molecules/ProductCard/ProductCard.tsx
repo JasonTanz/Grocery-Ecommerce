@@ -10,7 +10,8 @@ const ProductCard = ({ prod }: Props) => {
   return (
     <VStack
       borderRadius={'15px'}
-      minH="25vh"
+      minH="60vh"
+      gap="1.8em"
       backgroundColor="#ffff"
       border="1px solid #ececec"
       overflow={'hidden'}
@@ -35,7 +36,7 @@ const ProductCard = ({ prod }: Props) => {
           className="product-img"
         />
       </VStack>
-      <VStack alignItems={'flex-start'} gap="3px" pt="8px">
+      <VStack alignItems={'flex-start'} gap="3px" pt="8px" minW="12vw">
         {prod.categories.map((cat: Category, index) => (
           <Text
             style={{ marginTop: 0, marginLeft: 0 }}
@@ -59,6 +60,9 @@ const ProductCard = ({ prod }: Props) => {
             borderRadius="4px"
             px="8px"
             py="10px"
+            _hover={{
+              backgroundColor: '#31a36f',
+            }}
           >
             <HStack>
               <AiOutlineShoppingCart />

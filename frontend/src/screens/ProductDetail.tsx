@@ -78,7 +78,7 @@ const ProductDetail = () => {
       product.Product.categories.forEach((cat: Category) => {
         category_name.push(cat.category_name);
       });
-      console.log(category_name);
+
       getSimilar({
         variables: {
           category_name: {
@@ -100,11 +100,9 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (similarProducts) {
-      console.log(similarProducts);
       setAllSimilarProducts([...similarProducts.findSimilarProducts]);
     }
     if (similarErr) {
-      console.log(similarErr);
       toast({
         title: 'Fail to fetch similar products',
         status: 'error',
@@ -121,7 +119,6 @@ const ProductDetail = () => {
           cart_qty: currentCartQty + 1,
         }),
       );
-      console.log(cartData);
     }
     if (cartErr) {
       toast({
@@ -286,6 +283,9 @@ const ProductDetail = () => {
                             w="100%"
                             maxW="100%"
                             h="500px"
+                            style={{
+                              marginTop: '2em',
+                            }}
                           >
                             <Swiper
                               spaceBetween={15}

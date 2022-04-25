@@ -5,11 +5,11 @@ import { HStack, Text, Input, VStack, Box, Spinner } from '@chakra-ui/react';
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../../hooks';
+// import { BsSearch } from 'react-icons/bs';
 interface Props {
   form: any;
-  landing: boolean;
 }
-const SearchBar = ({ form, landing = false }: Props) => {
+const SearchBar = ({ form }: Props) => {
   const { loading, searchWords, filteredData, setSearchWords } = useSearch();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -60,47 +60,24 @@ const SearchBar = ({ form, landing = false }: Props) => {
         py=".6em"
         px="3.5"
         position={'relative'}
-        borderRadius={landing ? '25px' : '6px'}
+        borderRadius={'6px'}
       >
-        <HStack w="100%">
-          {landing ? (
-            <Input
-              borderColor={'#f3f4f7'}
-              py="6px"
-              border={'1px solid transparent'}
-              variant="unstyled"
-              onChange={(e) => {
-                dropDownToggle(true);
-                setSearchWords(e.target.value);
-              }}
-            />
-          ) : (
-            <Input
-              ref={inputText}
-              backgroundColor="#f3f4f7"
-              borderColor={'#f3f4f7'}
-              border={'1px solid transparent'}
-              p="8px"
-              variant="unstyled"
-              onChange={(e) => {
-                setSearchWords(e.target.value);
-                dropDownToggle(true);
-                form.setFieldValue('keywords', e.target.value);
-              }}
-            />
-          )}
-
-          {/* <IconButton
-              size="sm"
-              aria-label="Search"
-              type="submit"
-              bgColor={'#005450'}
-              color="#000000"
-              borderRadius={'50%'}
-              cursor="pointer"
-            >
-              <Image src={SearchIcon} w="12px" h="14px" />
-            </IconButton> */}
+        <HStack w="100%" justifyContent={'flex-end'}>
+          {' '}
+          <Input
+            ref={inputText}
+            backgroundColor="#f3f4f7"
+            borderColor={'#f3f4f7'}
+            border={'1px solid transparent'}
+            p="8px"
+            w="60%"
+            variant="unstyled"
+            onChange={(e) => {
+              setSearchWords(e.target.value);
+              dropDownToggle(true);
+              form.setFieldValue('keywords', e.target.value);
+            }}
+          />
         </HStack>
 
         {searchWords.length > 0 && (

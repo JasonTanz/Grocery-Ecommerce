@@ -19,8 +19,9 @@ import { UPDATECART } from '../../../reducers/cartSlice';
 interface Props {
   item: Cart;
   setCart: any;
+  setTotalPrice: any;
 }
-const CartItemRow = ({ item, setCart }: Props) => {
+const CartItemRow = ({ item, setCart, setTotalPrice }: Props) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const [
@@ -28,9 +29,12 @@ const CartItemRow = ({ item, setCart }: Props) => {
     { data: deleteCartData, loading: deleteLoading, error: deleteErr },
   ] = useMutation(deleteCartById);
   const currentCartQty = useSelector((state: any) => state.cart.cart_qty);
+
   useEffect(() => {
     if (deleteCartData) {
-      console.log(deleteCartData);
+      setTotalPrice(
+        (prev: number) => prev - item.product.product_price * item.item_qty,
+      );
       dispatch(
         UPDATECART({
           cart_qty: currentCartQty - 1,
@@ -51,7 +55,7 @@ const CartItemRow = ({ item, setCart }: Props) => {
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [toast, deleteErr, deleteCartData, dispatch]);
+  }, [toast, deleteErr, deleteCartData, dispatch, setTotalPrice]);
   return (
     <Tr>
       <Td>

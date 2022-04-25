@@ -49,6 +49,14 @@ export class CartItemService {
     });
   }
 
+  async bulkDelete(data) {
+    return await this.cartItemRepo.destroy({
+      where: {
+        cart_id: data.cart_id,
+      },
+    });
+  }
+
   async findCartByCustId(cust_id: string): Promise<cartItems[]> {
     return await this.cartItemRepo.findAll({
       where: {
