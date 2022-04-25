@@ -11,3 +11,9 @@ export class CreateCartItemInput {
   @Field()
   product_id: string;
 }
+
+@InputType()
+export class BulkDeleteCartItemById {
+  @Field(() => [String])
+  cart_id: string[];
+}

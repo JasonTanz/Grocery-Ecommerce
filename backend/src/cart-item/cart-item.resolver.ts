@@ -1,6 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CartItemService } from './cart-item.service';
-import { CreateCartItemInput } from './dto/create-cartItems.input';
+import {
+  BulkDeleteCartItemById,
+  CreateCartItemInput,
+} from './dto/create-cartItems.input';
 import { UpdateCartItemInput } from './dto/update-cartItems.input';
 import { CartItems } from './entities/cartItem.entity';
 
@@ -44,5 +47,11 @@ export class CartItemResolver {
   async deleteById(@Args('cart_id') cart_id: string) {
     await this.cartItemService.deleteById(cart_id);
     return `${cart_id}`;
+  }
+
+  @Mutation(() => [String], { name: 'BulkDeleteCartItemById' })
+  async bulkDelete(@Args('cart_id') cart_id: BulkDeleteCartItemById) {
+    await this.cartItemService.bulkDelete(cart_id);
+    return cart_id.cart_id;
   }
 }

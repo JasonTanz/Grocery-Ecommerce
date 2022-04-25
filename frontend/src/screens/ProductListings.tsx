@@ -84,17 +84,13 @@ const ProductListings = () => {
   ] = useLazyQuery(getProductsPaginate);
 
   useEffect(() => {
-    console.log('here');
     if (products) {
-      console.log(products);
-      console.log('here');
       setAllProducts([...products.getProductsPaginate.data]);
       setPages(products.getProductsPaginate.totalPages);
       setPage(products.getProductsPaginate.currentPage);
     }
 
     if (productErr) {
-      console.log(productErr);
       toast({
         title: 'Fail to fetch products',
         status: 'error',
@@ -110,7 +106,6 @@ const ProductListings = () => {
     }
 
     if (productErrByCategory) {
-      console.log(productErrByCategory);
       toast({
         title: 'Fail to fetch products by category',
         status: 'error',

@@ -1,7 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ORDER_REPOSITORY } from '../constants/index';
 import { order } from 'src/models/order';
-import { CreateOrderInput } from './dto/create-order.input';
+import {
+  CreateOrderInput,
+  CreateOrderInputAll,
+} from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
 import { customer } from '../models/customer';
 import { product } from '../models/product';
@@ -12,8 +15,8 @@ export class OrderService {
     @Inject(ORDER_REPOSITORY) private readonly orderRepo: typeof order,
   ) {}
 
-  async createOrder(data: CreateOrderInput): Promise<order> {
-    return await this.orderRepo.create(data);
+  async createOrder(data): Promise<order[]> {
+    return await this.orderRepo.bulkCreate(data.data);
   }
 
   async findAll(): Promise<order[]> {

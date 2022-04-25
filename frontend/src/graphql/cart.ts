@@ -34,4 +34,15 @@ const deleteCartById = gql`
   }
 `;
 
-export { createCartItem, findCartByCustId, deleteCartById };
+const bulkDeleteCartItemById = gql`
+  mutation BulkDeleteCartItemById($input: BulkDeleteCartItemById!) {
+    BulkDeleteCartItemById(cart_id: $input)
+  }
+`;
+
+export {
+  createCartItem,
+  findCartByCustId,
+  deleteCartById,
+  bulkDeleteCartItemById,
+};

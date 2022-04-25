@@ -68,8 +68,6 @@ const Header = ({ searchBar = false }: Props) => {
           cart_qty: cartItem.findCartByCustId.length,
         }),
       );
-
-      console.log(cartItem);
     }
     if (cartErr) {
       toast({

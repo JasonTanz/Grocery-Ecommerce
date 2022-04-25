@@ -11,6 +11,8 @@ import {
   useToast,
   Spinner,
   IconButton,
+  Text,
+  Button,
 } from '@chakra-ui/react';
 import { useQuery } from '@apollo/client';
 
@@ -19,6 +21,7 @@ import { PageWrapper } from '../components/organisms';
 import { getPopularProduct } from '../graphql/product';
 import { Products as ProductsProps } from '../types/productTypes';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { AiOutlineArrowRight } from 'react-icons/ai';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import 'swiper/swiper.min.css';
 import 'swiper/components/pagination/pagination.min.css';
@@ -79,6 +82,9 @@ const Landing = () => {
                 clickable: true,
               }}
               slidesPerView={1}
+              autoplay={{
+                delay: 3000,
+              }}
               className="mySwiper"
               style={{
                 width: '98%',
@@ -86,6 +92,7 @@ const Landing = () => {
                 textAlign: 'center',
                 alignItems: 'center',
                 paddingBottom: '30px',
+                height: '75vh',
               }}
             >
               <SwiperSlide
@@ -101,8 +108,8 @@ const Landing = () => {
                   style={{ marginTop: 0 }}
                   bgImg="https://klbtheme.com/bacola/wp-content/uploads/2021/05/slider-image-6.jpg"
                   w="98%"
-                  borderRadius={'8px'}
-                  h="60vh"
+                  borderRadius={'18px'}
+                  h="65vh"
                   justifyContent={'center'}
                   alignItems="flex-start"
                   backgroundSize="cover"
@@ -112,17 +119,37 @@ const Landing = () => {
                   <VStack
                     w="100%"
                     alignItems={'flex-start'}
-                    px="15rem"
+                    px="7.5rem"
                     zIndex={200}
                   >
                     <VStack mb="2em" alignItems={'flex-start'}>
                       {' '}
-                      <Heading fontWeight={600} fontSize="50px">
-                        Fresh Vegetables
+                      <Heading fontWeight={700} fontSize="50px">
+                        Feed your family the best
                       </Heading>
-                      <Heading fontWeight={600} fontSize="50px">
-                        Big Discount
-                      </Heading>
+                      <Text fontSize={'30px'}>
+                        Fully prepared & delivered nationwide.
+                      </Text>
+                      <Text fontSize={'20px'} color="#7e7e7e">
+                        Only this week. Don&apos;t miss...
+                      </Text>
+                      <Button
+                        backgroundColor="#29A56C"
+                        _hover={{
+                          backgroundColor: '#238759',
+                        }}
+                        color="#ffffff"
+                        onClick={() => (window.location.href = '/products')}
+                        style={{
+                          marginTop: '1.2em',
+                        }}
+                        w="25%"
+                      >
+                        <HStack alignItems={'center'} justifyContent="center">
+                          <Text>Shop Now</Text>
+                          <AiOutlineArrowRight />
+                        </HStack>
+                      </Button>
                     </VStack>
                   </VStack>
                 </VStack>
@@ -138,10 +165,10 @@ const Landing = () => {
               >
                 <VStack
                   style={{ marginTop: 0 }}
-                  bgImg=" https://klbtheme.com/bacola/wp-content/uploads/2021/05/slider-image-7.jpg"
+                  bgImg="http://wp.alithemes.com/html/nest/demo/assets/imgs/slider/slider-2.png"
                   w="98%"
-                  borderRadius={'8px'}
-                  h="60vh"
+                  borderRadius={'18px'}
+                  h="65vh"
                   justifyContent={'center'}
                   alignItems="flex-start"
                   backgroundSize="cover"
@@ -152,17 +179,37 @@ const Landing = () => {
                   <VStack
                     w="100%"
                     alignItems={'flex-start'}
-                    px="15rem"
+                    px="7.5rem"
                     zIndex={200}
                   >
                     <VStack mb="2em" alignItems={'flex-start'}>
                       {' '}
-                      <Heading fontWeight={600} fontSize="50px">
+                      <Heading fontWeight={700} fontSize="50px">
                         Fresh Vegetables
                       </Heading>
-                      <Heading fontWeight={600} fontSize="50px">
-                        Big Discount
+                      <Heading fontWeight={700} fontSize="50px">
+                        Big discount
                       </Heading>
+                      <Text fontSize={'30px'}>
+                        Save up to 50% off on your first order
+                      </Text>
+                      <Button
+                        backgroundColor="#29A56C"
+                        _hover={{
+                          backgroundColor: '#238759',
+                        }}
+                        color="#ffffff"
+                        onClick={() => (window.location.href = '/products')}
+                        style={{
+                          marginTop: '1.2em',
+                        }}
+                        w="25%"
+                      >
+                        <HStack alignItems={'center'} justifyContent="center">
+                          <Text>Shop Now</Text>
+                          <AiOutlineArrowRight />
+                        </HStack>
+                      </Button>
                     </VStack>
                   </VStack>
                 </VStack>
