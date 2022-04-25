@@ -18,6 +18,11 @@ export class CategoryResolver {
     return await this.categoryService.findAll();
   }
 
+  @Query(() => [Category], { name: 'findByCategoryName' })
+  async findByCategoryName(@Args('category_name') category_name: string) {
+    return await this.categoryService.findByCategoryName(category_name);
+  }
+
   @Query(() => Category, { name: 'Category' })
   async findById(@Args('category_id') category_id: string) {
     return await this.categoryService.findById(category_id);

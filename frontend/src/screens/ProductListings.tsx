@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { PageWrapper } from '../components/organisms';
 import {
@@ -11,47 +12,89 @@ import {
   Center,
   Container,
   Spinner,
+  HStack,
 } from '@chakra-ui/react';
 import { GiFruitBowl, GiChickenLeg, GiFrozenOrb } from 'react-icons/gi';
 import { BsEgg } from 'react-icons/bs';
 import { FaCoffee } from 'react-icons/fa';
 import { CategoryButton } from '../components/atoms';
-import { findAllProducts, findByKeywordsWithInfo } from '../graphql/product';
+import {
+  // findAllProducts,
+  // findByKeywordsWithInfo,
+  getProductsPaginate,
+} from '../graphql/product';
 import { Products as ProductsProps } from '../types/productTypes';
 import { useLazyQuery } from '@apollo/client';
 import { ProductCard } from '../components/molecules';
 import { useSearchParams } from 'react-router-dom';
+import { Pagination } from '@mui/material';
+import { getByCategoryName } from '../graphql/category';
 const ProductListings = () => {
   const toast = useToast();
   const [searchParams] = useSearchParams();
+  const [allProducts, setAllProducts] = useState<ProductsProps[]>([]);
   const keywords = searchParams.get('keywords')
     ? searchParams.get('keywords')
     : '';
-
+  const currentPage: any = searchParams.get('page')
+    ? searchParams.get('page')
+    : 1;
+  const [page, setPage] = useState(parseInt(currentPage, 10));
+  const [pages, setPages] = useState(0);
+  const [category, setCategory] = useState<string>('');
+  const paginateOppo = (e: any, val: any) => {
+    setPage(val);
+    getAll({
+      variables: {
+        input: {
+          keywords,
+          limit: 10,
+          page: val,
+          category,
+        },
+      },
+    });
+    // setSearchParams({ page: val });
+  };
+  // Get By Category name
   const [
-    getByProductKeywords,
+    getProductsByCatName,
     {
-      data: productsByKeyword,
-      loading: productLoadingByKeyword,
-      error: productErrByKeyword,
+      data: productByCategory,
+      loading: productLoadingByCategory,
+      error: productErrByCategory,
     },
-  ] = useLazyQuery(findByKeywordsWithInfo, {
-    variables: { keywords },
-  });
+  ] = useLazyQuery(getByCategoryName);
+
+  // Get By product keywords
+  // const [
+  //   getByProductKeywords,
+  //   {
+  //     data: productsByKeyword,
+  //     loading: productLoadingByKeyword,
+  //     error: productErrByKeyword,
+  //   },
+  // ] = useLazyQuery(findByKeywordsWithInfo, {
+  //   variables: { keywords },
+  // });
+
   const [
     getAll,
     { data: products, loading: productLoading, error: productErr },
-  ] = useLazyQuery(findAllProducts, {
-    variables: { keywords },
-  });
+  ] = useLazyQuery(getProductsPaginate);
 
-  const [allProducts, setAllProducts] = useState<ProductsProps[]>([]);
   useEffect(() => {
+    console.log('here');
     if (products) {
-      setAllProducts([...products.Products]);
+      console.log(products);
+      console.log('here');
+      setAllProducts([...products.getProductsPaginate.data]);
+      setPages(products.getProductsPaginate.totalPages);
+      setPage(products.getProductsPaginate.currentPage);
     }
 
     if (productErr) {
+      console.log(productErr);
       toast({
         title: 'Fail to fetch products',
         status: 'error',
@@ -59,30 +102,61 @@ const ProductListings = () => {
         isClosable: true,
       });
     }
-  }, [productErr, productErrByKeyword, products, productsByKeyword, toast]);
+  }, [productErr, products, toast]);
 
   useEffect(() => {
-    if (productsByKeyword) {
-      setAllProducts([...productsByKeyword.searchProductByKeyword]);
+    if (productByCategory) {
+      setAllProducts([...productByCategory.findByCategoryName[0].products]);
     }
 
-    if (productErrByKeyword) {
+    if (productErrByCategory) {
+      console.log(productErrByCategory);
       toast({
-        title: 'Fail to fetch products',
+        title: 'Fail to fetch products by category',
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
     }
-  }, [productErrByKeyword, productsByKeyword, toast]);
+  }, [productByCategory, productErrByCategory, toast]);
 
+  // useEffect(() => {
+  //   if (productsByKeyword) {
+  //     console.log('here');
+  //     setAllProducts([...productsByKeyword.searchProductByKeyword]);
+  //   }
+
+  //   if (productErrByKeyword) {
+  //     toast({
+  //       title: 'Fail to fetch products by keywords',
+  //       status: 'error',
+  //       duration: 5000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // }, [productErrByKeyword, productsByKeyword, toast]);
+
+  // useEffect(() => {
+  //   console.log('rerender');
+  //   if (keywords !== '') {
+  //     getByProductKeywords();
+  //   } else {
+  //     console.log('there');
+  //     getAll();
+  //   }
+  // }, [getAll, getByProductKeywords, keywords]);
   useEffect(() => {
-    if (keywords !== '') {
-      getByProductKeywords();
-    } else {
-      getAll();
-    }
-  }, [getAll, getByProductKeywords, keywords]);
+    getAll({
+      variables: {
+        input: {
+          keywords,
+          limit: 10,
+          page: 1,
+          category,
+        },
+      },
+    });
+  }, [category, getAll, keywords, setPage]);
 
   return (
     <>
@@ -105,7 +179,36 @@ const ProductListings = () => {
                 <VStack gap="8px" alignItems={'flex-start'}>
                   <Heading fontSize={'32px'}>Category</Heading>
                   <Divider />
-                  <CategoryButton>
+                  <CategoryButton
+                    onClick={() => {
+                      getAll({
+                        variables: {
+                          input: {
+                            keywords,
+                            limit: 10,
+                            page: 1,
+                          },
+                        },
+                      });
+                    }}
+                  >
+                    {' '}
+                    <GiFruitBowl
+                      style={{
+                        width: '25px',
+                        height: '25px',
+                      }}
+                    />
+                    <Text>All</Text>
+                  </CategoryButton>
+                  <CategoryButton
+                    onClick={() => {
+                      setCategory('Fruits & Vegetables');
+                      // getProductsByCatName({
+                      //   variables: { category: 'Fruits & Vegetables' },
+                      // });
+                    }}
+                  >
                     {' '}
                     <GiFruitBowl
                       style={{
@@ -115,7 +218,11 @@ const ProductListings = () => {
                     />
                     <Text>Fruits & Vegetables</Text>
                   </CategoryButton>
-                  <CategoryButton>
+                  <CategoryButton
+                    onClick={() => {
+                      setCategory('Meats & Seafood');
+                    }}
+                  >
                     {' '}
                     <GiChickenLeg
                       style={{
@@ -125,7 +232,14 @@ const ProductListings = () => {
                     />
                     <Text>Meats & Seafood</Text>
                   </CategoryButton>
-                  <CategoryButton>
+                  <CategoryButton
+                    onClick={() => {
+                      setCategory('Breakfast & Dairy');
+                      // getProductsByCatName({
+                      //   variables: { category: 'Breakfast & Dairy' },
+                      // });
+                    }}
+                  >
                     {' '}
                     <BsEgg
                       style={{
@@ -135,7 +249,14 @@ const ProductListings = () => {
                     />
                     <Text>Breakfast & Dairy</Text>
                   </CategoryButton>
-                  <CategoryButton>
+                  <CategoryButton
+                    onClick={() => {
+                      setCategory('Beverages');
+                      // getProductsByCatName({
+                      //   variables: { category: 'Beverages' },
+                      // });
+                    }}
+                  >
                     {' '}
                     <FaCoffee
                       style={{
@@ -145,7 +266,14 @@ const ProductListings = () => {
                     />
                     <Text>Beverages</Text>
                   </CategoryButton>
-                  <CategoryButton>
+                  <CategoryButton
+                    onClick={() => {
+                      setCategory('Frozen Foods');
+                      // getProductsByCatName({
+                      //   variables: { category: 'Frozen Foods' },
+                      // });
+                    }}
+                  >
                     {' '}
                     <GiFrozenOrb
                       style={{
@@ -160,7 +288,7 @@ const ProductListings = () => {
             </VStack>
           </GridItem>
           <GridItem>
-            {productLoading || productLoadingByKeyword ? (
+            {productLoading || productLoadingByCategory ? (
               <Center minH="100vh">
                 <Container
                   d="flex"
@@ -188,6 +316,27 @@ const ProductListings = () => {
                 </Grid>
               </>
             )}
+            <HStack
+              justifyContent={'center'}
+              spacing={'20px'}
+              alignItems={'center'}
+              fontSize={'20px'}
+              pt="25px"
+              cursor={'pointer'}
+            >
+              {pages > 1 && (
+                <>
+                  <Pagination
+                    count={pages}
+                    color="primary"
+                    size="large"
+                    onChange={paginateOppo}
+                    defaultPage={page}
+                    page={page}
+                  />
+                </>
+              )}
+            </HStack>
           </GridItem>
         </Grid>
       </PageWrapper>

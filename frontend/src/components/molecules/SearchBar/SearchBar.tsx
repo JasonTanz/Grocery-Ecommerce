@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 import { HStack, Text, Input, VStack, Box, Spinner } from '@chakra-ui/react';
 
 import { useSearchParams } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../../hooks';
 interface Props {
   form: any;
@@ -12,6 +12,7 @@ interface Props {
 const SearchBar = ({ form, landing = false }: Props) => {
   const { loading, searchWords, filteredData, setSearchWords } = useSearch();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const keywords = searchParams.get('keywords');
   const inputText = useRef(null);
   const dropDownRef = useRef<HTMLDivElement>(null);
@@ -49,6 +50,7 @@ const SearchBar = ({ form, landing = false }: Props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [keywords]);
+
   return (
     <>
       <HStack
@@ -74,6 +76,7 @@ const SearchBar = ({ form, landing = false }: Props) => {
             />
           ) : (
             <Input
+              ref={inputText}
               backgroundColor="#f3f4f7"
               borderColor={'#f3f4f7'}
               border={'1px solid transparent'}
@@ -137,14 +140,14 @@ const SearchBar = ({ form, landing = false }: Props) => {
                   {filteredData.length === 0 ? (
                     <>
                       <Text px="16px" py="6px" cursor="pointer">
-                        No such service
+                        No such product
                       </Text>
                     </>
                   ) : (
                     filteredData.slice(0, 10).map((value: any) => {
                       return (
                         <Box
-                          key={value.service_id}
+                          key={value.product_id}
                           py="8px"
                           px="15px"
                           style={{
@@ -156,16 +159,11 @@ const SearchBar = ({ form, landing = false }: Props) => {
                           w="100%"
                           cursor={'pointer'}
                           onClick={() => {
-                            const url = new URL(
-                              '/services',
-                              window.location.href,
-                            );
-                            const searchParams = url.searchParams;
-                            searchParams.set('keywords', value.service_name);
-                            searchParams.delete('category');
-                            url.search = searchParams.toString();
-                            const newurl = url.toString();
-                            window.location.href = newurl;
+                            navigate({
+                              pathname: '/products',
+                              search: `?keywords=${value.product_name}`,
+                            });
+                            dropDownToggle(false);
                           }}
                         >
                           <Text>{value.product_name}</Text>

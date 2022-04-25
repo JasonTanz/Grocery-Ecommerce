@@ -24,6 +24,11 @@ export class CartItemResolver {
     return await this.cartItemService.findById(cart_id);
   }
 
+  @Query(() => [CartItems], { name: 'findCartByCustId' })
+  async findCartByCustId(@Args('cust_id') cust_id: string) {
+    return await this.cartItemService.findCartByCustId(cust_id);
+  }
+
   @Mutation(() => CartItems, { name: 'UpdateCartItemById' })
   async updateById(
     @Args('updateCartItemInput') updateCartItemInput: UpdateCartItemInput,
@@ -38,6 +43,6 @@ export class CartItemResolver {
   @Mutation(() => String, { name: 'DeleteCartItemById' })
   async deleteById(@Args('cart_id') cart_id: string) {
     await this.cartItemService.deleteById(cart_id);
-    return `Order with the id ${cart_id} successfully deleted`;
+    return `${cart_id}`;
   }
 }

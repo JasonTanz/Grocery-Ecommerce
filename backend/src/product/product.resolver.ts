@@ -1,11 +1,17 @@
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { CreateProductInput } from './dto/create-product.input';
+import { GetProductsInput, SimilarProducts } from './dto/get-products.input';
 import { UpdateProductInput } from './dto/update-product.input';
-import { Product } from './entities/product.entity';
+import { PaginateProduct, Product } from './entities/product.entity';
 import { ProductService } from './product.service';
+import { ProductHelper } from './product.helper';
+import { Op } from 'sequelize';
 @Resolver(() => Product)
 export class ProductResolver {
-  constructor(private readonly productService: ProductService) {}
+  constructor(
+    private readonly productService: ProductService,
+    private readonly productHelper: ProductHelper,
+  ) {}
 
   @Mutation(() => Product)
   async createProduct(
@@ -21,6 +27,11 @@ export class ProductResolver {
     return await this.productService.findAll();
   }
 
+  @Query(() => [Product], { name: 'PopularProducts' })
+  async findPopular(@Args('limit') limit: number) {
+    return await this.productService.findPopular(limit);
+  }
+
   @Query(() => Product, { name: 'Product' })
   async findById(@Args('product_id') product_id: string) {
     return await this.productService.findById(product_id);
@@ -29,6 +40,43 @@ export class ProductResolver {
   @Query(() => [Product], { name: 'searchProductByKeyword' })
   async findByKeyword(@Args('keywords') keywords: string) {
     return await this.productService.findByKeywords(keywords);
+  }
+
+  @Query(() => [Product], { name: 'findSimilarProducts' })
+  async findSimilarProducts(
+    @Args('category_name') category_name: SimilarProducts,
+  ) {
+    return await this.productService.findSimilarProducts(category_name);
+  }
+
+  @Query(() => PaginateProduct, { name: 'getProductsPaginate' })
+  async findProductPaginate(
+    @Args('getProductsInput') getProductsInput: GetProductsInput,
+  ) {
+    const { keywords, category, limit: pageSize, page } = getProductsInput;
+    const condition = keywords
+      ? {
+          product_name: {
+            [Op.iLike]: '%' + keywords.toLowerCase() + '%',
+          },
+        }
+      : null;
+    const condition_2 = category
+      ? {
+          category_name: category,
+        }
+      : null;
+    const { limit, offset } = this.productHelper.getPagination(page, pageSize);
+    const products = await this.productService.findAllPaginate(
+      keywords,
+      limit,
+      offset,
+      condition,
+      condition_2,
+    );
+    const result = this.productHelper.getPaginateData(products, page, limit);
+    console.log(result);
+    return result;
   }
 
   @Mutation(() => Product, { name: 'UpdateProductById' })

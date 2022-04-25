@@ -16,7 +16,7 @@ import { useQuery } from '@apollo/client';
 
 import { ProductCard } from '../components/molecules';
 import { PageWrapper } from '../components/organisms';
-import { findAllProducts } from '../graphql/product';
+import { getPopularProduct } from '../graphql/product';
 import { Products as ProductsProps } from '../types/productTypes';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
@@ -37,12 +37,16 @@ const Landing = () => {
     data: products,
     loading: productLoading,
     error: productErr,
-  } = useQuery(findAllProducts);
+  } = useQuery(getPopularProduct, {
+    variables: {
+      limit: 10,
+    },
+  });
   const [allProducts, setAllProducts] = useState<ProductsProps[]>([]);
 
   useEffect(() => {
     if (products) {
-      setAllProducts([...products.Products]);
+      setAllProducts([...products.PopularProducts]);
     }
 
     if (productErr) {
@@ -95,7 +99,7 @@ const Landing = () => {
               >
                 <VStack
                   style={{ marginTop: 0 }}
-                  bgImg="http://wp.alithemes.com/html/nest/demo/assets/imgs/slider/slider-2.png"
+                  bgImg="https://klbtheme.com/bacola/wp-content/uploads/2021/05/slider-image-6.jpg"
                   w="98%"
                   borderRadius={'8px'}
                   h="60vh"
@@ -134,7 +138,7 @@ const Landing = () => {
               >
                 <VStack
                   style={{ marginTop: 0 }}
-                  bgImg=" http://wp.alithemes.com/html/nest/demo/assets/imgs/slider/slider-1.png"
+                  bgImg=" https://klbtheme.com/bacola/wp-content/uploads/2021/05/slider-image-7.jpg"
                   w="98%"
                   borderRadius={'8px'}
                   h="60vh"

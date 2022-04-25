@@ -1,7 +1,7 @@
 import React from 'react';
 import { HStack, Button } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
-const CategoryButton = ({ children }: any) => {
+const CategoryButton = ({ children, onClick }: any) => {
   return (
     <Button
       border="1px solid #F2F3F4"
@@ -14,6 +14,7 @@ const CategoryButton = ({ children }: any) => {
         boxShadow: 'md',
         transition: 'opacity 500ms ease 0',
       }}
+      onClick={onClick}
       w="100%"
     >
       <HStack justifyContent={'flex-start'} w="100%">
@@ -25,6 +26,7 @@ const CategoryButton = ({ children }: any) => {
 
 CategoryButton.propTypes = {
   children: PropTypes.node.isRequired,
+  onClick: PropTypes.any,
 };
 
-export default CategoryButton;
+export default React.memo(CategoryButton);

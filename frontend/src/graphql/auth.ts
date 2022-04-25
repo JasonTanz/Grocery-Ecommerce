@@ -19,6 +19,9 @@ const Login = gql`
         cust_id
         cust_username
         cust_email
+        cartItems {
+          cart_qty
+        }
       }
       access_token
     }

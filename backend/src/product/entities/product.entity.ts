@@ -30,3 +30,13 @@ export class Product {
   @Field(() => dataProduct)
   dataValues?: dataProduct;
 }
+
+@ObjectType()
+export class PaginateProduct {
+  @Field(() => [Product])
+  data: Product[];
+  @Field()
+  currentPage: number;
+  @Field()
+  totalPages: number;
+}

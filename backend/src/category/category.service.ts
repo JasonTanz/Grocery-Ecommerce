@@ -37,4 +37,18 @@ export class CategoryService {
       },
     });
   }
+
+  async findByCategoryName(name): Promise<category[]> {
+    return await this.categoryRepo.findAll({
+      where: {
+        category_name: name,
+      },
+      include: [
+        {
+          model: product,
+          include: [category],
+        },
+      ],
+    });
+  }
 }
