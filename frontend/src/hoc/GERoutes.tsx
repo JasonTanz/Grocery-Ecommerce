@@ -3,12 +3,13 @@ import { Header } from '../components/organisms';
 
 interface Props {
   component: any;
+  header?: boolean;
 }
 
-const GERoutes = ({ component: Component }: Props) => {
+const GERoutes = ({ header = true, component: Component }: Props) => {
   return (
     <>
-      <Header />
+      {header && <Header />}
 
       <Component />
     </>

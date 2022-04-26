@@ -10,23 +10,24 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
+import moment from 'moment';
 import { updateOrderById } from '../../../graphql/order';
 import { Orders } from '../../../types/orderTypes';
 import { Category } from '../../../types/categoryType';
 interface Props {
   order: Orders;
   setCart?: any;
+  pendingOrder?: any;
+  setPendingOrder?: any;
   deliveryOrder?: any;
   setDeliveryOrder?: any;
-  completedOrder?: any;
-  setCompletedOrder?: any;
 }
-const OrderRow = ({
+const AllOrderRows = ({
   order,
+  pendingOrder,
+  setPendingOrder,
   deliveryOrder,
   setDeliveryOrder,
-  completedOrder,
-  setCompletedOrder,
 }: Props) => {
   const toast = useToast();
   const [
@@ -35,13 +36,13 @@ const OrderRow = ({
   ] = useMutation(updateOrderById);
   useEffect(() => {
     if (updatedData) {
-      setDeliveryOrder([
-        ...deliveryOrder.filter(
-          (order: Orders) =>
-            order.order_id !== updatedData.UpdateOrderById.order_id,
+      setPendingOrder(
+        pendingOrder.filter(
+          (data: Orders) =>
+            data.order_id !== updatedData.UpdateOrderById.order_id,
         ),
-      ]);
-      setCompletedOrder([...completedOrder, updatedData.UpdateOrderById]);
+      );
+      setDeliveryOrder([...deliveryOrder, updatedData.UpdateOrderById]);
     }
     if (updateErr) {
       toast({
@@ -51,15 +52,8 @@ const OrderRow = ({
         isClosable: true,
       });
     }
-  }, [
-    updatedData,
-    updateErr,
-    toast,
-    setCompletedOrder,
-    completedOrder,
-    setDeliveryOrder,
-    deliveryOrder,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatedData, updateErr, toast]);
   return (
     <Tr>
       <Td>
@@ -108,7 +102,17 @@ const OrderRow = ({
           </VStack>
         </HStack>
       </Td>
+      <Td>{order.customer.cust_username}</Td>
       <Td>{order.order_total_price}</Td>
+      <Td>
+        <Text fontSize={'12px'} color="#6c757d">
+          {' '}
+          {order.order_status === 'Pending' ||
+          order.order_status === 'Out for delivery'
+            ? moment(order.createdAt).format('DD-MM-YY hh:mm A')
+            : moment(order.updatedAt).format('DD-MM-YY hh:mm A')}
+        </Text>
+      </Td>
       <Td>{order.order_status}</Td>
       {order.order_status === 'Pending' ||
       order.order_status === 'Out for delivery' ? (
@@ -120,26 +124,24 @@ const OrderRow = ({
               _hover={{
                 backgroundColor: '#31a36f',
               }}
-              isDisabled={order.order_status === 'Pending'}
               isLoading={updateLoading}
+              isDisabled={order.order_status === 'Out for delivery'}
               onClick={() => {
                 updateOrder({
                   variables: {
                     input: {
-                      order_status: 'Completed',
+                      order_status: 'Out for delivery',
                       order_id: order.order_id,
                     },
                   },
                 });
               }}
             >
-              <>
-                {order.order_status === 'Pending' ? (
-                  <Text>Pending Delivery</Text>
-                ) : (
-                  <Text>Order Received</Text>
-                )}
-              </>
+              {order.order_status === 'Out for delivery' ? (
+                <Text>Delivery In Progress</Text>
+              ) : (
+                <Text>Deliver Item</Text>
+              )}
             </Button>
           </Td>
         </>
@@ -150,4 +152,4 @@ const OrderRow = ({
   );
 };
 
-export default OrderRow;
+export default AllOrderRows;

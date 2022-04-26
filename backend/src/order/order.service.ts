@@ -19,7 +19,15 @@ export class OrderService {
 
   async findAll(): Promise<order[]> {
     return await this.orderRepo.findAll({
-      include: [customer, product],
+      include: [
+        {
+          model: customer,
+        },
+        {
+          model: product,
+          include: [category],
+        },
+      ],
     });
   }
 

@@ -20,7 +20,13 @@ function App() {
         <Route path="/cart" element={<GERoutes component={Screens.Cart} />} />
         <Route
           path="/cust/dashboard"
-          element={<GERoutes component={Screens.Dashboard} />}
+          element={<GERoutes component={Screens.CustDashboard} />}
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <GERoutes header={false} component={Screens.AdminDashbaord} />
+          }
         />
       </Routes>
     </Router>

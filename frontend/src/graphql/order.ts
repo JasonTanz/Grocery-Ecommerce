@@ -36,6 +36,9 @@ const updateOrderById = gql`
       order_id
       order_status
       order_total_price
+      customer {
+        cust_username
+      }
       product {
         product_id
         product_name
@@ -51,4 +54,33 @@ const updateOrderById = gql`
     }
   }
 `;
-export { createOrder, findOrderByCustId, updateOrderById };
+
+const findAllOrders = gql`
+  query {
+    Orders {
+      order_id
+      order_status
+      order_total_price
+      order_delivery_address
+      order_phone_number
+      createdAt
+      updatedAt
+      customer {
+        cust_username
+      }
+      product {
+        product_id
+        product_name
+        product_brief_intro
+        product_description
+        product_img
+        product_price
+        categories {
+          category_id
+          category_name
+        }
+      }
+    }
+  }
+`;
+export { createOrder, findOrderByCustId, updateOrderById, findAllOrders };
