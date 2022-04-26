@@ -99,7 +99,7 @@ const Dashboard = () => {
       ) : (
         <>
           <Center py="2em" w="100%">
-            <Container maxW="container.xl">
+            <Container maxW="container.xl" minH="100vh">
               <VStack w="100%" alignItems={'flex-start'}>
                 <Heading>My Order</Heading>
                 <HStack

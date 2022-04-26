@@ -9,7 +9,7 @@ const ProductCard = ({ prod }: Props) => {
   return (
     <VStack
       borderRadius={'15px'}
-      minH="60vh"
+      minH="62vh"
       gap="1.8em"
       backgroundColor="#ffff"
       border="1px solid #ececec"

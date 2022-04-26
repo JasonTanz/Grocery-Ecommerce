@@ -28,55 +28,31 @@ import { useLazyQuery } from '@apollo/client';
 import { ProductCard } from '../components/molecules';
 import { useSearchParams } from 'react-router-dom';
 import { Pagination } from '@mui/material';
-import { getByCategoryName } from '../graphql/category';
+
 const ProductListings = () => {
   const toast = useToast();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [allProducts, setAllProducts] = useState<ProductsProps[]>([]);
   const keywords = searchParams.get('keywords')
     ? searchParams.get('keywords')
     : '';
-  const currentPage: any = searchParams.get('page')
-    ? searchParams.get('page')
-    : 1;
-  const [page, setPage] = useState(parseInt(currentPage, 10));
-  const [pages, setPages] = useState(0);
-  const [category, setCategory] = useState<string>('');
-  const paginateOppo = (e: any, val: any) => {
-    setPage(val);
-    getAll({
-      variables: {
-        input: {
-          keywords,
-          limit: 12,
-          page: val,
-          category,
-        },
-      },
-    });
-    // setSearchParams({ page: val });
-  };
-  // Get By Category name
-  const [
-    getProductsByCatName,
-    {
-      data: productByCategory,
-      loading: productLoadingByCategory,
-      error: productErrByCategory,
-    },
-  ] = useLazyQuery(getByCategoryName);
 
-  // Get By product keywords
-  // const [
-  //   getByProductKeywords,
-  //   {
-  //     data: productsByKeyword,
-  //     loading: productLoadingByKeyword,
-  //     error: productErrByKeyword,
-  //   },
-  // ] = useLazyQuery(findByKeywordsWithInfo, {
-  //   variables: { keywords },
-  // });
+  const currentPage: string | number | null = searchParams.get('page')
+    ? parseInt(searchParams.get('page')!, 10)
+    : 1;
+
+  const searchCategory: string | null = searchParams.get('category')
+    ? searchParams.get('category')
+    : null;
+  const [page, setPage] = useState<number>(1);
+  const [pages, setPages] = useState(0);
+  const [category, setCategory] = useState<string | null>('');
+  const [keyword, setKeyword] = useState<string | null>('');
+  const paginateOppo = (e: any, val: any) => {
+    searchParams.set('page', val);
+    setSearchParams(searchParams);
+    setPage(val);
+  };
 
   const [
     getAll,
@@ -85,9 +61,20 @@ const ProductListings = () => {
 
   useEffect(() => {
     if (products) {
+      if (
+        products.getProductsPaginate.currentPage >
+          products.getProductsPaginate.totalPages &&
+        products.getProductsPaginate.totalPages !== 0
+      ) {
+        setPage(products.getProductsPaginate.totalPages);
+        searchParams.set('page', products.getProductsPaginate.totalPages);
+        setSearchParams(searchParams);
+      } else if (products.getProductsPaginate.totalPages !== 0) {
+        setPage(products.getProductsPaginate.currentPage);
+      }
+
       setAllProducts([...products.getProductsPaginate.data]);
       setPages(products.getProductsPaginate.totalPages);
-      setPage(products.getProductsPaginate.currentPage);
     }
 
     if (productErr) {
@@ -98,60 +85,40 @@ const ProductListings = () => {
         isClosable: true,
       });
     }
-  }, [productErr, products, toast]);
+  }, [productErr, products, searchParams, setSearchParams, toast, keyword]);
 
   useEffect(() => {
-    if (productByCategory) {
-      setAllProducts([...productByCategory.findByCategoryName[0].products]);
+    if (currentPage) {
+      //@ts-ignore
+      searchParams.set('page', currentPage);
+      setSearchParams(searchParams);
+      setPage(currentPage);
     }
-
-    if (productErrByCategory) {
-      toast({
-        title: 'Fail to fetch products by category',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
+    if (searchCategory !== null) {
+      setCategory(searchCategory);
     }
-  }, [productByCategory, productErrByCategory, toast]);
+    if (keywords !== '') {
+      setKeyword(keywords);
+    }
+  }, [currentPage, keywords, searchCategory, searchParams, setSearchParams]);
 
-  // useEffect(() => {
-  //   if (productsByKeyword) {
-  //     console.log('here');
-  //     setAllProducts([...productsByKeyword.searchProductByKeyword]);
-  //   }
-
-  //   if (productErrByKeyword) {
-  //     toast({
-  //       title: 'Fail to fetch products by keywords',
-  //       status: 'error',
-  //       duration: 5000,
-  //       isClosable: true,
-  //     });
-  //   }
-  // }, [productErrByKeyword, productsByKeyword, toast]);
-
-  // useEffect(() => {
-  //   console.log('rerender');
-  //   if (keywords !== '') {
-  //     getByProductKeywords();
-  //   } else {
-  //     console.log('there');
-  //     getAll();
-  //   }
-  // }, [getAll, getByProductKeywords, keywords]);
   useEffect(() => {
     getAll({
       variables: {
         input: {
-          keywords,
-          limit: 12,
-          page: 1,
+          keywords: keyword,
+          page,
           category,
         },
       },
     });
-  }, [category, getAll, keywords, setPage]);
+  }, [category, getAll, keyword, page, searchParams, setSearchParams]);
+
+  const handleCat = (name: string) => {
+    setCategory(name);
+    searchParams.set('category', name);
+    setSearchParams(searchParams);
+  };
 
   return (
     <>
@@ -161,7 +128,7 @@ const ProductListings = () => {
           gap="16px"
           px="16px"
           pt="25px"
-          pb="2em"
+          pb="4em"
         >
           <GridItem>
             <VStack position={'sticky'} top="15%">
@@ -176,15 +143,10 @@ const ProductListings = () => {
                   <Divider />
                   <CategoryButton
                     onClick={() => {
-                      getAll({
-                        variables: {
-                          input: {
-                            keywords,
-                            limit: 10,
-                            page: 1,
-                          },
-                        },
-                      });
+                      setCategory(null);
+                      searchParams.delete('category');
+                      searchParams.delete('keywords');
+                      setSearchParams(searchParams);
                     }}
                   >
                     {' '}
@@ -198,10 +160,7 @@ const ProductListings = () => {
                   </CategoryButton>
                   <CategoryButton
                     onClick={() => {
-                      setCategory('Fruits & Vegetables');
-                      // getProductsByCatName({
-                      //   variables: { category: 'Fruits & Vegetables' },
-                      // });
+                      handleCat('Fruits & Vegetables');
                     }}
                   >
                     {' '}
@@ -215,7 +174,7 @@ const ProductListings = () => {
                   </CategoryButton>
                   <CategoryButton
                     onClick={() => {
-                      setCategory('Meats & Seafood');
+                      handleCat('Meats & Seafood');
                     }}
                   >
                     {' '}
@@ -229,10 +188,7 @@ const ProductListings = () => {
                   </CategoryButton>
                   <CategoryButton
                     onClick={() => {
-                      setCategory('Breakfast & Dairy');
-                      // getProductsByCatName({
-                      //   variables: { category: 'Breakfast & Dairy' },
-                      // });
+                      handleCat('Breakfast & Dairy');
                     }}
                   >
                     {' '}
@@ -246,10 +202,7 @@ const ProductListings = () => {
                   </CategoryButton>
                   <CategoryButton
                     onClick={() => {
-                      setCategory('Beverages');
-                      // getProductsByCatName({
-                      //   variables: { category: 'Beverages' },
-                      // });
+                      handleCat('Beverages');
                     }}
                   >
                     {' '}
@@ -263,10 +216,7 @@ const ProductListings = () => {
                   </CategoryButton>
                   <CategoryButton
                     onClick={() => {
-                      setCategory('Frozen Foods');
-                      // getProductsByCatName({
-                      //   variables: { category: 'Frozen Foods' },
-                      // });
+                      handleCat('Frozen Foods');
                     }}
                   >
                     {' '}
@@ -283,7 +233,7 @@ const ProductListings = () => {
             </VStack>
           </GridItem>
           <GridItem>
-            {productLoading || productLoadingByCategory ? (
+            {productLoading ? (
               <Center minH="100vh">
                 <Container
                   d="flex"
@@ -302,13 +252,17 @@ const ProductListings = () => {
               </Center>
             ) : (
               <>
-                <Grid templateColumns={'repeat(4, 1fr)'} gap="1.2em">
-                  {allProducts.map((prod) => (
-                    <GridItem key={prod.product_id}>
-                      <ProductCard prod={prod} />
-                    </GridItem>
-                  ))}
-                </Grid>
+                {allProducts.length > 0 ? (
+                  <Grid templateColumns={'repeat(4, 1fr)'} gap="1.2em">
+                    {allProducts.map((prod) => (
+                      <GridItem key={prod.product_id}>
+                        <ProductCard prod={prod} />
+                      </GridItem>
+                    ))}
+                  </Grid>
+                ) : (
+                  <Heading fontSize={'30px'}>Product not found</Heading>
+                )}
               </>
             )}
             <HStack

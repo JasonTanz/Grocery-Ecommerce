@@ -48,7 +48,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (orders) {
-      console.log(orders);
       setPendingOrder([
         ...orders.Orders.filter(
           (data: OrdersProps) => data.order_status === 'Pending',
@@ -66,7 +65,6 @@ const Dashboard = () => {
         ]);
     }
     if (orderErr) {
-      console.log(orderErr);
       toast({
         title: 'Fail to get all orders',
         status: 'error',
