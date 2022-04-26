@@ -23,6 +23,11 @@ export class OrderResolver {
     return await this.orderService.findById(order_id);
   }
 
+  @Query(() => [Order], { name: 'findOrderByCustId' })
+  async findOrderByCustId(@Args('cust_id') cust_id: string) {
+    return await this.orderService.findByCustId(cust_id);
+  }
+
   @Mutation(() => Order, { name: 'UpdateOrderById' })
   async updateById(
     @Args('updateOrderInput') updateOrderInput: UpdateOrderInput,
@@ -31,6 +36,7 @@ export class OrderResolver {
       updateOrderInput,
       updateOrderInput.order_id,
     );
+
     return await this.orderService.findById(updateOrderInput.order_id);
   }
 
