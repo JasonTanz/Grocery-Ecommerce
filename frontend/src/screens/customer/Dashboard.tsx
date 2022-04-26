@@ -27,6 +27,7 @@ const Dashboard = () => {
   const toast = useToast();
   const authState = useSelector((state: any) => state.auth);
   const [pendingOrder, setPendingOrder] = useState<OrdersProps[]>([]);
+  const [deliveryOrder, setDeliveryOrder] = useState<OrdersProps[]>([]);
   const [completedOrder, setCompletedOrder] = useState<OrdersProps[]>([]);
   const setActive = (currentTab: string) => {
     if (indicatorRef.current) {
@@ -34,7 +35,7 @@ const Dashboard = () => {
         indicatorRef.current.style.left = '-24px';
         indicatorRef.current.style.width = '35%';
       } else if (currentTab === '2') {
-        indicatorRef.current.style.left = '58px';
+        indicatorRef.current.style.left = '80px';
         indicatorRef.current.style.width = '50%';
       }
     }
@@ -51,9 +52,12 @@ const Dashboard = () => {
     if (orders) {
       setPendingOrder([
         ...orders.findOrderByCustId.filter(
-          (data: OrdersProps) =>
-            data.order_status === 'Pending' ||
-            data.order_status === 'Out for delivery',
+          (data: OrdersProps) => data.order_status === 'Pending',
+        ),
+      ]);
+      setDeliveryOrder([
+        ...orders.findOrderByCustId.filter(
+          (data: OrdersProps) => data.order_status === 'Out for delivery',
         ),
       ]);
       setCompletedOrder([
@@ -64,7 +68,7 @@ const Dashboard = () => {
     }
     if (orderErr) {
       toast({
-        title: 'Fail to create order',
+        title: 'Fail to get orders',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -110,7 +114,9 @@ const Dashboard = () => {
                       setActive('1');
                     }}
                   >
-                    <Text fontSize={'1rem'}>Pending</Text>
+                    <Text fontSize={'1rem'}>
+                      Pending ({pendingOrder.length + deliveryOrder.length})
+                    </Text>
                   </Center>
                   <Center
                     cursor={'pointer'}
@@ -119,7 +125,9 @@ const Dashboard = () => {
                       setActive('2');
                     }}
                   >
-                    <Text fontSize={'1rem'}>Completed</Text>
+                    <Text fontSize={'1rem'}>
+                      Completed ({completedOrder.length})
+                    </Text>
                   </Center>
                   <VStack
                     ref={indicatorRef}
@@ -149,15 +157,20 @@ const Dashboard = () => {
                           </Tr>
                         </Thead>
                         <Tbody>
-                          {pendingOrder.map((order: OrdersProps) => (
+                          {deliveryOrder.map((order: OrdersProps) => (
                             <OrderRow
                               order={order}
                               key={order.order_id}
-                              pendingOrder={pendingOrder}
-                              setPendingOrder={setPendingOrder}
+                              deliveryOrder={deliveryOrder}
+                              setDeliveryOrder={setDeliveryOrder}
                               completedOrder={completedOrder}
                               setCompletedOrder={setCompletedOrder}
                             />
+                          ))}
+                        </Tbody>
+                        <Tbody>
+                          {pendingOrder.map((order: OrdersProps) => (
+                            <OrderRow order={order} key={order.order_id} />
                           ))}
                         </Tbody>
                       </Table>
