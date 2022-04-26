@@ -102,7 +102,7 @@ const Cart = () => {
   useEffect(() => {
     if (deletedCart) {
       dispatch(CLEAR_CART());
-      window.location.href = '/';
+      window.location.href = '/cust/dashboard';
     }
     if (deleteErr) {
       toast({
