@@ -1,13 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ORDER_REPOSITORY } from '../constants/index';
 import { order } from 'src/models/order';
-import {
-  CreateOrderInput,
-  CreateOrderInputAll,
-} from './dto/create-order.input';
+
 import { UpdateOrderInput } from './dto/update-order.input';
 import { customer } from '../models/customer';
 import { product } from '../models/product';
+import { category } from '../models/category';
 
 @Injectable()
 export class OrderService {
@@ -30,7 +28,7 @@ export class OrderService {
       where: {
         order_id: id,
       },
-      include: [customer, product],
+      include: [{ model: customer }, { model: product, include: [category] }],
     });
   }
 
@@ -47,6 +45,18 @@ export class OrderService {
     return await this.orderRepo.destroy({
       where: {
         order_id: id,
+      },
+    });
+  }
+
+  async findByCustId(id: string): Promise<order[]> {
+    return await this.orderRepo.findAll({
+      where: {
+        cust_id: id,
+      },
+      include: {
+        model: product,
+        include: [category],
       },
     });
   }

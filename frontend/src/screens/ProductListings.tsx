@@ -48,7 +48,7 @@ const ProductListings = () => {
       variables: {
         input: {
           keywords,
-          limit: 10,
+          limit: 12,
           page: val,
           category,
         },
@@ -145,7 +145,7 @@ const ProductListings = () => {
       variables: {
         input: {
           keywords,
-          limit: 10,
+          limit: 12,
           page: 1,
           category,
         },

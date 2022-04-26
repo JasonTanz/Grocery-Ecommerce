@@ -159,6 +159,7 @@ type Query {
   Products: [Product!]!
   findByCategoryName(category_name: String!): [Category!]!
   findCartByCustId(cust_id: String!): [CartItems!]!
+  findOrderByCustId(cust_id: String!): [Order!]!
   findSimilarProducts(category_name: SimilarProducts!): [Product!]!
   getProductsPaginate(getProductsInput: GetProductsInput!): PaginateProduct!
   searchProductByKeyword(keywords: String!): [Product!]!
