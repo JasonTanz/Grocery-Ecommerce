@@ -26,10 +26,12 @@ const SearchBar = ({ form }: Props) => {
     }
   }, []);
   const dropDownToggle = (status: boolean) => {
-    if (status) {
-      dropDownRef.current!.style!.visibility = 'visible';
-    } else {
-      dropDownRef.current!.style!.visibility = 'hidden';
+    if (dropDownRef.current) {
+      if (status) {
+        dropDownRef.current!.style!.visibility = 'visible';
+      } else {
+        dropDownRef.current!.style!.visibility = 'hidden';
+      }
     }
   };
   useEffect(() => {
@@ -121,10 +123,10 @@ const SearchBar = ({ form }: Props) => {
                       </Text>
                     </>
                   ) : (
-                    filteredData.slice(0, 10).map((value: any) => {
+                    filteredData.slice(0, 10).map((value: any, index) => {
                       return (
                         <Box
-                          key={value.product_id}
+                          key={index}
                           py="8px"
                           px="15px"
                           style={{

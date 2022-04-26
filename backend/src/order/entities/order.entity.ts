@@ -11,7 +11,7 @@ export class Order {
   order_status: string;
 
   @Field()
-  order_delivery_addres: string;
+  order_delivery_address: string;
 
   @Field()
   order_phone_number: string;
@@ -24,6 +24,12 @@ export class Order {
 
   @Field(() => Product)
   product?: Product;
+
+  @Field()
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
 
   @Field(() => dataOrder)
   dataValues?: dataOrder;

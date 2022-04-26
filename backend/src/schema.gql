@@ -80,6 +80,11 @@ type Customer {
   dataValues: dataCust!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 input GetProductsInput {
   category: String
   keywords: String
@@ -117,14 +122,16 @@ type Mutation {
 }
 
 type Order {
+  createdAt: DateTime!
   customer: Customer!
   dataValues: dataOrder!
-  order_delivery_addres: String!
+  order_delivery_address: String!
   order_id: String!
   order_phone_number: String!
   order_status: String!
   order_total_price: Float!
   product: Product!
+  updatedAt: DateTime!
 }
 
 type PaginateProduct {
@@ -159,6 +166,7 @@ type Query {
   Products: [Product!]!
   findByCategoryName(category_name: String!): [Category!]!
   findCartByCustId(cust_id: String!): [CartItems!]!
+  findOrderByCustId(cust_id: String!): [Order!]!
   findSimilarProducts(category_name: SimilarProducts!): [Product!]!
   getProductsPaginate(getProductsInput: GetProductsInput!): PaginateProduct!
   searchProductByKeyword(keywords: String!): [Product!]!
