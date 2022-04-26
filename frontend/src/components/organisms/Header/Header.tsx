@@ -15,7 +15,7 @@ import { SearchBar } from '../../molecules';
 import { Form, Field, Formik } from 'formik';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { SearchProps } from '../../../types/searchTypes';
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import ProfileDropDown from '../ProfileDropDown/ProfileDropDown';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLazyQuery } from '@apollo/client';
@@ -28,7 +28,7 @@ interface Props {
 // eslint-disable-next-line no-unused-vars
 const Header = ({ searchBar = false }: Props) => {
   const headerSticky = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const initialValues = { keywords: '' };
   const toast = useToast();
   const dispatch = useDispatch();
@@ -87,7 +87,7 @@ const Header = ({ searchBar = false }: Props) => {
         },
       });
     }
-  }, [authState.id, getCartByCustId, isAuthenticated]);
+  }, [authState, getCartByCustId, isAuthenticated]);
 
   useEffect(() => {
     window.addEventListener('scroll', (e: any) => handleScroll(e));
@@ -142,10 +142,12 @@ const Header = ({ searchBar = false }: Props) => {
                 <Formik
                   initialValues={initialValues}
                   onSubmit={(data: SearchProps) => {
-                    navigate({
-                      pathname: '/products',
-                      search: `?keywords=${data.keywords}`,
-                    });
+                    if (data.keywords !== '') {
+                      searchParams.set('keywords', data.keywords);
+                      setSearchParams(searchParams);
+                    } else {
+                      window.location.href = '/products';
+                    }
                   }}
                   enableReinitialize
                 >

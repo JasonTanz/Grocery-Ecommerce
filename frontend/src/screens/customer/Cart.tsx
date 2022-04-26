@@ -168,148 +168,150 @@ const Cart = () => {
         ) : (
           <>
             {' '}
-            {cart.length > 0 ? (
-              <>
-                {' '}
-                <Grid
-                  templateColumns={'3fr 1fr'}
-                  gap="2.5em"
-                  px="1.5em"
-                  py="2em"
-                >
+            <VStack minH="100vh">
+              {cart.length > 0 ? (
+                <>
                   {' '}
-                  <GridItem>
+                  <Grid
+                    templateColumns={'3fr 1fr'}
+                    gap="2.5em"
+                    px="1.5em"
+                    py="2em"
+                  >
                     {' '}
-                    <Table variant="simple">
-                      <Thead>
-                        <Tr>
-                          <Th>Product</Th>
-                          <Th>Unit Price</Th>
-                          <Th>Quantity</Th>
-                          <Th>Subtotal</Th>
+                    <GridItem>
+                      {' '}
+                      <Table variant="simple">
+                        <Thead>
+                          <Tr>
+                            <Th>Product</Th>
+                            <Th>Unit Price</Th>
+                            <Th>Quantity</Th>
+                            <Th>Subtotal</Th>
 
-                          <Th>Remove</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {cart.map((item: CartProps) => {
-                          return (
-                            <CartItemRow
-                              key={item.cart_id}
-                              setTotalPrice={setTotalPrice}
-                              item={item}
-                              setCart={setCart}
-                            />
-                          );
-                        })}
-                      </Tbody>
-                    </Table>
-                  </GridItem>
-                  <GridItem>
-                    <VStack position={'fixed'} top="25%">
-                      <VStack
-                        borderRadius="15px"
-                        boxShadow={'5px 5px 15px rgb(0 0 0 / 5%)'}
-                        py="2em"
-                        px="3em"
-                        alignItems={'flex-start'}
-                      >
-                        <Grid
-                          templateColumns={'repeat(2, 1fr)'}
-                          alignItems="center"
+                            <Th>Remove</Th>
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {cart.map((item: CartProps) => {
+                            return (
+                              <CartItemRow
+                                key={item.cart_id}
+                                setTotalPrice={setTotalPrice}
+                                item={item}
+                                setCart={setCart}
+                              />
+                            );
+                          })}
+                        </Tbody>
+                      </Table>
+                    </GridItem>
+                    <GridItem>
+                      <VStack position={'fixed'} top="25%">
+                        <VStack
+                          borderRadius="15px"
+                          boxShadow={'5px 5px 15px rgb(0 0 0 / 5%)'}
+                          py="2em"
+                          px="3em"
+                          alignItems={'flex-start'}
                         >
-                          <GridItem>
-                            <Text color="#B6B6B6 " fontSize={'16px'}>
-                              SubTotal
-                            </Text>
-                          </GridItem>
-                          <GridItem>
-                            {' '}
-                            <Text
-                              color="#3BB77E"
-                              fontSize="32px"
-                              fontWeight={600}
-                            >
-                              RM {totalPrice}
-                            </Text>
-                          </GridItem>
-                          <GridItem>
-                            {' '}
-                            <Text color="#B6B6B6 " fontSize={'16px'}>
-                              Shipping
-                            </Text>
-                          </GridItem>
-                          <GridItem>
-                            <Text fontSize="25px">Free</Text>
-                          </GridItem>
-                        </Grid>
-
-                        <Formik
-                          initialValues={initialValues}
-                          validationSchema={schema}
-                          onSubmit={(data) => {
-                            let orderData: dataProps[] = [];
-                            cart.forEach((item) => {
-                              orderData.push({
-                                cust_id: authState.user.id,
-                                product_id: item.product.product_id,
-                                order_status: 'Pending',
-                                order_delivery_address:
-                                  data.order_delivery_address,
-                                order_phone_number: data.order_phone_number,
-                                order_total_price:
-                                  item.product.product_price * item.item_qty,
-                              });
-                            });
-                            createOrderAction({
-                              variables: {
-                                input: {
-                                  data: orderData,
-                                },
-                              },
-                            });
-                          }}
-                          enableReinitialize
-                        >
-                          {(props: FormikProps<FormValues>) => (
-                            <Form style={{ width: '100%' }}>
-                              <VStack pb="12px">
-                                <Field
-                                  name="order_delivery_address"
-                                  component={GETextFilledForm}
-                                  placeholder={'Delivery address'}
-                                  onChange={props.handleChange}
-                                  value={props.values.order_delivery_address}
-                                />
-                                <Field
-                                  name="order_phone_number"
-                                  component={GETextFilledForm}
-                                  placeholder={'Phone Number'}
-                                  onChange={props.handleChange}
-                                  value={props.values.order_phone_number}
-                                />
-                              </VStack>
-                              <Button
-                                isLoading={deleteLoading || createLoading}
-                                colorScheme={'teal'}
-                                w="100%"
-                                type="submit"
+                          <Grid
+                            templateColumns={'repeat(2, 1fr)'}
+                            alignItems="center"
+                          >
+                            <GridItem>
+                              <Text color="#B6B6B6 " fontSize={'16px'}>
+                                SubTotal
+                              </Text>
+                            </GridItem>
+                            <GridItem>
+                              {' '}
+                              <Text
+                                color="#3BB77E"
+                                fontSize="32px"
+                                fontWeight={600}
                               >
-                                Place Order
-                              </Button>
-                            </Form>
-                          )}
-                        </Formik>
+                                RM {totalPrice}
+                              </Text>
+                            </GridItem>
+                            <GridItem>
+                              {' '}
+                              <Text color="#B6B6B6 " fontSize={'16px'}>
+                                Shipping
+                              </Text>
+                            </GridItem>
+                            <GridItem>
+                              <Text fontSize="25px">Free</Text>
+                            </GridItem>
+                          </Grid>
+
+                          <Formik
+                            initialValues={initialValues}
+                            validationSchema={schema}
+                            onSubmit={(data) => {
+                              let orderData: dataProps[] = [];
+                              cart.forEach((item) => {
+                                orderData.push({
+                                  cust_id: authState.user.id,
+                                  product_id: item.product.product_id,
+                                  order_status: 'Pending',
+                                  order_delivery_address:
+                                    data.order_delivery_address,
+                                  order_phone_number: data.order_phone_number,
+                                  order_total_price:
+                                    item.product.product_price * item.item_qty,
+                                });
+                              });
+                              createOrderAction({
+                                variables: {
+                                  input: {
+                                    data: orderData,
+                                  },
+                                },
+                              });
+                            }}
+                            enableReinitialize
+                          >
+                            {(props: FormikProps<FormValues>) => (
+                              <Form style={{ width: '100%' }}>
+                                <VStack pb="12px">
+                                  <Field
+                                    name="order_delivery_address"
+                                    component={GETextFilledForm}
+                                    placeholder={'Delivery address'}
+                                    onChange={props.handleChange}
+                                    value={props.values.order_delivery_address}
+                                  />
+                                  <Field
+                                    name="order_phone_number"
+                                    component={GETextFilledForm}
+                                    placeholder={'Phone Number'}
+                                    onChange={props.handleChange}
+                                    value={props.values.order_phone_number}
+                                  />
+                                </VStack>
+                                <Button
+                                  isLoading={deleteLoading || createLoading}
+                                  colorScheme={'teal'}
+                                  w="100%"
+                                  type="submit"
+                                >
+                                  Place Order
+                                </Button>
+                              </Form>
+                            )}
+                          </Formik>
+                        </VStack>
                       </VStack>
-                    </VStack>
-                  </GridItem>
-                </Grid>
-              </>
-            ) : (
-              <>
-                <Text>Your cart is empty</Text>
-              </>
-            )}
+                    </GridItem>
+                  </Grid>
+                </>
+              ) : (
+                <>
+                  <Text>Your cart is empty</Text>
+                </>
+              )}
+            </VStack>
           </>
         )}
       </>

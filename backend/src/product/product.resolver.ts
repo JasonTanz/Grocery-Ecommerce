@@ -75,7 +75,7 @@ export class ProductResolver {
       condition_2,
     );
     const result = this.productHelper.getPaginateData(products, page, limit);
-    console.log(result);
+   
     return result;
   }
 
