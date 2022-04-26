@@ -14,10 +14,24 @@ function App() {
         />
 
         <Route
-          path="/products*"
+          path="/products/*"
           element={<GERoutes component={Screens.ProductListings} />}
         />
         <Route path="/cart" element={<GERoutes component={Screens.Cart} />} />
+        <Route
+          path="/cust/dashboard"
+          element={<GERoutes component={Screens.CustDashboard} />}
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <GERoutes
+              header={false}
+              component={Screens.AdminDashbaord}
+              footer={false}
+            />
+          }
+        />
       </Routes>
     </Router>
   );

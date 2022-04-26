@@ -4,7 +4,7 @@ import { CARTITEM_REPOSITORY } from '../constants/index';
 import { cartItems } from '../models/cartItem';
 import { CreateCartItemInput } from './dto/create-cartItems.input';
 import { UpdateCartItemInput } from './dto/update-cartItems.input';
-import { category } from 'src/models/category';
+import { category } from '../models/category';
 
 @Injectable()
 export class CartItemService {
