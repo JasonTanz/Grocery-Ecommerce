@@ -111,7 +111,7 @@ const ProfileDropDown = () => {
         >
           <ProfileDropDownText
             text={'My Dashboard'}
-            onClick={() => (window.location.href = '/')}
+            onClick={() => (window.location.href = '/cust/dashboard')}
           />
           <ProfileDropDownText text={'Log Out'} onClick={() => logout()} />
         </VStack>
