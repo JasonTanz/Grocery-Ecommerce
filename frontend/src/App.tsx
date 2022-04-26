@@ -25,7 +25,11 @@ function App() {
         <Route
           path="/admin/dashboard"
           element={
-            <GERoutes header={false} component={Screens.AdminDashbaord} />
+            <GERoutes
+              header={false}
+              component={Screens.AdminDashbaord}
+              footer={false}
+            />
           }
         />
       </Routes>

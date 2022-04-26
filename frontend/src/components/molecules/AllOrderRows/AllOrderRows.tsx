@@ -103,7 +103,11 @@ const AllOrderRows = ({
         </HStack>
       </Td>
       <Td>{order.customer.cust_username}</Td>
-      <Td>{order.order_total_price}</Td>
+      <Td>
+        {' '}
+        <Text>{order.order_phone_number}</Text>
+        <Text>{order.order_delivery_address}</Text>
+      </Td>
       <Td>
         <Text fontSize={'12px'} color="#6c757d">
           {' '}

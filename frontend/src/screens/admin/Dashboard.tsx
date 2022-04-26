@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { GridItem } from '@chakra-ui/react';
 import React, { useState, useRef, useEffect } from 'react';
 import {
   VStack,
@@ -20,6 +20,8 @@ import { findAllOrders } from '../../graphql/order';
 import { useQuery } from '@apollo/client';
 import { Orders as OrdersProps } from '../../types/orderTypes';
 import { AllOrderRows } from '../../components/molecules';
+
+import { AdminWrapper } from '../../components/organisms';
 const Dashboard = () => {
   const [tab, setTab] = useState<number>(1);
   const indicatorRef = useRef<HTMLDivElement>(null);
@@ -96,21 +98,21 @@ const Dashboard = () => {
         </>
       ) : (
         <>
-          <Grid templateColumns={'1fr 5fr'}>
-            <GridItem>
-              <VStack>
-                <VStack>
-                  <Text>Dashboard</Text>
-                  <Text>Products</Text>
-                </VStack>
-              </VStack>
-            </GridItem>
-            <GridItem>
+          <AdminWrapper>
+            <GridItem bg="#f8f9fa">
               <>
                 <Center py="2em" w="100%">
                   <Container maxW="container.xl">
-                    <VStack w="95%" alignItems={'flex-start'}>
-                      <Heading>All Orders</Heading>
+                    <Heading pb="1.2em">All Orders</Heading>
+                    <VStack
+                      w="95%"
+                      alignItems={'flex-start'}
+                      border="1px solid #eee"
+                      bg="#fff"
+                      py="1.2"
+                      px="1.4em"
+                      borderRadius={'12px'}
+                    >
                       <HStack
                         spacing={'25px'}
                         style={{ marginTop: '30px', marginBottom: '4px' }}
@@ -162,15 +164,16 @@ const Dashboard = () => {
                                 <Tr>
                                   <Th>Product</Th>
                                   <Th>Customer</Th>
-                                  <Th>Total Price</Th>
+                                  <Th>Delivery Info</Th>
                                   <Th>Ordered At</Th>
                                   <Th>Status</Th>
 
                                   <Th>Action</Th>
                                 </Tr>
                               </Thead>
+
                               <Tbody>
-                                {deliveryOrder.map((order: OrdersProps) => (
+                                {pendingOrder.map((order: OrdersProps) => (
                                   <AllOrderRows
                                     order={order}
                                     key={order.order_id}
@@ -182,7 +185,7 @@ const Dashboard = () => {
                                 ))}
                               </Tbody>
                               <Tbody>
-                                {pendingOrder.map((order: OrdersProps) => (
+                                {deliveryOrder.map((order: OrdersProps) => (
                                   <AllOrderRows
                                     order={order}
                                     key={order.order_id}
@@ -203,7 +206,7 @@ const Dashboard = () => {
                                 <Tr>
                                   <Th>Product</Th>
                                   <Th>Customer</Th>
-                                  <Th>Total Price</Th>
+                                  <Th>Delivery Info</Th>
                                   <Th>Received At</Th>
                                   <Th>Status</Th>
                                 </Tr>
@@ -225,7 +228,7 @@ const Dashboard = () => {
                 </Center>
               </>
             </GridItem>
-          </Grid>
+          </AdminWrapper>
         </>
       )}
     </>
