@@ -17,6 +17,7 @@ const findAllProducts = gql`
       product_description
       product_img
       product_price
+      product_qty
       categories {
         category_id
         category_name

@@ -1,9 +1,12 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateOrderInputAll } from './dto/create-order.input';
 import { UpdateOrderInput } from './dto/update-order.input';
 import { Order } from './entities/order.entity';
 import { OrderService } from './order.service';
 @Resolver(() => Order)
+@UseGuards(JwtAuthGuard)
 export class OrderResolver {
   constructor(private readonly orderService: OrderService) {}
   @Mutation(() => [Order])

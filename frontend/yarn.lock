@@ -6733,6 +6733,11 @@
     "array-includes" "^3.1.4"
     "object.assign" "^4.1.2"
 
+"jwt-decode@^3.1.2":
+  "integrity" "sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A=="
+  "resolved" "https://registry.npmjs.org/jwt-decode/-/jwt-decode-3.1.2.tgz"
+  "version" "3.1.2"
+
 "kind-of@^6.0.2":
   "integrity" "sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw=="
   "resolved" "https://registry.npmjs.org/kind-of/-/kind-of-6.0.3.tgz"
@@ -6886,6 +6891,18 @@
   "version" "1.4.0"
   dependencies:
     "js-tokens" "^3.0.0 || ^4.0.0"
+
+"lottie-react@^2.2.1":
+  "integrity" "sha512-lAdIUw+zeHLX3gtyLkisa4QM9NkTUUeZTsEL53laBEsjIH4JibgwkioZuza8CtwZ7/cpPZRbCRXWKfiuaDZWww=="
+  "resolved" "https://registry.npmjs.org/lottie-react/-/lottie-react-2.2.1.tgz"
+  "version" "2.2.1"
+  dependencies:
+    "lottie-web" "^5.8.1"
+
+"lottie-web@^5.8.1":
+  "integrity" "sha512-QKA31Lu57SMfS09oUvuheEL+BkzjWHuzi7VkO9gSBaynK8tOMF2EwBgRdvcn3vXvX79/Y9RFlm75mjsS8je2+w=="
+  "resolved" "https://registry.npmjs.org/lottie-web/-/lottie-web-5.9.3.tgz"
+  "version" "5.9.3"
 
 "lower-case@^2.0.2":
   "integrity" "sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg=="
@@ -8245,7 +8262,7 @@
     "strip-ansi" "^6.0.1"
     "text-table" "^0.2.0"
 
-"react-dom@^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8.0 || 17.x", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.2", "react-dom@<18.0.0", "react-dom@>=16.6.0", "react-dom@>=16.8", "react-dom@>=16.8 || ^17.0.0 || ^18.0.0", "react-dom@>=16.8.6":
+"react-dom@^16.8.0 || ^17.0.0", "react-dom@^16.8.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8.0 || 17.x", "react-dom@^17.0.0 || ^18.0.0", "react-dom@^17.0.2", "react-dom@<18.0.0", "react-dom@>=16.6.0", "react-dom@>=16.8", "react-dom@>=16.8 || ^17.0.0 || ^18.0.0", "react-dom@>=16.8.6":
   "integrity" "sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-17.0.2.tgz"
   "version" "17.0.2"
