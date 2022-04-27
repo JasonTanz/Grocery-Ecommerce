@@ -1,6 +1,17 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 
-import { HStack, Text, Input, VStack, Box, Spinner } from '@chakra-ui/react';
+import {
+  HStack,
+  Text,
+  Input,
+  VStack,
+  Box,
+  Spinner,
+  IconButton,
+  InputGroup,
+  InputRightElement,
+} from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -66,20 +77,30 @@ const SearchBar = ({ form }: Props) => {
       >
         <HStack w="100%" justifyContent={'flex-end'}>
           {' '}
-          <Input
-            ref={inputText}
-            backgroundColor="#f3f4f7"
-            borderColor={'#f3f4f7'}
-            border={'1px solid transparent'}
-            p="8px"
-            w="60%"
-            variant="unstyled"
-            onChange={(e) => {
-              setSearchWords(e.target.value);
-              dropDownToggle(true);
-              form.setFieldValue('keywords', e.target.value);
-            }}
-          />
+          <InputGroup w="70%">
+            <Input
+              ref={inputText}
+              backgroundColor="#f3f4f7"
+              borderColor={'#f3f4f7'}
+              border={'1px solid transparent'}
+              p="8px"
+              variant="unstyled"
+              onChange={(e) => {
+                setSearchWords(e.target.value);
+                dropDownToggle(true);
+                form.setFieldValue('keywords', e.target.value);
+              }}
+            />
+            <InputRightElement>
+              {' '}
+              <IconButton
+                type="submit"
+                colorScheme="blue"
+                aria-label="Search keywords"
+                icon={<SearchIcon />}
+              />
+            </InputRightElement>
+          </InputGroup>
         </HStack>
 
         {searchWords.length > 0 && (

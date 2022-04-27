@@ -16,13 +16,17 @@ const GESelectDropDown = ({
   customLabel,
   flex = false,
   customclass,
-
+  isMulti = false,
   ...props
 }: Props) => {
   const errorText: string =
     getIn(form.touched, field.name) && getIn(form.errors, field.name);
   const handleSelect = (e: any) => {
-    form.setFieldValue(field.name, e.value);
+    if (isMulti) {
+      form.setFieldValue(field.name, e);
+    } else {
+      form.setFieldValue(field.name, e.value);
+    }
   };
 
   return (
@@ -37,7 +41,9 @@ const GESelectDropDown = ({
               return option.value === field.value;
             }}
             isSearchable={false}
+            isClearable={true}
             onChange={(e: any) => handleSelect(e)}
+            isMulti={isMulti}
             placeholder={form.values.qty}
           />
           <FormErrorMessage fontSize="sm">{errorText}</FormErrorMessage>
@@ -50,6 +56,5 @@ const GESelectDropDown = ({
 GESelectDropDown.propTypes = {
   props: PropTypes.node,
   customclass: PropTypes.string,
-  value: PropTypes.string,
 };
 export default React.memo(GESelectDropDown);

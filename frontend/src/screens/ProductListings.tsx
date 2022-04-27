@@ -15,20 +15,17 @@ import {
   HStack,
 } from '@chakra-ui/react';
 import { GiFruitBowl, GiChickenLeg, GiFrozenOrb } from 'react-icons/gi';
-import { BsEgg } from 'react-icons/bs';
+import { BsEgg, BsFillGridFill } from 'react-icons/bs';
 import { FaCoffee } from 'react-icons/fa';
 import { CategoryButton } from '../components/atoms';
-import {
-  // findAllProducts,
-  // findByKeywordsWithInfo,
-  getProductsPaginate,
-} from '../graphql/product';
+import { getProductsPaginate } from '../graphql/product';
 import { Products as ProductsProps } from '../types/productTypes';
 import { useLazyQuery } from '@apollo/client';
 import { ProductCard } from '../components/molecules';
 import { useSearchParams } from 'react-router-dom';
 import { Pagination } from '@mui/material';
-
+import Lottie from 'lottie-react';
+import NotFound from '../assets/lottie/Not-found.json';
 const ProductListings = () => {
   const toast = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -129,6 +126,7 @@ const ProductListings = () => {
           px="16px"
           pt="25px"
           pb="4em"
+          minH="100vh"
         >
           <GridItem>
             <VStack position={'sticky'} top="15%">
@@ -150,7 +148,7 @@ const ProductListings = () => {
                     }}
                   >
                     {' '}
-                    <GiFruitBowl
+                    <BsFillGridFill
                       style={{
                         width: '25px',
                         height: '25px',
@@ -261,7 +259,14 @@ const ProductListings = () => {
                     ))}
                   </Grid>
                 ) : (
-                  <Heading fontSize={'30px'}>Product not found</Heading>
+                  <VStack>
+                    {' '}
+                    <Heading fontSize={'30px'}>Product not found</Heading>
+                    <Text>Try other keywords...</Text>
+                    <VStack w="20vw">
+                      <Lottie animationData={NotFound} />
+                    </VStack>
+                  </VStack>
                 )}
               </>
             )}

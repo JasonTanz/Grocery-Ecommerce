@@ -66,7 +66,9 @@ const ProductDetail = () => {
   } = useQuery(findProductById, {
     variables: { product_id },
   });
-
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated,
+  );
   const [
     getSimilar,
     { data: similarProducts, loading: similarLoading, error: similarErr },
@@ -253,10 +255,15 @@ const ProductDetail = () => {
                                       _hover={{
                                         backgroundColor: '#31a36f',
                                       }}
+                                      disabled={!isAuthenticated}
                                       type="submit"
                                       w="30%"
                                     >
-                                      Add To Cart
+                                      {!isAuthenticated ? (
+                                        <Text>Please Log In</Text>
+                                      ) : (
+                                        <Text> Add To Cart</Text>
+                                      )}
                                     </Button>
                                   </HStack>
                                 </Form>
