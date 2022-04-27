@@ -5,6 +5,6 @@ export interface formField {
   customLabel?: string;
   flex?: boolean;
   customclass?: string;
-
+  isMulti?: boolean;
   type?: string;
 }

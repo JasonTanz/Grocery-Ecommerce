@@ -8,14 +8,37 @@ import { Provider } from 'react-redux';
 import { theme } from '@chakra-ui/react';
 import store from './store';
 import { API_URL } from './constants';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
+import cookie from 'js-cookie';
 import {
   ThemeProvider,
   unstable_createMuiStrictModeTheme,
 } from '@mui/material/styles';
 const MUITheme = unstable_createMuiStrictModeTheme();
-const client = new ApolloClient({
+const httpLink = createHttpLink({
   uri: API_URL,
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = cookie.get('accessTokenGE');
+  console.log(token);
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+
   cache: new InMemoryCache(),
 });
 ReactDOM.render(

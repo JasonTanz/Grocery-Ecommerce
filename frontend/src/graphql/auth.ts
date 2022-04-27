@@ -25,4 +25,23 @@ const Login = gql`
   }
 `;
 
-export { SignUp, Login };
+const adminLogin = gql`
+  mutation adminLogin($login: LoginAdminInput!) {
+    adminLogin(loginAdminInput: $login) {
+      admin {
+        admin_id
+        admin_username
+        admin_email
+      }
+      access_token
+    }
+  }
+`;
+
+const checkAuth = gql`
+  query {
+    checkAuth
+  }
+`;
+
+export { SignUp, Login, checkAuth, adminLogin };

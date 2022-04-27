@@ -6,6 +6,8 @@ import { PaginateProduct, Product } from './entities/product.entity';
 import { ProductService } from './product.service';
 import { ProductHelper } from './product.helper';
 import { Op } from 'sequelize';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Resolver(() => Product)
 export class ProductResolver {
   constructor(
@@ -13,6 +15,7 @@ export class ProductResolver {
     private readonly productHelper: ProductHelper,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Product)
   async createProduct(
     @Args('createProductInput') createProductInput: CreateProductInput,
@@ -75,10 +78,10 @@ export class ProductResolver {
       condition_2,
     );
     const result = this.productHelper.getPaginateData(products, page, limit);
-   
+
     return result;
   }
-
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Product, { name: 'UpdateProductById' })
   async updateById(
     @Args('updateProductInput') updateProductInput: UpdateProductInput,
@@ -89,7 +92,7 @@ export class ProductResolver {
     );
     return await this.productService.findById(updateProductInput.product_id);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => String, { name: 'DeleteProductById' })
   async deleteById(@Args('product_id') product_id: string) {
     await this.productService.deleteById(product_id);

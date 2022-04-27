@@ -97,7 +97,7 @@ const Dashboard = () => {
       ) : (
         <>
           <AdminWrapper>
-            <GridItem bg="#f8f9fa">
+            <GridItem bg="#f8f9fa" minH={'100vh'}>
               <>
                 <Center py="2em" w="100%">
                   <Container maxW="container.xl">

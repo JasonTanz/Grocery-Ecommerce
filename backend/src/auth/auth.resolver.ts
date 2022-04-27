@@ -1,5 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { Customer } from 'src/customer/entities/customer.entity';
+import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
 import { Admin } from 'src/admin/entities/admin.entity';
 import { AuthService } from './auth.service';
 import { LoginCustomerInput } from './dto/cust-dto/cust-login-input';
@@ -8,6 +7,8 @@ import { CustLoginResponse } from './dto/cust-dto/cust-login-response';
 import { AdminLoginResponse } from './dto/admin-dto/admin-login-response';
 import { SignUpCustInput } from './dto/cust-dto/cust-signup.input';
 import { SignUpAdminInput } from './dto/admin-dto/admin-signup.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Resolver()
 export class AuthResolver {
@@ -39,5 +40,11 @@ export class AuthResolver {
     @Args('signUpAdminInput') signUpAdminInput: SignUpAdminInput,
   ) {
     return await this.authService.adminSignup(signUpAdminInput);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Query(() => String)
+  async checkAuth() {
+    return 'Still Authenticated';
   }
 }

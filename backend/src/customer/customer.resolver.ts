@@ -4,12 +4,12 @@ import { CustomerService } from './customer.service';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Resolver(() => Customer)
 export class CustomerResolver {
   constructor(private readonly customerService: CustomerService) {}
 
   @Query(() => [Customer], { name: 'Customers' })
-  // @UseGuards(JwtAuthGuard)
   async findAll(): Promise<Customer[]> {
     return await this.customerService.findAll();
   }

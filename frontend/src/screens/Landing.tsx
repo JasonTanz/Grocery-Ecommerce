@@ -53,6 +53,7 @@ const Landing = () => {
     }
 
     if (productErr) {
+      console.log(productErr);
       toast({
         title: 'Fail to fetch products',
         status: 'error',
