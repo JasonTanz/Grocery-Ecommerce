@@ -164,6 +164,7 @@ type Query {
   PopularProducts(limit: Float!): [Product!]!
   Product(product_id: String!): Product!
   Products: [Product!]!
+  checkAuth: String!
   findByCategoryName(category_name: String!): [Category!]!
   findCartByCustId(cust_id: String!): [CartItems!]!
   findOrderByCustId(cust_id: String!): [Order!]!

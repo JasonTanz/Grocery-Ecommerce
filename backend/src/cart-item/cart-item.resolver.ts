@@ -1,4 +1,6 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CartItemService } from './cart-item.service';
 import {
   BulkDeleteCartItemById,
@@ -8,8 +10,10 @@ import { UpdateCartItemInput } from './dto/update-cartItems.input';
 import { CartItems } from './entities/cartItem.entity';
 
 @Resolver()
+@UseGuards(JwtAuthGuard)
 export class CartItemResolver {
   constructor(private readonly cartItemService: CartItemService) {}
+
   @Mutation(() => CartItems)
   async createCartItem(
     @Args('createCartItemInput') createCartItemInput: CreateCartItemInput,

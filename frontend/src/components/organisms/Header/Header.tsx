@@ -15,7 +15,7 @@ import { SearchBar } from '../../molecules';
 import { Form, Field, Formik } from 'formik';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { SearchProps } from '../../../types/searchTypes';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ProfileDropDown from '../ProfileDropDown/ProfileDropDown';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLazyQuery } from '@apollo/client';
@@ -28,7 +28,7 @@ interface Props {
 // eslint-disable-next-line no-unused-vars
 const Header = ({ searchBar = false }: Props) => {
   const headerSticky = useRef<HTMLDivElement>(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const initialValues = { keywords: '' };
   const toast = useToast();
   const dispatch = useDispatch();
@@ -143,8 +143,10 @@ const Header = ({ searchBar = false }: Props) => {
                   initialValues={initialValues}
                   onSubmit={(data: SearchProps) => {
                     if (data.keywords !== '') {
-                      searchParams.set('keywords', data.keywords);
-                      setSearchParams(searchParams);
+                      navigate({
+                        pathname: '/products',
+                        search: `?keywords=${data.keywords}`,
+                      });
                     } else {
                       window.location.href = '/products';
                     }
@@ -162,35 +164,40 @@ const Header = ({ searchBar = false }: Props) => {
                   )}
                 </Formik>
               </HStack>
-              <VStack position={'relative'}>
-                <AiOutlineShoppingCart
-                  style={{
-                    width: '35px',
-                    height: '35px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => {
-                    window.location.href = '/cart';
-                  }}
-                />
+              {isAuthenticated && (
+                <>
+                  {' '}
+                  <VStack position={'relative'}>
+                    <AiOutlineShoppingCart
+                      style={{
+                        width: '35px',
+                        height: '35px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => {
+                        window.location.href = '/cart';
+                      }}
+                    />
 
-                <HStack
-                  position={'absolute'}
-                  w="20px"
-                  h={'20px'}
-                  borderRadius="50%"
-                  color="#ffffff"
-                  top="-12px"
-                  left="20px"
-                  backgroundColor="#3BB77E"
-                  justifyContent={'center'}
-                  alignItems="center"
-                >
-                  <Text fontSize={'12px'} fontWeight="600">
-                    {cart_qty}
-                  </Text>
-                </HStack>
-              </VStack>
+                    <HStack
+                      position={'absolute'}
+                      w="20px"
+                      h={'20px'}
+                      borderRadius="50%"
+                      color="#ffffff"
+                      top="-12px"
+                      left="20px"
+                      backgroundColor="#3BB77E"
+                      justifyContent={'center'}
+                      alignItems="center"
+                    >
+                      <Text fontSize={'12px'} fontWeight="600">
+                        {cart_qty}
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </>
+              )}
 
               <ProfileDropDown />
             </HStack>

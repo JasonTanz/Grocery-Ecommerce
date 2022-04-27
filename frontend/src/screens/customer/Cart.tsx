@@ -14,6 +14,7 @@ import {
   useToast,
   Center,
   Container,
+  Heading,
   Spinner,
 } from '@chakra-ui/react';
 import { CartItemRow } from '../../components/molecules';
@@ -26,6 +27,8 @@ import { Cart as CartProps } from '../../types/cartTypes';
 import * as yup from 'yup';
 import { createOrder } from '../../graphql/order';
 import { CLEAR_CART } from '../../reducers/cartSlice';
+import Lottie from 'lottie-react';
+import Empty from '../../assets/lottie/Empty.json';
 interface FormValues {
   order_delivery_address: string;
   order_phone_number: string;
@@ -43,9 +46,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const [cart, setCart] = useState<CartProps[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const isAuthenticated = useSelector(
-    (state: any) => state.auth.isAuthenticated,
-  );
+
   const toast = useToast();
   const schema = yup.object({
     order_delivery_address: yup
@@ -141,11 +142,7 @@ const Cart = () => {
   return (
     <PageWrapper>
       <>
-        {!isAuthenticated ? (
-          <>
-            <Text>Please Login</Text>
-          </>
-        ) : cartLoading ? (
+        {cartLoading ? (
           <>
             {' '}
             <Center minH="75vh">
@@ -308,7 +305,20 @@ const Cart = () => {
                 </>
               ) : (
                 <>
-                  <Text>Your cart is empty</Text>
+                  <VStack gap="12px" pt="1.2em">
+                    <Heading>Your cart is empty</Heading>
+                    <VStack w="35vw">
+                      {' '}
+                      <Lottie animationData={Empty} loop={true} />
+                    </VStack>
+
+                    <Button
+                      onClick={() => (window.location.href = '/products')}
+                      w="25%"
+                    >
+                      Shop now
+                    </Button>
+                  </VStack>
                 </>
               )}
             </VStack>
