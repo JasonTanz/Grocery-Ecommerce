@@ -7,27 +7,55 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<GERoutes component={Screens.Landing} />} />
+        <Route
+          path="/"
+          element={<GERoutes roles="cust" component={Screens.Landing} />}
+        />
         <Route
           path="/product/detail/:product_id"
-          element={<GERoutes component={Screens.ProductDetail} />}
+          element={<GERoutes roles="cust" component={Screens.ProductDetail} />}
         />
 
         <Route
           path="/products/*"
-          element={<GERoutes component={Screens.ProductListings} />}
+          element={
+            <GERoutes roles="cust" component={Screens.ProductListings} />
+          }
         />
-        <Route path="/cart" element={<GERoutes component={Screens.Cart} />} />
+        <Route
+          path="/cart"
+          element={
+            <GERoutes isProtected roles="cust" component={Screens.Cart} />
+          }
+        />
         <Route
           path="/cust/dashboard"
-          element={<GERoutes component={Screens.CustDashboard} />}
+          element={
+            <GERoutes
+              isProtected
+              roles="cust"
+              component={Screens.CustDashboard}
+            />
+          }
         />
         <Route
           path="/admin/dashboard"
           element={
             <GERoutes
+              isProtected
+              roles="admin"
               header={false}
               component={Screens.AdminDashbaord}
+              footer={false}
+            />
+          }
+        />
+        <Route
+          path="/admin/login"
+          element={
+            <GERoutes
+              header={false}
+              component={Screens.AdminLogin}
               footer={false}
             />
           }
