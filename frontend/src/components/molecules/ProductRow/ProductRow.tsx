@@ -66,7 +66,6 @@ const ProductRow = ({ product, setModalProduct, onOpen, setType }: Props) => {
               setType('Update');
               let cat: any = [];
               product.categories.forEach((category) => {
-                console.log(category);
                 cat.push({
                   label: category.category_name,
                   value: category.category_id,

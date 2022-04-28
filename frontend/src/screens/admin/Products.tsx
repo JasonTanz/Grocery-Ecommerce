@@ -73,7 +73,6 @@ const Products = () => {
   const toast = useToast();
   useEffect(() => {
     if (products) {
-      console.log(products);
       setAllProducts([...products.Products]);
     }
 
@@ -217,7 +216,6 @@ const Products = () => {
           </>
         ) : (
           <>
-            {console.log(modalProduct.categories)}
             <GridItem bg="#f8f9fa">
               <Container
                 maxW={'container.xl'}

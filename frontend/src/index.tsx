@@ -28,7 +28,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = cookie.get('accessTokenGE');
-  console.log(token);
+
   return {
     headers: {
       ...headers,

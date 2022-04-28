@@ -63,7 +63,6 @@ const ProductListings = () => {
           products.getProductsPaginate.totalPages &&
         products.getProductsPaginate.totalPages !== 0
       ) {
-        console.log(products.getProductsPaginate);
         if (products.getProductsPaginate.totalPages > 1) {
           setPage(1);
           //@ts-ignore
