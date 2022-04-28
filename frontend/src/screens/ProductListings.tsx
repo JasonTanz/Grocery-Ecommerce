@@ -63,9 +63,17 @@ const ProductListings = () => {
           products.getProductsPaginate.totalPages &&
         products.getProductsPaginate.totalPages !== 0
       ) {
-        setPage(products.getProductsPaginate.totalPages);
-        searchParams.set('page', products.getProductsPaginate.totalPages);
-        setSearchParams(searchParams);
+        console.log(products.getProductsPaginate);
+        if (products.getProductsPaginate.totalPages > 1) {
+          setPage(1);
+          //@ts-ignore
+          searchParams.set('page', 1);
+          setSearchParams(searchParams);
+        } else {
+          setPage(products.getProductsPaginate.totalPages);
+          searchParams.set('page', products.getProductsPaginate.totalPages);
+          setSearchParams(searchParams);
+        }
       } else if (products.getProductsPaginate.totalPages !== 0) {
         setPage(products.getProductsPaginate.currentPage);
       }
