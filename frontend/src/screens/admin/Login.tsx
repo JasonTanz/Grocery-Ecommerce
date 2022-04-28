@@ -36,7 +36,6 @@ const Login = () => {
 
   useEffect(() => {
     if (logInData) {
-      console.log(logInData);
       dispatch(
         LOGIN({
           user: {
@@ -74,7 +73,6 @@ const Login = () => {
             initialValues={adminLoginInitialValues}
             validationSchema={logInSchema}
             onSubmit={(data: any) => {
-              console.log(data);
               logIn({
                 variables: {
                   login: {
