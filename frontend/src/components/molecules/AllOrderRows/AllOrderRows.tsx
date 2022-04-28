@@ -110,7 +110,6 @@ const AllOrderRows = ({
       </Td>
       <Td>
         <Text fontSize={'12px'} color="#6c757d">
-          {console.log(order.order_status)}
           {order.order_status === 'Pending'
             ? moment(order.createdAt).format('DD-MM-YY hh:mm A')
             : order.order_status === 'Out for delivery'
