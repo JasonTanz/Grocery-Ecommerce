@@ -82,9 +82,9 @@ const Landing = () => {
                 clickable: true,
               }}
               slidesPerView={1}
-              // autoplay={{
-              //   delay: 5000,
-              // }}
+              autoplay={{
+                delay: 5000,
+              }}
               className="mySwiper"
               style={{
                 width: '98%',
