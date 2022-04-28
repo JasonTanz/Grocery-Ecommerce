@@ -1,5 +1,5 @@
-Grocery Ecommerce that is built using NodeJS(NestJS), GraphQL, PostgreSQL & Sequelize
-## Include a .env
+Grocery Ecommerce that is built using NodeJS(NestJS), GraphQL, PostgreSQL & Sequelize.
+## Include a .env files at the root directory
 ```
 DB_DEV_USER=
 DB_DEV_PASSWORD=
