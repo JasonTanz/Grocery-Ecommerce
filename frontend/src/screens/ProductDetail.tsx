@@ -160,16 +160,20 @@ const ProductDetail = () => {
             {productDetail && (
               <>
                 <Center pt="2em" pb="4em">
-                  <Container maxW="container.xl">
+                  <Container maxW={'container.xl'}>
                     <Grid
-                      templateColumns={'repeat(2, 1fr)'}
+                      templateColumns={[
+                        'repeat(1,1fr)',
+                        'repeat(1,1fr)',
+                        'repeat(2, 1fr)',
+                      ]}
                       justifyItems={'center'}
                       py="2.5em"
                     >
                       <GridItem
                         border={'1px solid #ececec'}
                         borderRadius="10px"
-                        maxW="25vw"
+                        maxW={['75vw', '75vw', '25vw']}
                         cursor={'pointer'}
                         overflow="hidden"
                       >
@@ -180,20 +184,26 @@ const ProductDetail = () => {
                           />
                         </VStack>
                       </GridItem>
-                      <GridItem>
+                      <GridItem
+                        px={['2.5em', '1.5em', '0']}
+                        w={['45%', '45%', '100%']}
+                      >
                         <VStack alignItems={'flex-start'} gap="12px">
                           {productDetail.categories.map((cat: Category) => (
                             <Text
                               style={{ marginTop: 0, marginLeft: 0 }}
                               color="#adadad"
-                              fontSize={'12px'}
+                              fontSize={['18px', '18px', '12px']}
                               key={cat.category_id}
+                              paddingTop={['4px', '4px', '0']}
                             >
                               {cat.category_name}
                             </Text>
                           ))}
 
-                          <Heading>{productDetail.product_name}</Heading>
+                          <Heading fontSize={['20px', '20px', '2em']}>
+                            {productDetail.product_name}
+                          </Heading>
                           <Heading color="#3BB77E" fontSize={'40px'}>
                             RM{productDetail.product_price}
                           </Heading>
@@ -272,7 +282,7 @@ const ProductDetail = () => {
                           </HStack>
                         </VStack>
                       </GridItem>
-                    </Grid>
+                    </Grid>{' '}
                     <VStack gap="1em" alignItems={'flex-start'}>
                       <Heading>Description</Heading>
                       <Text>{productDetail.product_description}</Text>
