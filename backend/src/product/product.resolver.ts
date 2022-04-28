@@ -15,7 +15,7 @@ export class ProductResolver {
     private readonly productHelper: ProductHelper,
   ) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Mutation(() => Product)
   async createProduct(
     @Args('createProductInput') createProductInput: CreateProductInput,
