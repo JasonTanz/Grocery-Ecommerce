@@ -81,6 +81,7 @@ export class ProductResolver {
 
     return result;
   }
+
   @UseGuards(JwtAuthGuard)
   @Mutation(() => Product, { name: 'UpdateProductById' })
   async updateById(
