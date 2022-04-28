@@ -1,6 +1,6 @@
 Grocery Ecommerce frontend that is built using React(Redux) & ChakraUI
 
-## Install all required modules
+## Install all the required modules
 ```
 npm i
 ```
