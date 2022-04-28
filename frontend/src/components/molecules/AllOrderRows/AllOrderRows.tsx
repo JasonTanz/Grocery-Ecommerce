@@ -110,9 +110,10 @@ const AllOrderRows = ({
       </Td>
       <Td>
         <Text fontSize={'12px'} color="#6c757d">
-          {' '}
-          {order.order_status === 'Pending' ||
-          order.order_status === 'Out for delivery'
+          {console.log(order.order_status)}
+          {order.order_status === 'Pending'
+            ? moment(order.createdAt).format('DD-MM-YY hh:mm A')
+            : order.order_status === 'Out for delivery'
             ? moment(order.createdAt).format('DD-MM-YY hh:mm A')
             : moment(order.updatedAt).format('DD-MM-YY hh:mm A')}
         </Text>

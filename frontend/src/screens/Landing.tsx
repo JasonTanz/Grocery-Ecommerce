@@ -83,9 +83,9 @@ const Landing = () => {
                 clickable: true,
               }}
               slidesPerView={1}
-              autoplay={{
-                delay: 5000,
-              }}
+              // autoplay={{
+              //   delay: 5000,
+              // }}
               className="mySwiper"
               style={{
                 width: '98%',
@@ -120,15 +120,21 @@ const Landing = () => {
                   <VStack
                     w="100%"
                     alignItems={'flex-start'}
-                    px="7.5rem"
+                    px={['1.3em', '1.3em', '7.5em']}
                     zIndex={200}
                   >
                     <VStack mb="2em" alignItems={'flex-start'}>
                       {' '}
-                      <Heading fontWeight={700} fontSize="50px">
+                      <Heading
+                        fontWeight={700}
+                        fontSize={['20px', '20px', '50px']}
+                      >
                         Feed your family the best
                       </Heading>
-                      <Text fontSize={'30px'}>
+                      <Text
+                        fontSize={'30px'}
+                        textAlign={['left', 'left', 'inherit']}
+                      >
                         Fully prepared & delivered nationwide.
                       </Text>
                       <Text fontSize={'20px'} color="#7e7e7e">
@@ -144,7 +150,7 @@ const Landing = () => {
                         style={{
                           marginTop: '1.2em',
                         }}
-                        w="25%"
+                        w={['50%', '50%', '25%']}
                       >
                         <HStack alignItems={'center'} justifyContent="center">
                           <Text>Shop Now</Text>
@@ -180,18 +186,25 @@ const Landing = () => {
                   <VStack
                     w="100%"
                     alignItems={'flex-start'}
-                    px="7.5rem"
+                    px={['1.3em', '1.3em', '7.5em']}
                     zIndex={200}
+                    textAlign="left"
                   >
                     <VStack mb="2em" alignItems={'flex-start'}>
                       {' '}
-                      <Heading fontWeight={700} fontSize="50px">
+                      <Heading
+                        fontWeight={700}
+                        fontSize={['30px', '30px', '50px']}
+                      >
                         Fresh Vegetables
                       </Heading>
-                      <Heading fontWeight={700} fontSize="50px">
+                      <Heading
+                        fontWeight={700}
+                        fontSize={['30px', '30px', '50px']}
+                      >
                         Big discount
                       </Heading>
-                      <Text fontSize={'30px'}>
+                      <Text fontSize={['25px', '25px', '30px']}>
                         Save up to 50% off on your first order
                       </Text>
                       <Button
@@ -204,7 +217,7 @@ const Landing = () => {
                         style={{
                           marginTop: '1.2em',
                         }}
-                        w="25%"
+                        w={['50%', '50%', '25%']}
                       >
                         <HStack alignItems={'center'} justifyContent="center">
                           <Text>Shop Now</Text>
@@ -274,7 +287,14 @@ const Landing = () => {
               </Center>
             ) : (
               <>
-                <Grid templateColumns={'repeat(5, 1fr)'} gap="1.2em">
+                <Grid
+                  templateColumns={[
+                    'repeat(1,1fr)',
+                    'repeat(2,1fr)',
+                    'repeat(5, 1fr)',
+                  ]}
+                  gap="1.2em"
+                >
                   {allProducts.map((prod) => (
                     <GridItem key={prod.product_id}>
                       <ProductCard prod={prod} />
