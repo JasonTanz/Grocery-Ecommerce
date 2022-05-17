@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable unused-imports/no-unused-imports */
 import React, { useEffect, useRef, useCallback } from 'react';
 import {
   Center,
@@ -130,14 +132,19 @@ const Header = ({ searchBar = false }: Props) => {
               >
                 Grocery Ecommerce
               </Heading>
-              <Link fontSize={'18px'} href="/" pt="6px">
+              {/* <Link fontSize={'18px'} href="/" pt="6px">
                 Home
               </Link>
               <Link fontSize={'18px'} href="/products" pt="6px">
                 Products
-              </Link>
+              </Link> */}
             </HStack>
-            <HStack gap="1.2em" w="50%" position={'relative'}>
+            <HStack
+              gap="1.2em"
+              w="50%"
+              position={'relative'}
+              display={['none', 'none', 'flex']}
+            >
               <HStack w="100%">
                 <Formik
                   initialValues={initialValues}

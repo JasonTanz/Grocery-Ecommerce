@@ -1,3 +1,4 @@
+/* eslint-disable unused-imports/no-unused-imports */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import {
@@ -168,7 +169,7 @@ const ProductDetail = () => {
                         'repeat(2, 1fr)',
                       ]}
                       justifyItems={'center'}
-                      py="2.5em"
+                      py={['1.2em', '1.5em', '2.5em']}
                     >
                       <GridItem
                         border={'1px solid #ececec'}
@@ -184,18 +185,20 @@ const ProductDetail = () => {
                           />
                         </VStack>
                       </GridItem>
-                      <GridItem
-                        px={['2.5em', '1.5em', '0']}
-                        w={['45%', '45%', '100%']}
-                      >
-                        <VStack alignItems={'flex-start'} gap="12px">
+                      <GridItem>
+                        <VStack
+                          alignItems={'flex-start'}
+                          gap="12px"
+                          px={['1.4em', '1.2em', '0']}
+                          py={['12px', '12px', '0']}
+                        >
                           {productDetail.categories.map((cat: Category) => (
                             <Text
                               style={{ marginTop: 0, marginLeft: 0 }}
                               color="#adadad"
                               fontSize={['18px', '18px', '12px']}
                               key={cat.category_id}
-                              paddingTop={['4px', '4px', '0']}
+                              paddingTop={['2px', '2px', '0']}
                             >
                               {cat.category_name}
                             </Text>
@@ -208,55 +211,64 @@ const ProductDetail = () => {
                             RM{productDetail.product_price}
                           </Heading>
                           <Text>{productDetail.product_brief_intro}</Text>
-                          <HStack w="100%">
-                            <Formik
-                              initialValues={initialValues}
-                              validationSchema={addToCartSchema}
-                              onSubmit={(data) => {
-                                createCart({
-                                  variables: {
-                                    input: {
-                                      cust_id: authState.id,
-                                      product_id,
-                                      item_qty: data.qty,
-                                    },
-                                  },
-                                });
-                              }}
-                            >
-                              {(props: FormikProps<CartProps>) => (
-                                <Form style={{ width: '100%' }}>
-                                  <HStack spacing={'20px'} w="100%">
-                                    <HStack>
-                                      <Field
-                                        name="qty"
-                                        component={GESelectDropDown}
-                                        customclass="custom-dropdown"
-                                        options={[
-                                          {
-                                            label: '1',
-                                            value: 1,
-                                          },
-                                          {
-                                            label: '2',
-                                            value: 2,
-                                          },
-                                          {
-                                            label: '3',
-                                            value: 3,
-                                          },
-                                          {
-                                            label: '4',
-                                            value: 4,
-                                          },
-                                          {
-                                            label: '5',
-                                            value: 5,
-                                          },
-                                        ]}
-                                      />
-                                    </HStack>
 
+                          <Formik
+                            initialValues={initialValues}
+                            validationSchema={addToCartSchema}
+                            onSubmit={(data) => {
+                              createCart({
+                                variables: {
+                                  input: {
+                                    cust_id: authState.id,
+                                    product_id,
+                                    item_qty: data.qty,
+                                  },
+                                },
+                              });
+                            }}
+                          >
+                            {(props: FormikProps<CartProps>) => (
+                              <Form style={{ width: '100%' }}>
+                                <Grid
+                                  templateColumns={[
+                                    'repeat(1,1fr)',
+                                    'repeat(1,1fr)',
+                                    '30% 50% ',
+                                  ]}
+                                  alignItems="center"
+                                >
+                                  <GridItem>
+                                    {' '}
+                                    <Field
+                                      name="qty"
+                                      component={GESelectDropDown}
+                                      customclass="custom-dropdown"
+                                      options={[
+                                        {
+                                          label: '1',
+                                          value: 1,
+                                        },
+                                        {
+                                          label: '2',
+                                          value: 2,
+                                        },
+                                        {
+                                          label: '3',
+                                          value: 3,
+                                        },
+                                        {
+                                          label: '4',
+                                          value: 4,
+                                        },
+                                        {
+                                          label: '5',
+                                          value: 5,
+                                        },
+                                      ]}
+                                    />
+                                  </GridItem>
+                                  <GridItem>
+                                    {' '}
                                     <Button
                                       backgroundColor="#3BB77E"
                                       py="1.4em"
@@ -267,7 +279,7 @@ const ProductDetail = () => {
                                       }}
                                       disabled={!isAuthenticated}
                                       type="submit"
-                                      w="30%"
+                                      w={['50%', '50%', '30%']}
                                     >
                                       {!isAuthenticated ? (
                                         <Text>Please Log In</Text>
@@ -275,15 +287,19 @@ const ProductDetail = () => {
                                         <Text> Add To Cart</Text>
                                       )}
                                     </Button>
-                                  </HStack>
-                                </Form>
-                              )}
-                            </Formik>
-                          </HStack>
+                                  </GridItem>
+                                </Grid>
+                              </Form>
+                            )}
+                          </Formik>
                         </VStack>
                       </GridItem>
                     </Grid>{' '}
-                    <VStack gap="1em" alignItems={'flex-start'}>
+                    <VStack
+                      gap={['.8em', '.8em', '1em']}
+                      alignItems={'flex-start'}
+                      px={['1.4em', '1.2em', '0']}
+                    >
                       <Heading>Description</Heading>
                       <Text>{productDetail.product_description}</Text>
                     </VStack>
@@ -324,7 +340,17 @@ const ProductDetail = () => {
                               autoplay={{
                                 delay: 5000,
                               }}
-                              slidesPerView={4}
+                              breakpoints={{
+                                // when window width is >= 640px
+                                640: {
+                                  width: 640,
+                                  slidesPerView: 1,
+                                },
+                                // when window width is >= 768px
+                                768: {
+                                  slidesPerView: 4,
+                                },
+                              }}
                               className="mySwiper"
                               style={{
                                 width: '100%',

@@ -24,12 +24,20 @@ code {
   min-height: 50px;
   width: 150px;
   max-width: 150px;
+  margin-left: 0 !important ;
 }
 
 .trash-can-icon:hover {
   color: red;
   transition: all 0.3s;
 }
+
+@media only screen and (max-width: 600px) {
+  .swiper-container {
+    width: 90vw !important;
+  }
+}
+
 .phone-input {
   width: 100%;
   position: relative;

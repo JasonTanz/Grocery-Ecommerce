@@ -24,6 +24,7 @@ const theme = extendTheme({
     'container.xl': '1500px',
     'container.dashboard': '1350px',
     'container.form': '550px',
+    'container.normal': '1200px',
   },
   components: {
     stepperBox: {
